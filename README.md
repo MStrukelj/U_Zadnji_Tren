@@ -9,15 +9,46 @@ Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije 
 > Dobro izrađen opis omogućuje vam da pokažete svoj rad drugim programerima, kao i potencijalnim poslodavcima. Ne samo da prvi dojam na stranici opisa često razlikuje dobar projekt od lošeg projekta već i predstavlja dobru praksu koju morate savladati.
 
 # Funkcijski zahtjevi
-> Navedite ključne zahtjeve Vašeg projekta.
-
-
+- odabir smjera koji učenik želi upisati
+- pridjeljivanje predmeta učenicima ovisno o smjeru
+- izrađivanje rasporeda sati po smjerovima i prikazivanje istog
+- nastavnik može odrediti vrijeme u danu/tjednu kad ne može održati nastavu
+- slanje rasporeda i promjene na rasporedu svim učenicima i nastavnika elektroničkom 
+  poštom
+- slanje obavijesti i komunikacija unutar grupe i pojedinih osoba
+- objavljivanje materijala na web stranicama
+- praćenje statistike pregleda i pristupa svim nastavnim materijalima
+- slanje obavijesti o terenskoj nastavi
+- prikazivanje dolaska od lokacije škole do lokacije terenske nastave
+- omogućivanje nekoliko kategorija korisnika
+- generiranje potvrde o upisu o školi i slanje iste elektroničkom poštom
+- praćenje statistike o izdavanju potvrda i omogućivanje pregleda iste
+  
+# Nefunkcijski zahtjevi
+- responzivni dizajn i prilagodba aplikacije za upotrebu na različitim uređajima
+- OAuth2 vanjski servis za autentifikaciju
+- učenik može upisati samo jedan smjer
+- raspored sati se prikazuje u tabličnom obliku za svaki tjedan
+- materijali pojedinog predmeta su dostupni samo učenicima koji imaju taj predmet
+- za prikaz puta od škole do lokacije koristi se Google Maps
+- kategorije korisnika su : učenik, nastavnik, ravnatelj, satničar, djelatnik studentske službe i administrator informatičkog sustava
+- potvrda o upisu u školu je u pdf formatu
+- samo dvije kategorije korisnika imaju pregled statistike o izdavanju potvrda
+  (djelatnik studentske službe i ravnatelj)
+     
 # Tehnologije
+Frontend - 
+Backend -
+Baza podataka - 
 
 #Instalcija
 # Članovi tima 
-> Popis članova tima/linkovi/ glavni doprinos
->
+Voditelj tima
+Mislav Štrukelj
+
+Frontend
+
+Backend
 
 # Kontribucije
 >Pravila ovise o organizaciji tima i su često izdvojena u CONTRIBUTING.md
