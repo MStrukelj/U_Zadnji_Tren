@@ -37,27 +37,30 @@ Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije 
   (djelatnik studentske službe i ravnatelj)
      
 # Tehnologije
-Frontend - React
-Backend - Spring boot
-Baza podataka - PostgreSQL
+## Frontend  
+   - React
+## Backend 
+  - Spring boot
+## Baza podataka 
+  - PostgreSQL
 
 #Instalcija
 # Članovi tima 
-Voditelj tima 
-Mislav Štrukelj
+  ## Voditelj tima 
+   - Mislav Štrukelj
 
-Frontend
-Hana Morović
-Andrea Anđelković
-Luka Petrušić
+  ## Frontend
+  - Hana Morović
+  - Andrea Anđelković
+  - Luka Petrušić
 
-Backend
-Dominik Papić
-Marko Knez
-Mislav Štrukelj
+  ## Backend
+   - Dominik Papić
+   - Marko Knez
+   - Mislav Štrukelj
 
-Dokumentacija
-Sasha Lučić
+  ## Dokumentacija
+   - Sasha Lučić
 # Kontribucije
 >Pravila ovise o organizaciji tima i su često izdvojena u CONTRIBUTING.md
 
