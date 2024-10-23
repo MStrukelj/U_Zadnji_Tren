@@ -9,11 +9,12 @@ Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije 
 > Dobro izrađen opis omogućuje vam da pokažete svoj rad drugim programerima, kao i potencijalnim poslodavcima. Ne samo da prvi dojam na stranici opisa često razlikuje dobar projekt od lošeg projekta već i predstavlja dobru praksu koju morate savladati.
 
 # Funkcijski zahtjevi
+- izrada baze podataka 
 - odabir smjera koji učenik želi upisati
 - pridjeljivanje predmeta učenicima ovisno o smjeru
 - izrađivanje rasporeda sati po smjerovima i prikazivanje istog
 - nastavnik može odrediti vrijeme u danu/tjednu kad ne može održati nastavu
-- slanje rasporeda i promjene na rasporedu svim učenicima i nastavnika elektroničkom 
+- slanje rasporeda i promjena na rasporedu svim učenicima i nastavnicima elektroničkom 
   poštom
 - slanje obavijesti i komunikacija unutar grupe i pojedinih osoba
 - objavljivanje materijala na web stranicama
@@ -25,12 +26,13 @@ Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije 
 - praćenje statistike o izdavanju potvrda i omogućivanje pregleda iste
   
 # Nefunkcijski zahtjevi
+- PostgreSQL baza podataka
 - responzivni dizajn i prilagodba aplikacije za upotrebu na različitim uređajima
 - OAuth2 vanjski servis za autentifikaciju
 - učenik može upisati samo jedan smjer
 - raspored sati se prikazuje u tabličnom obliku za svaki tjedan
 - materijali pojedinog predmeta su dostupni samo učenicima koji imaju taj predmet
-- za prikaz puta od škole do lokacije koristi se Google Maps
+- za prikaz puta od škole do lokacije terenske nastave koristi se Google Maps
 - kategorije korisnika su : učenik, nastavnik, ravnatelj, satničar, djelatnik studentske službe i administrator informatičkog sustava
 - potvrda o upisu u školu je u pdf formatu
 - samo dvije kategorije korisnika imaju pregled statistike o izdavanju potvrda
