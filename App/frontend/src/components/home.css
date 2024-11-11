@@ -1,0 +1,119 @@
+/* src/components/home.css */
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+}
+
+/* Header styling */
+.header {
+    display: flex;
+    align-items: center;
+    background-color: #4a3a8b;
+    padding: 10px 20px;
+    color: white;
+}
+
+.menu-button {
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    flex-grow: 1;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.header-button {
+    padding: 8px 16px;
+    background-color: #ffffff;
+    color: #4a3a8b;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.header-button:hover {
+    background-color: #d9d9d9;
+}
+
+/* Sidebar (dropdown) styling */
+.sidebar {
+    position: absolute;
+    top: 60px;
+    left: 10px;
+    background-color: #e0e0e0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 150px;
+    z-index: 1000; /* To make sure it appears above other elements */
+}
+
+.sidebar-button {
+    padding: 10px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    
+}
+
+.sidebar-button:hover {
+    background-color: #d9d9d9;
+}
+
+/* Main content styling */
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f4faff;
+    margin-top: 10px;
+}
+
+.info-section {
+    background-color: #d6e8ff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.info-image {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.info-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4a3a8b;
+    margin-bottom: 10px;
+}
+
+.info-text {
+    font-size: 16px;
+    color: #333;
+    font-style: italic;
+}
