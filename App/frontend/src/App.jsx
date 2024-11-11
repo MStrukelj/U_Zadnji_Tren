@@ -1,40 +1,39 @@
 // src/App.jsx
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import LogIn from './components/LogIn';
+import SignUp from './components/SignUp';
 import Home from './components/home';
-/* import SomeOtherPage from './components/SomeOtherPage'; */
 
 function App() {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                {/* <Route path="/other" element={<SomeOtherPage />} /> */}
-            </Routes>
-        </Router>
-    );
-}
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // To track if the user is logged in
+  const [form, setForm] = useState("login"); // To toggle between LogIn and SignUp
 
-export default App;
+  const handleAuthentication = () => {
+    setIsAuthenticated(true);
+  };
 
-
-//Nedostaju signin i login fileovi za pokusaj spajanja 2 App.jsx pa je kod drugog ispod:
-
-/* import React, { useState } from 'react';
-import LogIn from "./components/LogIn";
-import SignUp from "./components/SignUp";
-
-function App() {
-  const [form, setForm] =useState("login");
   return (
-    <>
-    {form == "login" ? (
-      <LogIn FormHandle ={setForm}/>) : 
-      ( <SignUp FormHandle ={setForm}/>)}
-    </>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/home" replace />
+            ) : (
+              form === "login" ? (
+                <LogIn FormHandle={setForm} onAuthenticate={handleAuthentication} />
+              ) : (
+                <SignUp FormHandle={setForm} onAuthenticate={handleAuthentication} />
+              )
+            )
+          }
+        />
+        <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   );
 }
 
-
-export default App; */
-
+export default App;
