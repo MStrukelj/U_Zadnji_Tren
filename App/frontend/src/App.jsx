@@ -16,3 +16,25 @@ function App() {
 }
 
 export default App;
+
+
+//Nedostaju signin i login fileovi za pokusaj spajanja 2 App.jsx pa je kod drugog ispod:
+
+/* import React, { useState } from 'react';
+import LogIn from "./components/LogIn";
+import SignUp from "./components/SignUp";
+
+function App() {
+  const [form, setForm] =useState("login");
+  return (
+    <>
+    {form == "login" ? (
+      <LogIn FormHandle ={setForm}/>) : 
+      ( <SignUp FormHandle ={setForm}/>)}
+    </>
+  );
+}
+
+
+export default App; */
+
