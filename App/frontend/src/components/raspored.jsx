@@ -1,9 +1,7 @@
-// src/components/Home.jsx
-import React, { useState } from 'react';
+import React from 'react';
 import './home.css';
-import SkolaImg from '../assets/skola.jpg';
-
-function Home() {
+ 
+function Raspored() {
     const [sidebarVisible, setSidebarVisible] = useState(false);
 
     const toggleSidebar = () => {
@@ -27,28 +25,19 @@ function Home() {
             {/* Sidebar (dropdown menu) */}
             {sidebarVisible && (
                 <aside className="sidebar">
+                    <button className="sidebar-button">NASLOVNICA</button>
                     <button className="sidebar-button">PREDMETI</button>
-                    <button className="sidebar-button">KALENDAR</button>
                     <button className="sidebar-button">POTVRDE</button>
                     <button className="sidebar-button">CHAT</button>
                 </aside>
             )}
 
-            {/* Main Content */}
-            <main className="content">
-                <section className="info-section">
-                    <img className="info-image" alt="Škola" src={SkolaImg}/>
-                    <h2 className="info-title">NEŠTO O NAMA</h2>
-                    <p className="info-text">
-                        Diplomski studij. Diplomski studij organizira se kroz tri studijska programa,
-                        traje dvije godine, a izvode se po sustavu preduvjeta. Doktorski studij. Fakultet
-                        je nositelj doktorskog studija iz područja tehničkih znanosti, znanstvenog polja
-                        elektrotehnike i znanstvenog polja računarstva.
-                    </p>
-                </section>
+            <main className="raspored-container">
+                
             </main>
+
         </div>
-    );
+    )
 }
 
-export default Home;
+export default Raspored;
