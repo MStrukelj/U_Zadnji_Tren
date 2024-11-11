@@ -1,6 +1,6 @@
 /* src/components/home.css */
 
-.home-container {
+.container {
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
