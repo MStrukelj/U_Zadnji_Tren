@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import {Link} from 'react-router-dom';
 import './home.css';
  
 function Potvrde() {
@@ -10,7 +11,7 @@ function Potvrde() {
 
     return (
         <div className="container">
-            {/* Header with menu button and school logo */}
+            {/* Header with menu button and "school logo" */}
             <header className="header">
                 <button className="menu-button" onClick={toggleSidebar}>
                     ☰
@@ -25,21 +26,18 @@ function Potvrde() {
                 </div>
             </header>
 
-            {/* Sidebar (dropdown menu) */}
-            {sidebarVisible && (
-                <aside className="sidebar">
-                    <button className="sidebar-button">NASLOVNICA</button>
-                    <button className="sidebar-button">PREDMETI</button>
-                    <button className="sidebar-button">RASPORED</button>
-                    <button className="sidebar-button">CHAT</button>
-                </aside>
-            )}
-
-
-            {/*NEEDS TO BE PROPERLY CHANGED FOR THIS SPECIFIC SITE} */}
-            <main className="">
-                
-            </main>
+            {/* Also needs missing materials to style properly! Working functionality */}
+            <div className="main-content">
+                {sidebarVisible && (
+                    <aside className="left-sidebar">
+                        <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
+                        <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                        <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
+                        <Link to="/potvrde" className="sidebar-button active">POTVRDE</Link>
+                        <button className="sidebar-button">CHAT</button>
+                    </aside>
+                )}
+            </div>
 
         </div>
     )

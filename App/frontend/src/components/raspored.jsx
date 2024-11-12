@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import {Link} from 'react-router-dom';
 import './home.css';
  
 function Raspored() {
@@ -25,20 +26,18 @@ function Raspored() {
                 </div>
             </header>
 
-            {/* Sidebar (dropdown menu) */}
-            {sidebarVisible && (
-                <aside className="sidebar">
-                    <button className="sidebar-button">NASLOVNICA</button>
-                    <button className="sidebar-button">PREDMETI</button>
-                    <button className="sidebar-button">POTVRDE</button>
-                    <button className="sidebar-button">CHAT</button>
-                </aside>
-            )}
-
-            <main className="raspored-container">
-                
-            </main>
-
+            {/* Needs missing materials to style properly! Working functionality*/}
+            <div className="main-content">
+                {sidebarVisible && (
+                    <aside className="left-sidebar">
+                        <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
+                        <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                        <Link to="/raspored" className="sidebar-button active">KALENDAR</Link>
+                        <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+                        <button className="sidebar-button">CHAT</button>
+                    </aside>
+                )}
+            </div>
         </div>
     )
 }
