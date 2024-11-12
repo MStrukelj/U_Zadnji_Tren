@@ -51,16 +51,10 @@ function Predmeti() {
             </header>
 
             <div className="main-content">
-                <div className="left-sidebar">
-                    <button className="nav-button active">NASLOVNICA</button>
-                    <button className="nav-button">KALENDAR</button>
-                    <button className="nav-button">POTVRDE</button>
-                    <button className="nav-button">CHAT</button>
-                </div>
-
                 {sidebarVisible && (
                     <aside className="sidebar">
                         <Link to="/" className="sidebar-button">NASLOVNICA</Link>
+                        <button className="sidebar-button active">PREDMETI</button>
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
                         <button className="sidebar-button">CHAT</button>
