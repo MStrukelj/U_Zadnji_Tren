@@ -16,9 +16,12 @@ function Potvrde() {
                     ☰
                 </button>
                 <h1 className="logo">eŠkola</h1>
-                <div className="header-buttons">
-                    <button className="header-button">Prijava</button>
-                    <button className="header-button">Registracija</button>
+                <div className="user-container">
+                    <div className="user-names">
+                        <span className="user-field">Ime</span>
+                        <span className="user-field">Prezime</span>
+                    </div>
+                    <span className="class-field">Class</span>
                 </div>
             </header>
 
