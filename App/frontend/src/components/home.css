@@ -1,6 +1,6 @@
 /* src/components/home.css */
 
-.home-container {
+.container {
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
@@ -31,24 +31,34 @@
     flex-grow: 1;
 }
 
-.header-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.header-button {
-    padding: 8px 16px;
-    background-color: #ffffff;
+.user-container {
+    background-color: white;
+    padding: 10px;
+    border-radius: 4px;
+    position: relative;
+    min-width: 150px;
+    height: 60px;
     color: #4a3a8b;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+}
+  
+.user-names {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
     font-size: 14px;
 }
 
-.header-button:hover {
-    background-color: #d9d9d9;
-}
+/* .user-field {
+    color: #4a3a8b;
+    font-size: 14px;
+} */
+  
+.class-field {
+    position: absolute;
+    bottom: 7px;
+    right: 9px;
+    font-size: 12px;
+  }
 
 /* Sidebar (dropdown) styling */
 .sidebar {

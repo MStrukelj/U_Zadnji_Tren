@@ -96,7 +96,7 @@ BEGIN
         i := i + 1;
     END LOOP;
 
-    --svi razredi osim onih za fakultativne predmete i punjenje relacije upisao učenika koji nisu prvi razred
+    --svi razredi osim onih za fakultativne predmete i punjenje relacije upisao učenika koji nisu prvi razred bez izbornih
 	FOR god IN 1..4 LOOP
         FOR cnt IN 1..6 LOOP
             smj := CASE 
@@ -111,7 +111,7 @@ BEGIN
             IF god != 1 THEN
                 FOR i IN 1..20 LOOP
                     INSERT INTO upisao(oznRaz, JMBAG) 
-                    VALUES (god::varchar || '.' || raz[cnt], i + 20 * (4 - god));
+                    VALUES (god::varchar || '.' || raz[cnt], i + 120 *(4 - god)+ (cnt-1) *20);
                 END LOOP;
             END IF;
         END LOOP;
@@ -123,6 +123,18 @@ BEGIN
                 VALUES (god::varchar ||  smjer[i]||'-'||'ET', god,smjer[i],'Etika', 20);   
         END LOOP;         
     END LOOP;
+
+    --punjenje upisao s izbornim razredima
+	FOR ra IN (SELECT up.JMBAG, r.godina, r.smjer FROM upisao up NATURAL JOIN razred r) LOOP
+    	IF ra.JMBAG % 2 = 0 THEN 
+        INSERT INTO upisao(oznRaz, JMBAG) 
+        VALUES (ra.godina::varchar || ra.smjer || '-VJ', ra.JMBAG);
+    	ELSE 
+        INSERT INTO upisao(oznRaz, JMBAG) 
+        VALUES (ra.godina::varchar || ra.smjer || '-ET', ra.JMBAG);
+    	END IF;
+	END LOOP;
+
 
     -- fakultativni razredi
     INSERT INTO razred(oznRaz,fakultativan,kapacitet) VALUES ('DSD','Njemački jezik DSD', 40);

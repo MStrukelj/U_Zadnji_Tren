@@ -16,6 +16,9 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Za brzi pristup home */}
+        {/* <Route path="/" element={<Home />} /> */}
+        
         <Route
           path="/"
           element={
