@@ -13,10 +13,10 @@ public class Predmet {
     @Column(name = "sifpredmet")
     private Integer sifPredmet;
 
-    @Column(name = "nazPred")
+    @Column(name = "nazpred")
     private String nazPred;
 
-    @Column(name = "brSatiTjedno")
+    @Column(name = "brsatitjedno")
     private Integer brSatiTjedno;
 
     @Column(name = "izboran")

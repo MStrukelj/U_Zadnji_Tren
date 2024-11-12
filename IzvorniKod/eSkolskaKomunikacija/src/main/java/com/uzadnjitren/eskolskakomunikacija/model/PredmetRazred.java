@@ -9,11 +9,11 @@ import java.io.Serializable;
 public class PredmetRazred implements Serializable {
 
     @Id
-    @Column(name = "oznraz") // Update to match the database column name
+    @Column(name = "oznraz")
     private String oznRaz;
 
     @Id
-    @Column(name = "sifpredmet") // Update to match the database column name
+    @Column(name = "sifpredmet")
     private Integer sifPredmet;
 
     @ManyToOne
