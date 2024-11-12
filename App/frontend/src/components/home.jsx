@@ -1,4 +1,4 @@
-// src/components/Home.jsx
+// Home.jsx
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
 import './home.css';
@@ -6,14 +6,13 @@ import SkolaImg from '../assets/skola.jpg';
 
 function Home() {
     const [sidebarVisible, setSidebarVisible] = useState(false);
-
+    
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
     };
-
+    
     return (
         <div className="container">
-            {/* Header with menu button and school logo */}
             <header className="header">
                 <button className="menu-button" onClick={toggleSidebar}>
                     ☰
@@ -27,30 +26,31 @@ function Home() {
                     <span className="class-field">Class</span>
                 </div>
             </header>
-
-            {/* Sidebar (dropdown menu) */}
-            {sidebarVisible && (
-                <aside className="sidebar">
-                    <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
-                    <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
-                    <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
-                    <button className="sidebar-button">CHAT</button>
-                </aside>
-            )}
-
-            {/* Main Content */}
-            <main className="content">
-                <section className="info-section">
-                    <img className="info-image" alt="Škola" src={SkolaImg}/>
-                    <h2 className="info-title">NEŠTO O NAMA</h2>
-                    <p className="info-text">
-                        Diplomski studij. Diplomski studij organizira se kroz tri studijska programa,
-                        traje dvije godine, a izvode se po sustavu preduvjeta. Doktorski studij. Fakultet
-                        je nositelj doktorskog studija iz područja tehničkih znanosti, znanstvenog polja
-                        elektrotehnike i znanstvenog polja računarstva.
-                    </p>
-                </section>
-            </main>
+            
+            <div className="main-content">
+                {sidebarVisible && (
+                    <aside className="sidebar">
+                        <button className="sidebar-button active">NASLOVNICA</button>
+                        <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                        <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
+                        <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+                        <button className="sidebar-button">CHAT</button>
+                    </aside>
+                )}
+                
+                <main className="content">
+                    <section className="info-section">
+                        <img className="info-image" alt="Škola" src={SkolaImg}/>
+                        <h2 className="info-title">NEŠTO O NAMA</h2>
+                        <p className="info-text">
+                            Diplomski studij. Diplomski studij organizira se kroz tri studijska programa,
+                            traje dvije godine, a izvode se po sustavu preduvjeta. Doktorski studij. Fakultet
+                            je nositelj doktorskog studija iz područja tehničkih znanosti, znanstvenog polja
+                            elektrotehnike i znanstvenog polja računarstva.
+                        </p>
+                    </section>
+                </main>
+            </div>
         </div>
     );
 }

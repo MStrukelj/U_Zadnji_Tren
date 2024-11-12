@@ -1,12 +1,14 @@
-/* src/components/home.css */
-
+/* home.css */
 .container {
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
     min-height: 100vh;
-    width: 100%;  
-    max-width: 100%;  
+}
+
+.main-content {
+    display: flex;
+    height: calc(100vh - 80px); /* Adjust based on header height */
 }
 
 /* Header styling */
@@ -42,7 +44,7 @@
     height: 60px;
     color: #4a3a8b;
 }
-  
+
 .user-names {
     display: flex;
     flex-direction: column;
@@ -50,48 +52,43 @@
     font-size: 14px;
 }
 
-/* .user-field {
-    color: #4a3a8b;
-    font-size: 14px;
-} */
-  
 .class-field {
     position: absolute;
     bottom: 7px;
     right: 9px;
     font-size: 12px;
-  }
+}
 
-/* Sidebar (dropdown) styling */
+/* Sidebar styling */
 .sidebar {
-    position: absolute;
-    top: 60px;
-    left: 10px;
-    background-color: #e0e0e0;
+    width: 200px;
+    background-color: #f5f5f5;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 150px;
-    z-index: 1000; /* To make sure it appears above other elements */
 }
 
 .sidebar-button {
-    padding: 10px;
-    background-color: #ffffff;
+    padding: 10px 20px;
+    background-color: white;
     border: none;
     border-radius: 5px;
+    text-align: left;
+    text-decoration: none;
+    color: inherit;
     font-size: 16px;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    
+    transition: background-color 0.2s;
 }
 
 .sidebar-button:hover {
-    background-color: #d9d9d9;
+    background-color: #e0e0e0;
+}
+
+.sidebar-button.active {
+    background-color: #4a3a8b;
+    color: white;
 }
 
 /* Main content styling */
@@ -99,6 +96,7 @@
     flex: 1;
     padding: 20px;
     background-color: #f4faff;
+    overflow-y: auto;
 }
 
 .info-section {
