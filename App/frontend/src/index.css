@@ -94,9 +94,10 @@ border-radius: 5px;
 
 
 
-/* index.css */
+/* index.css  */
+
 @media (max-width: 768px) {
-  .login-container {
+  .form-container {
     max-width: 90%;
     padding: 1.5rem;
   }
