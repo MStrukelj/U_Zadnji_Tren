@@ -7,24 +7,29 @@ function SignUp({ FormHandle }) {
   const [izborniPredmeti, setIzborniPredmeti] = useState([]);
 
   // Handler to manage changes in Smjer selection
-  const handleSmjerChange = (event) => {
-    const { value, checked } = event.target;
-    if (checked) {
-      setSmjer([...smjer, value]);
-    } else {
-      setSmjer(smjer.filter((item) => item !== value));
-    }
-  };
+const handleSmjerChange = (event) => {
+  const { value, checked } = event.target;
+  if (checked) {
+    // Set smjer to an array containing only the selected value
+    setSmjer([value]);
+  } else {
+    // If unchecked, clear the smjer array
+    setSmjer([]);
+  }
+};
 
-  // Handler to manage changes in Izborni Predmeti selection
-  const handleIzborniPredmetiChange = (event) => {
-    const { value, checked } = event.target;
-    if (checked) {
-      setIzborniPredmeti([...izborniPredmeti, value]);
-    } else {
-      setIzborniPredmeti(izborniPredmeti.filter((item) => item !== value));
-    }
-  };
+// Handler to manage changes in Izborni Predmeti selection
+const handleIzborniPredmetiChange = (event) => {
+  const { value, checked } = event.target;
+  if (checked) {
+    // Set izborniPredmeti to an array containing only the selected value
+    setIzborniPredmeti([value]);
+  } else {
+    // If unchecked, clear the izborniPredmeti array
+    setIzborniPredmeti([]);
+  }
+};
+
 
   return (
     <div className="form-container">
@@ -48,6 +53,7 @@ function SignUp({ FormHandle }) {
               type="checkbox"
               value="Opci"
               onChange={handleSmjerChange}
+              checked={smjer.includes("Opci")}
             />
             A-Opći</label>
           </div>
@@ -56,8 +62,9 @@ function SignUp({ FormHandle }) {
           <label>
             <input
               type="checkbox"
-              value="Matematicki"
+              value="Informaticki"
               onChange={handleSmjerChange}
+              checked={smjer.includes("Informaticki")}
             />
             B-Informatički</label>
           </div>
@@ -66,8 +73,9 @@ function SignUp({ FormHandle }) {
           <label>
             <input
               type="checkbox"
-              value="Informaticki"
+              value="Matematicki"
               onChange={handleSmjerChange}
+              checked={smjer.includes("Matematicki")}
             />
             C-Matematički</label>
           </div>
@@ -84,6 +92,7 @@ function SignUp({ FormHandle }) {
               type="checkbox"
               value="Francuski"
               onChange={handleIzborniPredmetiChange}
+              checked={izborniPredmeti.includes("Francuski")}
             />
             Francuski</label>
           </div>
@@ -93,6 +102,7 @@ function SignUp({ FormHandle }) {
               type="checkbox"
               value="Njemacki"
               onChange={handleIzborniPredmetiChange}
+              checked={izborniPredmeti.includes("Njemacki")}
             />
             Njemački-DSD</label>
           </div>
@@ -102,6 +112,7 @@ function SignUp({ FormHandle }) {
               type="checkbox"
               value="Astronomija"
               onChange={handleIzborniPredmetiChange}
+              checked={izborniPredmeti.includes("Astronomija")}
             />
             Astronomija</label>
           </div>
