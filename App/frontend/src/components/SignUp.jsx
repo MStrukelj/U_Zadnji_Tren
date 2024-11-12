@@ -33,7 +33,7 @@ const handleIzborniPredmetiChange = (event) => {
 
   return (
     <div className="form-container">
-      <h2>REGISTRACIJA</h2>
+      <h2>Signup</h2>
       <form>
         <div className="form-control">
           <input type="text" placeholder="Enter your email" />
@@ -120,9 +120,9 @@ const handleIzborniPredmetiChange = (event) => {
           </div>
         </div>
 
-        <button>REGISTRIRAJ SE</button>
+        <button>REGISTRACIJA</button>
       </form>
-      <p onClick={() => FormHandle("login")}>Imate račun? Prijavi se</p>
+      <p onClick={() => FormHandle("login")}>Already have an account? Login</p>
     </div>
   );
 }
