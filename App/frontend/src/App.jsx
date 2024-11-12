@@ -20,7 +20,7 @@ function App() {
     <Router>
       <Routes>
         {/* Fast access to home, for testing */}
-        <Route path="/" element={<Home />} />
+        {/* <Route path="/" element={<Home />} /> */}
         
         <Route
           path="/"
