@@ -10,12 +10,13 @@
   box-sizing: border-box;
 }
 
-body {
+.auth-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   background: #73a2cd;
+  font-family: "Montserrat", sans-serif;
 }
 
 .form-container {
