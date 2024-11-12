@@ -7,24 +7,24 @@ function Predmeti() {
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [subjects, setSubjects] = useState([]);
 
-    
-    useEffect(() => {       
+    // Dohvaca predmete iz backenda
+    useEffect(() => {
+
         const fetchSubjects = async () => {
-            // Placeholder backend data (supposed to be supplied from backend)
-            const data = [
-                { 
-                    id: 1, 
-                    name: "Predmet", 
-                    iconUrl: "/path-to-icon.svg"  // Needs replacement
-                },
-                { 
-                    id: 2, 
-                    name: "Predmet", 
-                    iconUrl: "/path-to-icon.svg" 
-                },
-                // ... 
-            ];
-            setSubjects(data);
+            try {
+                const response = await fetch('http://localhost:8080/api/ucenici/241/predmeti', {
+                    credentials: 'include',
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Greška: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                setSubjects(data); // Spremaju se predmeti u stanje komponente
+            } catch (error) {
+                console.error("Greška prilikom dohvaćanja predmeta:", error);
+            }
         };
 
         fetchSubjects();
@@ -64,18 +64,18 @@ function Predmeti() {
                 <div className="subjects-container">
                     <div className="subjects-grid">
                         {subjects.map(subject => (
-                            <div key={subject.id} className="subject-card">
+                            <div key={subject.sifPredmet} className="subject-card">
                                 <div className="subject-icon-space">
                                     {subject.iconUrl && (
-                                        <img 
-                                            src={subject.iconUrl} 
-                                            alt={subject.name} 
+                                        <img
+                                            src={subject.iconUrl}
+                                            alt={subject.nazPred}
                                             className="subject-icon"
                                         />
                                     )}
                                 </div>
                                 <div className="subject-name">
-                                    <p>{subject.name}</p>
+                                    <p>{subject.nazPred}</p>
                                 </div>
                             </div>
                         ))}

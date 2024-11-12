@@ -1,9 +1,7 @@
 package com.uzadnjitren.eskolskakomunikacija.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
+
 import java.util.Date;
 
 @Entity
@@ -25,6 +23,14 @@ public class Ucenik {
     @ManyToOne
     @JoinColumn(name = "pbrRod", insertable = false, updatable = false)
     private Mjesto mjestoRodenja;
+
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "email", referencedColumnName = "email", insertable = false, updatable = false),
+            @JoinColumn(name = "lozinka", referencedColumnName = "lozinka", insertable = false, updatable = false)
+    })
+    private Korisnik korisnik;
+
 
     // Getteri za sva polja
     public Integer getJMBAG() { return JMBAG; }

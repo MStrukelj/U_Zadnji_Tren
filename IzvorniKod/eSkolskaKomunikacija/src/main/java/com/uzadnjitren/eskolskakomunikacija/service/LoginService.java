@@ -115,4 +115,12 @@ public class LoginService {
         return loginRepository.findByEmailAndLozinka(email, lozinka)
             .orElseThrow(() -> new InvalidLoginException("Neispravni podaci za prijavu"));
     }
+
+    public Integer getJmbagByEmail(String email) {
+        // Metoda za dohvaćanje JMBAG-a po emailu ako je korisnik ucenik
+        return loginRepository.findJmbagByEmail(email).orElseThrow(() ->
+                new InvalidLoginException("Nije moguće pronaći JMBAG za učenika s emailom: " + email)
+        );
+    }
+
 }

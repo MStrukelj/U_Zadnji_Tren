@@ -48,19 +48,25 @@ public class LoginController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
         try {
             Login user = loginService.authenticate(loginRequest.getEmail(), loginRequest.getLozinka());
-            
+
             // Spremanje podataka u sesiju
             session.setAttribute("user", user);
             session.setAttribute("email", user.getEmail());
-            
+
+            // Ako je user ucenik, pohrani njegov JMBAG u sesion
+            if (loginService.isStudent(user)) {
+                Integer jmbag = loginService.getJmbagByEmail(user.getEmail());
+                session.setAttribute("jmbag", jmbag);
+            }
+
             // Priprema odgovora
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", "Uspješna prijava");
             response.put("user", createUserResponse(user));
-            
+
             return ResponseEntity.ok(response);
-            
+
         } catch (InvalidLoginException e) {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
