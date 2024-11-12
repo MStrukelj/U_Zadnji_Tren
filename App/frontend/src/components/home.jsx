@@ -1,5 +1,6 @@
 // src/components/Home.jsx
 import React, { useState } from 'react';
+import {Link} from 'react-router-dom';
 import './home.css';
 import SkolaImg from '../assets/skola.jpg';
 
@@ -30,9 +31,9 @@ function Home() {
             {/* Sidebar (dropdown menu) */}
             {sidebarVisible && (
                 <aside className="sidebar">
-                    <button className="sidebar-button">PREDMETI</button>
-                    <button className="sidebar-button">KALENDAR</button>
-                    <button className="sidebar-button">POTVRDE</button>
+                    <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                    <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
+                    <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
                     <button className="sidebar-button">CHAT</button>
                 </aside>
             )}

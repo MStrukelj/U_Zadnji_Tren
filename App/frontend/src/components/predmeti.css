@@ -1,15 +1,82 @@
-/* src/components/home.css */
-
-.container {
+/* predmeti.css */
+.main-content {
     display: flex;
-    flex-direction: column;
-    font-family: Arial, sans-serif;
-    min-height: 100vh;
-    width: 100%;  
-    max-width: 100%;  
+    height: calc(100vh - 80px); /* Adjust based on header height */
 }
 
-/* Header styling */
+/* Left sidebar styles */
+.left-sidebar {
+    width: 200px;
+    background-color: #f5f5f5;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.nav-button {
+    padding: 10px 20px;
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.nav-button:hover {
+    background-color: #e0e0e0;
+}
+
+.nav-button.active {
+    background-color: #4a3a8b;
+    color: white;
+}
+
+/* Subjects grid styles */
+.subjects-container {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #ffffff;
+}
+
+.subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.subject-card {
+    background-color: #d6e8ff;
+    border-radius: 10px;
+    aspect-ratio: 1;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.subject-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.subject-content {
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+}
+
+.subject-content p {
+    margin: 0;
+    color: #333;
+    font-size: 16px;
+}
+
+/* Styling from home */
+
 .header {
     display: flex;
     align-items: center;
@@ -49,11 +116,6 @@
     gap: 5px;
     font-size: 14px;
 }
-
-/* .user-field {
-    color: #4a3a8b;
-    font-size: 14px;
-} */
   
 .class-field {
     position: absolute;
@@ -92,39 +154,4 @@
 
 .sidebar-button:hover {
     background-color: #d9d9d9;
-}
-
-/* Main content styling */
-.content {
-    flex: 1;
-    padding: 20px;
-    background-color: #f4faff;
-}
-
-.info-section {
-    background-color: #d6e8ff;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.info-image {
-    width: 100%;
-    max-width: 400px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-
-.info-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #4a3a8b;
-    margin-bottom: 10px;
-}
-
-.info-text {
-    font-size: 16px;
-    color: #333;
-    font-style: italic;
 }
