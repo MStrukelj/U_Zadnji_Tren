@@ -1,0 +1,52 @@
+package com.uzadnjitren.eskolskakomunikacija.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import java.util.Date;
+
+@Entity
+public class Ucenik {
+
+    @Id
+    private Integer JMBAG;
+    private String OIB;
+    private Date datRod;
+    private Integer pbrStan;
+    private Integer pbrRod;
+    private String email;
+    private String lozinka;
+
+    @ManyToOne
+    @JoinColumn(name = "pbrStan", insertable = false, updatable = false)
+    private Mjesto mjestoStanovanja;
+
+    @ManyToOne
+    @JoinColumn(name = "pbrRod", insertable = false, updatable = false)
+    private Mjesto mjestoRodenja;
+
+    // Getteri za sva polja
+    public Integer getJMBAG() { return JMBAG; }
+    public String getOIB() { return OIB; }
+    public Date getDatRod() { return datRod; }
+    public Integer getPbrStan() { return pbrStan; }
+    public Integer getPbrRod() { return pbrRod; }
+    public String getEmail() { return email; }
+    public String getLozinka() { return lozinka; }
+
+    public Mjesto getMjestoStanovanja() { return mjestoStanovanja; }
+    public Mjesto getMjestoRodenja() { return mjestoRodenja; }
+
+    // Setteri za sva polja
+    public void setJMBAG(Integer JMBAG) { this.JMBAG = JMBAG; }
+    public void setOIB(String OIB) { this.OIB = OIB; }
+    public void setDatRod(Date datRod) { this.datRod = datRod; }
+    public void setPbrStan(Integer pbrStan) { this.pbrStan = pbrStan; }
+    public void setPbrRod(Integer pbrRod) { this.pbrRod = pbrRod; }
+    public void setEmail(String email) { this.email = email; }
+    public void setLozinka(String lozinka) { this.lozinka = lozinka; }
+
+    public void setMjestoStanovanja(Mjesto mjestoStanovanja) { this.mjestoStanovanja = mjestoStanovanja; }
+    public void setMjestoRodenja(Mjesto mjestoRodenja) { this.mjestoRodenja = mjestoRodenja; }
+}

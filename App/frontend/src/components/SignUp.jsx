@@ -28,7 +28,7 @@ function SignUp({ FormHandle }) {
 
   return (
     <div className="form-container">
-      <h2>Signup</h2>
+      <h2>REGISTRACIJA</h2>
       <form>
         <div className="form-control">
           <input type="text" placeholder="Enter your email" />
@@ -49,7 +49,7 @@ function SignUp({ FormHandle }) {
               value="Opci"
               onChange={handleSmjerChange}
             />
-            Opći</label>
+            A-Opći</label>
           </div>
 
           <div className="checkbox-container">
@@ -59,7 +59,7 @@ function SignUp({ FormHandle }) {
               value="Matematicki"
               onChange={handleSmjerChange}
             />
-            Matematički</label>
+            B-Informatički</label>
           </div>
 
           <div className="checkbox-container">
@@ -69,7 +69,7 @@ function SignUp({ FormHandle }) {
               value="Informaticki"
               onChange={handleSmjerChange}
             />
-            Informatički</label>
+            C-Matematički</label>
           </div>
           </div>
         </div>
@@ -94,7 +94,7 @@ function SignUp({ FormHandle }) {
               value="Njemacki"
               onChange={handleIzborniPredmetiChange}
             />
-            Njemački</label>
+            Njemački-DSD</label>
           </div>
           <div className="checkbox-container">
           <label>
@@ -105,21 +105,13 @@ function SignUp({ FormHandle }) {
             />
             Astronomija</label>
           </div>
-          <div className="checkbox-container">
-          <label>
-            <input
-              type="checkbox"
-              value="DSD"
-              onChange={handleIzborniPredmetiChange}
-            />
-            DSD</label>
-          </div>
+          
           </div>
         </div>
 
-        <button>Sign Up</button>
+        <button>REGISTRIRAJ SE</button>
       </form>
-      <p onClick={() => FormHandle("login")}>Already have an account? Login</p>
+      <p onClick={() => FormHandle("login")}>Imate račun? Prijavi se</p>
     </div>
   );
 }

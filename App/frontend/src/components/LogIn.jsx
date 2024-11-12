@@ -14,7 +14,7 @@ function LogIn({FormHandle}) {
    }
    return (
    <div className="form-container">
-   <h2>Login</h2>
+   <h2>PRIJAVA</h2>
    <form onSubmit={handleLogin}>
    <div className="form-control">
    <input type="text" placeholder="Enter your email" 
@@ -26,9 +26,9 @@ function LogIn({FormHandle}) {
      onChange={(e)=>setPassword(e.target.value)}/>
    </div>
    
-   <button onClick={handleLogin}>Log In</button>
+   <button onClick={handleLogin}>PRIJAVA</button>
    </form>
-   <p onClick={() => FormHandle("signup")}>Don't have an Account? Signup</p>
+   <p onClick={() => FormHandle("signup")}>Novi korsinik? Registriraj se</p>
    </div>
    );
    }
