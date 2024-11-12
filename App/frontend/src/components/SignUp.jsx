@@ -33,7 +33,7 @@ const handleIzborniPredmetiChange = (event) => {
 
   return (
     <div className="form-container">
-      <h2>Signup</h2>
+      <h2>REGISTRACIJA</h2>
       <form>
         <div className="form-control">
           <input type="text" placeholder="Enter your email" />
