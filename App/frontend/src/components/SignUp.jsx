@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './login.css';
 
 function SignUp({ FormHandle }) {
   // State to keep track of selected options
