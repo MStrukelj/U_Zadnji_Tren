@@ -1,18 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import './login.css';
 
-function LogIn({ FormHandle }) {
+function LogIn({ FormHandle, onAuthenticate }) {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   async function handleLogin(e) {
     e.preventDefault();
-    console.log("Sending payload:", {
-        email: user,
-        lozinka: password
-      });
     setError('');
     setLoading(true);
 
@@ -34,8 +32,12 @@ function LogIn({ FormHandle }) {
       if (data.success) {
         // Uspješna prijava
         console.log('Prijava uspješna:', data.user);
-        setUser('');
-        setPassword('');
+        // Pozivamo onAuthenticate da ažuriramo stanje u App komponenti
+        onAuthenticate();
+        // Spremamo podatke o korisniku u sessionStorage
+        sessionStorage.setItem('user', JSON.stringify(data.user));
+        // Preusmjeravamo na home stranicu
+        navigate('/home');
       } else {
         // Neuspješna prijava
         setError(data.message || 'Greška prilikom prijave');
