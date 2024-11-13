@@ -78,7 +78,7 @@ function App() {
           path="/raspored"
           element={
             <ProtectedRoute>
-              <Predmeti />
+              <Raspored />
             </ProtectedRoute>
           }
         />
