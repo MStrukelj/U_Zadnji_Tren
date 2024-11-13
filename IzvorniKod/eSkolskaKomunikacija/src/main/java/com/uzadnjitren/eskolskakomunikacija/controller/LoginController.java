@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class LoginController {
 
     private final LoginService loginService;
@@ -46,33 +46,38 @@ public class LoginController {
      */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
+        System.out.println("Received login request for email: " + loginRequest.getEmail());
         try {
             Login user = loginService.authenticate(loginRequest.getEmail(), loginRequest.getLozinka());
-
+            
             // Spremanje podataka u sesiju
             session.setAttribute("user", user);
             session.setAttribute("email", user.getEmail());
-
+    
             // Ako je user ucenik, pohrani njegov JMBAG u sesion
             if (loginService.isStudent(user)) {
                 Integer jmbag = loginService.getJmbagByEmail(user.getEmail());
                 session.setAttribute("jmbag", jmbag);
             }
-
+    
             // Priprema odgovora
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", "Uspješna prijava");
             response.put("user", createUserResponse(user));
-
+    
+            System.out.println("Login successful for user: " + user.getEmail());
             return ResponseEntity.ok(response);
-
+    
         } catch (InvalidLoginException e) {
+            System.out.println("Login failed: " + e.getMessage());
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("message", e.getMessage());
             return ResponseEntity.badRequest().body(response);
         } catch (Exception e) {
+            System.out.println("Unexpected error during login: " + e.getMessage());
+            e.printStackTrace();
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("message", "Došlo je do greške prilikom prijave");
