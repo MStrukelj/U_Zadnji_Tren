@@ -49,20 +49,20 @@ Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije 
 #Instalcija
 # Članovi tima 
   ## Voditelj tima 
-   - Mislav Štrukelj
+   * [Mislav Štrukelj](https://github.com/MStrukelj)
 
   ## Frontend
-  - Hana Morović
-  - Andrea Anđelković
-  - Luka Petrušić
+  * [Hana Morović](https://github.com/h-m1234)
+  * [Andrea Anđelković](https://github.com/AndreaA44)
+  * [Luka Petrušić](https://github.com/LukaFER99)
 
   ## Backend
-   - Dominik Papić
-   - Marko Knez
-   - Mislav Štrukelj
+   * [Dominik Papić](https://github.com/Dominik-Papic)
+   * [Marko Knez](https://github.com/MarkoKnezFER)
+   * [Mislav Štrukelj](https://github.com/MStrukelj)
 
   ## Dokumentacija
-   - Sasha Lučić
+   * [Sasha Lucić](https://github.com/lucxix)
 # Kontribucije
 >Pravila ovise o organizaciji tima i su često izdvojena u CONTRIBUTING.md
 
