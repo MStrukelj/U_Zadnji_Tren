@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './home.css';
 import SkolaImg from '../assets/skola.jpg';
 
-function Home() {
+function Home({ onLogout }) {
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
@@ -32,7 +32,7 @@ function Home() {
             });
             
             if (response.ok) {
-                sessionStorage.removeItem('user');
+                onLogout(); // Pozivamo onLogout iz App komponente
                 navigate('/');
             }
         } catch (error) {
