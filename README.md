@@ -3,12 +3,19 @@
 # Opis projekta
 Ovaj projekt je reultat timskog rada u sklopu projeknog zadatka kolegija [Programsko inženjerstvo](https://www.fer.unizg.hr/predmet/proinz) na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu. 
 
-Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije »Zato što je to bio zadatak i nismo imali ideje za drugo.«). Koji problem rješavate?
-> Obzirom da je ovo zadani projekt navedite i što želite/jeste novo  naučili.
+Cilj ovog projekta je razvoj web aplikacije koja će omogućiti učinkovito upravljanje i organizaciju obrazovnog procesa u srednjoj školi putem  elektroničkih sredstava komunikacije. Putem aplikacije objedinit će se najvažniji elementi  administracije i komunikacije unutar obrazovnog procesa i omogućit će se jednostavan pristup podacima, učinkovito upravljanje resursima i olakšanu suradnju svih sudionika obrazovnog procesa. Uvođenjem ovakve aplikacije omogućit će se : 
+* centralizirano vođenje informacija o učenicima poput smjera, nastavnih i izvannastavnih aktivnosti koje učenici pohađaju
+* prikaz rasporeda sati za te aktivnosti
+* pristup materijalima tih aktivnosti
+* podizanje potvrda učenika
+* prikaz puta od škole do lokacija terenske nastave
+* slanje obavijesti svim osobama koje sudjeluju u nastavnom procesu
+* generiranje rasporeda sati s obzirom na resurse škole
+* postavljanje materijala nastavnika za predmete koje predaje
+* međusobna komunikacija između osoba koje sudjeluju u nastavnom procesu
+* prikaz vremenske prognoze lokacije na kojoj se škola nalazi
 
-> Dobro izrađen opis omogućuje vam da pokažete svoj rad drugim programerima, kao i potencijalnim poslodavcima. Ne samo da prvi dojam na stranici opisa često razlikuje dobar projekt od lošeg projekta već i predstavlja dobru praksu koju morate savladati.
-
-# Funkcijski zahtjevi
+# Funkcijski zahtjevi - detaljan opis na 2. stranici Wiki-ja
 - izrada baze podataka 
 - odabir smjera koji učenik želi upisati
 - pridjeljivanje predmeta učenicima ovisno o smjeru
@@ -25,7 +32,7 @@ Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije 
 - generiranje potvrde o upisu o školi i slanje iste elektroničkom poštom
 - praćenje statistike o izdavanju potvrda i omogućivanje pregleda iste
   
-# Nefunkcijski zahtjevi
+# Nefunkcijski zahtjevi - detaljan opis na 2. stranici Wiki-ja
 - PostgreSQL baza podataka
 - responzivni dizajn i prilagodba aplikacije za upotrebu na različitim uređajima
 - OAuth2 vanjski servis za autentifikaciju
