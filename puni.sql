@@ -53,8 +53,8 @@ BEGIN
         ime := ime_array[ceil(random() * array_length(ime_array, 1))];
         prezime := prezime_array[ceil(random() * array_length(prezime_array, 1))];
         
-        email := lower(ime || '.' || prezime || i || '@skole.hr');
-        lozinka := lower(left(ime, 1) || prezime || i);
+        email := lower(ime || '.' || translate(prezime,'čćđšžČĆĐŠŽ', 'ccdsszCCDSSZ') || i || '@skole.hr');
+        lozinka := lower(left(ime, 1) || translate(prezime,'čćđšžČĆĐŠŽ', 'ccdsszCCDSSZ')  || i);
 
         INSERT INTO korisnik (email, lozinka, ime, prezime, uloga1)
         VALUES (email, lozinka, ime, prezime, 'S');
