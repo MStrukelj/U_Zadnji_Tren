@@ -14,8 +14,11 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class GoogleOAuthController {
     
-    private final String clientId = "401923248656-a1rtvefu1e506923r7kjvfmqnq1a84i6.apps.googleusercontent.com";
-    private final String clientSecret = "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";
+    @Value("${google.oauth.client.id}")
+    private String clientId;
+    
+    @Value("${google.oauth.client.secret}")
+    private String clientSecret;
     private final String redirectUri = "http://localhost:5173/oauth/callback";
 
     @GetMapping("/google")
