@@ -21,7 +21,13 @@ function Predmeti() {
                 }
 
                 const data = await response.json();
-                setSubjects(data); // Spremaju se predmeti u stanje komponente
+                const subjectWithImage = data.map(subject =>{
+                    return{
+                        ...subject,
+                        imageUrl: `src/assets/${subject.sifPredmet}.png`
+                    }
+                })
+                setSubjects(subjectWithImage); // Spremaju se predmeti u stanje komponente
             } catch (error) {
                 console.error("Greška prilikom dohvaćanja predmeta:", error);
             }
@@ -66,9 +72,9 @@ function Predmeti() {
                         {subjects.map(subject => (
                             <div key={subject.sifPredmet} className="subject-card">
                                 <div className="subject-icon-space">
-                                    {subject.iconUrl && (
+                                    {subject.imageUrl && (
                                         <img
-                                            src={subject.iconUrl}
+                                            src={subject.imageUrl}
                                             alt={subject.nazPred}
                                             className="subject-icon"
                                         />
