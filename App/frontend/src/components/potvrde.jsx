@@ -1,12 +1,42 @@
-import React, { useState } from 'react';
-import {Link} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 import './home.css';
  
 function Potvrde() {
     const [sidebarVisible, setSidebarVisible] = useState(false);
+    const [userData, setUserData] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // Dohvaćanje podataka o korisniku iz sessionStorage
+        const userStr = sessionStorage.getItem('user');
+        if (!userStr) {
+            navigate('/');
+            return;
+        }
+        
+        const user = JSON.parse(userStr);
+        setUserData(user);
+    }, [navigate]);
 
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
+    };
+
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/api/auth/logout', {
+                method: 'POST',
+                credentials: 'include'
+            });
+            
+            if (response.ok) {
+                onLogout(); // Pozivamo onLogout iz App komponente
+                navigate('/');
+            }
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
     };
 
     return (
@@ -35,6 +65,7 @@ function Potvrde() {
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button active">POTVRDE</Link>
                         <button className="sidebar-button">CHAT</button>
+                        <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
                     </aside>
                 )}
             </div>
