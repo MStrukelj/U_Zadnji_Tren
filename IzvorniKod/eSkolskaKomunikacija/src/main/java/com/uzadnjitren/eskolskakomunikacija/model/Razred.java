@@ -2,16 +2,30 @@ package com.uzadnjitren.eskolskakomunikacija.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 @Entity
+@Table(name = "razred")
 public class Razred {
 
     @Id
+    @Column(name = "oznraz")
     private String oznRaz;
+    
+    @Column(name = "smjer")
     private String smjer;
+    
+    @Column(name = "godina")
     private Integer godina;
+    
+    @Column(name = "kapacitet")
     private Integer kapacitet;
+    
+    @Column(name = "izboran")
     private String izboran;
+    
+    @Column(name = "fakultativan")
     private String fakultativan;
 
     public String getOznRaz() {
