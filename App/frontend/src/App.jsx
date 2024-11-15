@@ -6,6 +6,7 @@ import Home from './components/home';
 import Predmeti from './components/predmeti.jsx';
 import Raspored from './components/raspored.jsx';
 import Potvrde from './components/potvrde.jsx';
+import Materijali from './components/materijali.jsx';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -41,6 +42,9 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Materijali />} />
+        <Route path="/predmet/:subjectId" element={<Materijali />} />
+          
         <Route
           path="/"
           element={

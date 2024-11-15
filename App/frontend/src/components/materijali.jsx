@@ -1,37 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import {Link, useNavigate} from 'react-router-dom';
-import './predmeti.css';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import './materijali.css';
 
-function Predmeti({ onLogout }) {
+function Materijali({ onLogout }) {
     const [sidebarVisible, setSidebarVisible] = useState(false);
-    const [subjects, setSubjects] = useState([]);
+    const [materials, setMaterials] = useState([]);
     const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
+    const { subjectId } = useParams(); // Za preuzimanje subjectId iz URL-a
 
-    // Dohvaca predmete iz backenda
+    // Za testiranje pri izradi kartica
+    /* useEffect(() => {
+        const fetchMaterials = async () => {
+            const data = [
+                { id: 1, name: "Naziv materijala"},
+                { id: 2, name: "Naziv materijala"},
+            ];
+            setMaterials(data);
+        };
+
+        fetchMaterials();
+    }, []); */
+
     useEffect(() => {
-
-        const fetchSubjects = async () => {
+        const fetchMaterials = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/ucenici/241/predmeti', {
+                const response = await fetch(`http://localhost:8080/api/predmeti/${subjectId}/materijali`, {
                     credentials: 'include',
                 });
-
-                if (!response.ok) {
-                    throw new Error(`Greška: ${response.statusText}`);
-                }
-
+                if (!response.ok) throw new Error(`Greška: ${response.statusText}`);
                 const data = await response.json();
-                setSubjects(data); // Spremaju se predmeti u stanje komponente
+                setMaterials(data);
             } catch (error) {
-                console.error("Greška prilikom dohvaćanja predmeta:", error);
+                console.error("Greška prilikom dohvaćanja materijala:", error);
             }
         };
-        
-        fetchSubjects();
-    }, []);
 
-    //Za dohvacanje podataka o useru iz backenda za dispay u navbaru
+        fetchMaterials();
+    }, [subjectId]);
+    
+    
     useEffect(() => {
         // Dohvaćanje podataka o korisniku iz sessionStorage
         const userStr = sessionStorage.getItem('user');
@@ -39,7 +47,7 @@ function Predmeti({ onLogout }) {
             navigate('/');
             return;
         }
-            
+        
         const user = JSON.parse(userStr);
         setUserData(user);
     }, [navigate]);
@@ -64,10 +72,17 @@ function Predmeti({ onLogout }) {
         }
     };
 
-    const handleSubjectClick = (sifPredmet) => {
-        navigate(`/predmet/${sifPredmet}`);  // Navigacijado stranice s materijalima
+    // Funkcija za preuzimanje materijala 
+    const handleDownloadClick = (downloadUrl) => {
+        // Kreira privremeni "a" element da pokrene preuzimanje
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.setAttribute('download', '');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
-
+    
     return (
         <div className="container">
             <header className="header">
@@ -83,7 +98,7 @@ function Predmeti({ onLogout }) {
                     <span className="class-field">{userData?.razred || 'Razred'}</span>
                 </div>
             </header>
-
+            
             <div className="main-content">
                 {sidebarVisible && (
                     <aside className="sidebar">
@@ -95,28 +110,19 @@ function Predmeti({ onLogout }) {
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
                     </aside>
                 )}
-
-                <div className="subjects-container">
-                    <div className="subjects-grid">
-                        {subjects.map(subject => (
-                            <div 
-                                key={subject.sifPredmet} 
-                                className="subject-card"
-                                onClick={() => handleSubjectClick(subject.sifPredmet)}
-                                style={{ cursor: 'pointer' }} 
-                                role="button">
-                                <div className="subject-icon-space">
-                                    {subject.iconUrl && (
-                                        <img
-                                            src={subject.iconUrl}
-                                            alt={subject.nazPred}
-                                            className="subject-icon"
-                                        />
-                                    )}
-                                </div>
-                                <div className="subject-name">
-                                    <p>{subject.nazPred}</p>
-                                </div>
+                
+                {/* Grid za materijale */}
+                <div className="materials-container">
+                    <div className="subject-header">Predmet</div>
+                    <div className="materials-grid">
+                        {materials.map(material => (
+                            <div key={material.id} 
+                            className="material-card"
+                            onClick={() => handleDownloadClick(material.downloadUrl)}
+                            style={{ cursor: 'pointer' }}
+                            role="button">
+                                <span className="material-icon">📚</span>
+                                <span className="material-name">{material.name}</span>
                             </div>
                         ))}
                     </div>
@@ -126,4 +132,4 @@ function Predmeti({ onLogout }) {
     );
 }
 
-export default Predmeti;
+export default Materijali;
