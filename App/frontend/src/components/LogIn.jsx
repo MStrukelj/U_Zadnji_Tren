@@ -50,10 +50,24 @@ function LogIn({ FormHandle, onAuthenticate }) {
     }
   }
 
+  // Google Login handler
+  const handleGoogleLogin = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/oauth/google');
+      const data = await response.json();
+      window.location.href = data.url;
+    } catch (err) {
+      setError('Greška prilikom Google prijave');
+      console.error('Google login error:', err);
+    }
+  };
+
   return (
     <div className="auth-wrapper">
       <div className="form-container">
         <h2>PRIJAVA</h2>
+        
+        {/* Original login form */}
         <form onSubmit={handleLogin}>
           <div className="form-control">
             <input
@@ -81,6 +95,18 @@ function LogIn({ FormHandle, onAuthenticate }) {
             {loading ? 'UČITAVANJE...' : 'PRIJAVA'}
           </button>
         </form>
+
+        {/* Google login button */}
+        <div className="google-login-container">
+          <button 
+            onClick={handleGoogleLogin}
+            className="google-login-button"
+            type="button"
+          >
+            Prijava preko Google-a
+          </button>
+        </div>
+
         <p onClick={() => FormHandle("signup")}>
           Novi korisnik? Registriraj se
         </p>

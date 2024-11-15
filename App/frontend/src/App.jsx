@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import LogIn from './components/LogIn';
-import SignUp from './components/SignUp';
-import Home from './components/home';
-import Predmeti from './components/predmeti.jsx';
-import Raspored from './components/raspored.jsx';
-import Potvrde from './components/potvrde.jsx';
-import Materijali from './components/materijali.jsx';
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import LogIn from "./components/LogIn";
+import OAuthCallback from "./components/OAuthCallback";
+import SignUp from "./components/SignUp";
+import Home from "./components/home";
+import Predmeti from "./components/predmeti.jsx";
+import Raspored from "./components/raspored.jsx";
+import Potvrde from "./components/potvrde.jsx";
+import Materijali from "./components/materijali.jsx";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -15,7 +21,7 @@ function App() {
   // Provjeri autentifikaciju pri učitavanju
   useEffect(() => {
     const checkAuth = () => {
-      const userStr = sessionStorage.getItem('user');
+      const userStr = sessionStorage.getItem("user");
       setIsAuthenticated(!!userStr);
     };
     checkAuth();
@@ -27,12 +33,12 @@ function App() {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    sessionStorage.removeItem('user');
+    sessionStorage.removeItem("user");
   };
 
   // Komponenta za zaštićene rute
   const ProtectedRoute = ({ children }) => {
-    const userStr = sessionStorage.getItem('user');
+    const userStr = sessionStorage.getItem("user");
     if (!userStr) {
       return <Navigate to="/" />;
     }
@@ -42,24 +48,27 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Materijali />} />
-        <Route path="/predmet/:subjectId" element={<Materijali />} />
-          
+        {/* Root route for authentication */}
         <Route
           path="/"
           element={
             isAuthenticated ? (
               <Navigate to="/home" replace />
+            ) : form === "login" ? (
+              <LogIn
+                FormHandle={setForm}
+                onAuthenticate={handleAuthentication}
+              />
             ) : (
-              form === "login" ? (
-                <LogIn FormHandle={setForm} onAuthenticate={handleAuthentication} />
-              ) : (
-                <SignUp FormHandle={setForm} onAuthenticate={handleAuthentication} />
-              )
+              <SignUp
+                FormHandle={setForm}
+                onAuthenticate={handleAuthentication}
+              />
             )
           }
         />
-        
+
+        {/* Protected routes */}
         <Route
           path="/home"
           element={
@@ -68,30 +77,41 @@ function App() {
             </ProtectedRoute>
           }
         />
-        
+
+        <Route path="/oauth/callback" element={<OAuthCallback />} />
+
         <Route
           path="/predmeti"
           element={
             <ProtectedRoute>
-              <Predmeti />
+              <Predmeti onLogout={handleLogout} />
             </ProtectedRoute>
           }
         />
-        
+
+        <Route
+          path="/predmeti/:subjectId/materijali"
+          element={
+            <ProtectedRoute>
+              <Materijali onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/raspored"
           element={
             <ProtectedRoute>
-              <Raspored />
+              <Raspored onLogout={handleLogout} />
             </ProtectedRoute>
           }
         />
-        
+
         <Route
           path="/potvrde"
           element={
             <ProtectedRoute>
-              <Potvrde />
+              <Potvrde onLogout={handleLogout} />
             </ProtectedRoute>
           }
         />

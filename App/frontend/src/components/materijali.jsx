@@ -6,6 +6,7 @@ function Materijali({ onLogout }) {
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [materials, setMaterials] = useState([]);
     const [userData, setUserData] = useState(null);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
     const { subjectId } = useParams(); // Za preuzimanje subjectId iz URL-a
 
@@ -24,6 +25,15 @@ function Materijali({ onLogout }) {
 
     useEffect(() => {
         const fetchMaterials = async () => {
+            // Reset error state
+            setError(null);
+            
+            // Check if subjectId is available
+            if (!subjectId) {
+                setError('ID predmeta nije dostupan');
+                return;
+            }
+
             try {
                 const response = await fetch(`http://localhost:8080/api/predmeti/${subjectId}/materijali`, {
                     credentials: 'include',
@@ -33,6 +43,7 @@ function Materijali({ onLogout }) {
                 setMaterials(data);
             } catch (error) {
                 console.error("Greška prilikom dohvaćanja materijala:", error);
+                setError('Nije moguće dohvatiti materijale. Molimo pokušajte kasnije.');
             }
         };
 
@@ -64,13 +75,21 @@ function Materijali({ onLogout }) {
             });
             
             if (response.ok) {
-                onLogout(); // Pozivamo onLogout iz App komponente
+                // Clear session storage
+                sessionStorage.clear();
+                
+                // Call onLogout if it exists
+                if (typeof onLogout === 'function') {
+                    onLogout();
+                }
+                
+                // Navigate to login page
                 navigate('/');
             }
         } catch (error) {
             console.error('Logout error:', error);
         }
-    };
+    };  
 
     // Funkcija za preuzimanje materijala 
     const handleDownloadClick = (downloadUrl) => {
@@ -114,18 +133,24 @@ function Materijali({ onLogout }) {
                 {/* Grid za materijale */}
                 <div className="materials-container">
                     <div className="subject-header">Predmet</div>
-                    <div className="materials-grid">
-                        {materials.map(material => (
-                            <div key={material.id} 
-                            className="material-card"
-                            onClick={() => handleDownloadClick(material.downloadUrl)}
-                            style={{ cursor: 'pointer' }}
-                            role="button">
-                                <span className="material-icon">📚</span>
-                                <span className="material-name">{material.name}</span>
-                            </div>
-                        ))}
-                    </div>
+                    {error ? (
+                        <div className="error-message" style={{ textAlign: 'center', color: 'red', margin: '20px' }}>
+                            {error}
+                        </div>
+                    ) : (
+                        <div className="materials-grid">
+                            {materials.map(material => (
+                                <div key={material.id} 
+                                className="material-card"
+                                onClick={() => handleDownloadClick(material.downloadUrl)}
+                                style={{ cursor: 'pointer' }}
+                                role="button">
+                                    <span className="material-icon">📚</span>
+                                    <span className="material-name">{material.name}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
