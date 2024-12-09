@@ -1,28 +1,32 @@
 package com.uzadnjitren.eskolskakomunikacija.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
 
 @Entity
 public class Materijal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sifMaterijal") // Exact database column name
     private Integer sifMaterijal;
+
+    @Column(name = "nazMaterijal")
     private String nazMaterijal;
+
+    @Column(name = "brPregleda")
     private Integer brPregleda;
+
+    @Column(name = "brSkidanja")
     private Integer brSkidanja;
+
+    @Column(name = "URL")
     private String url;
 
     @ManyToOne
-    @JoinColumn(name = "sifPredmet")
+    @JoinColumn(name = "sifPredmet") // Exact foreign key column name
     private Predmet predmet;
 
-    // Getteri i setteri
+    // Getters and Setters
     public Integer getSifMaterijal() { return sifMaterijal; }
     public void setSifMaterijal(Integer sifMaterijal) { this.sifMaterijal = sifMaterijal; }
 

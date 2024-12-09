@@ -100,6 +100,7 @@ CREATE TABLE upisao
     CONSTRAINT checkoznRaz CHECK(CHAR_LENGTH(oznRaz) < 10)
 );
 
+
 CREATE TABLE kompatibilan
 (
     oznUcionica VARCHAR NOT NULL,
