@@ -1,0 +1,138 @@
+/* Importing Google Fonts - Montserrat (fixed syntax) */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+/* Base styles for auth forms */
+.form-container, 
+.form-container input{
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.auth-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #73a2cd;
+  font-family: "Montserrat", sans-serif;
+}
+
+.form-container {
+  background-color: #fff;
+  width: 450px;
+  padding: 2rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.form-container h2 {
+  font-size: 2.5rem;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.form-container form {
+  margin: 2rem 0;
+}
+
+.form-control {
+  position: relative;
+}
+
+.form-control input {
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 1.2rem;
+  padding: 0.75rem 2rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+}
+
+form button {
+  width: 100%;
+  background: #2452de;
+  outline: none;
+  border: none;
+  color: #fff;
+  padding: 1rem 0;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 50px;
+}
+
+form button:active {
+  transform: scale(0.98);
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-right: 0.5rem;
+  width: auto;
+  padding: 0;
+}
+
+.checkbox-container label {
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.google-login-container {
+    margin-top: 20px;
+  }
+  
+.google-login-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+.google-login-button:hover {
+    background-color: #357abd;
+  }
+
+/* Enhanced link styling */
+.form-container p {
+  text-align: center;
+  color: #2452de;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.form-container p:hover {
+  color: #1a3eb8;
+}
+
+.form-container p:active {
+  color: #143285;
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    max-width: 90%;
+    padding: 1.5rem;
+  }
+}
