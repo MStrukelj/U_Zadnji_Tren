@@ -48,12 +48,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Force lowercase repository owner
+        run: echo "REPO_OWNER_LOWER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build and push backend image
         uses: docker/build-push-action@v6
         with:
           context: ./IzvorniKod/eSkolskaKomunikacija
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/u_zadnji_tren/backend:latest
+          tags: ghcr.io/${{ env.REPO_OWNER_LOWER }}/u_zadnji_tren/backend:latest
           build-args: |
             GOOGLE_OAUTH_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
             GOOGLE_OAUTH_CLIENT_SECRET=${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
