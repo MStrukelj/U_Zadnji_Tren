@@ -6,7 +6,7 @@ on:
       - master
       - dev
     paths:
-      - 'IzvorniKod/eSkolskaKomunikacija/**'      # Trigger only on changes in the /backend directory
+      - 'IzvorniKod/eSkolskaKomunikacija/**'      # Trigger only on changes in the backend directory
   workflow_dispatch:
 
 jobs:
@@ -32,7 +32,10 @@ jobs:
           cache-dependency-path: 'IzvorniKod/eSkolskaKomunikacija/pom.xml'
 
       - name: Maven build
-        run: mvn clean package
+        run: |
+          mvn clean package \
+            -DGOOGLE_OAUTH_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_CLIENT_ID }} \
+            -DGOOGLE_OAUTH_CLIENT_SECRET=${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
         working-directory: IzvorniKod/eSkolskaKomunikacija
 
       - name: Set up Docker Buildx
@@ -51,6 +54,9 @@ jobs:
           context: ./IzvorniKod/eSkolskaKomunikacija
           push: true
           tags: ghcr.io/${{ github.repository }}/backend:latest
+          build-args: |
+            GOOGLE_OAUTH_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
+            GOOGLE_OAUTH_CLIENT_SECRET=${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
 
       - name: Trigger release
         if: ${{ env.BACKEND_DEPLOY_HOOK }}
