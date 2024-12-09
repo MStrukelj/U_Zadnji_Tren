@@ -6,7 +6,7 @@ on:
       - master
       - dev
     paths:
-      - 'backend/**'      # Trigger only on changes in the /backend directory
+      - 'IzvorniKod/eSkolskaKomunikacija/**'      # Trigger only on changes in the /backend directory
   workflow_dispatch:
 
 jobs:
