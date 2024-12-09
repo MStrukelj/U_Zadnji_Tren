@@ -16,11 +16,11 @@ import java.util.Map;
 @RequestMapping("/api/oauth")
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class GoogleOAuthController {
-    
-    @Value("${google.oauth.client.id}")
+
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String clientId;
-    
-    @Value("${google.oauth.client.secret}")
+
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     private String clientSecret;
     private final String redirectUri = "http://localhost:5173/oauth/callback";
 
