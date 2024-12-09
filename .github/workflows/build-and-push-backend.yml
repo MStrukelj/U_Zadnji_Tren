@@ -27,7 +27,7 @@ jobs:
           distribution: 'temurin'
           architecture: x64
           cache: 'maven'
-          cache-dependency-path: 'backend/pom.xml'
+          cache-dependency-path: 'IzvorniKod/eSkolskaKomunikacija/pom.xml'
 
       - name: Maven build
         run: mvn clean package
