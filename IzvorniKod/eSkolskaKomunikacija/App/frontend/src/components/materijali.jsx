@@ -35,7 +35,7 @@ function Materijali({ onLogout }) {
             }
 
             try {
-                const response = await fetch(`http://localhost:8080/api/predmeti/${subjectId}/materijali`, {
+                const response = await fetch(`http://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali`, {
                     credentials: 'include',
                 });
                 if (!response.ok) throw new Error(`Greška: ${response.statusText}`);
@@ -66,6 +66,8 @@ function Materijali({ onLogout }) {
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
     };
+
+
 
     const handleLogout = async () => {
         try {
