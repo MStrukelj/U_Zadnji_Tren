@@ -1,0 +1,147 @@
+/* predmeti.css */
+.main-content {
+    display: flex;
+    height: calc(100vh - 80px); /* Adjust based on header height */
+}
+
+/* sidebar styles */
+.sidebar {
+    width: 200px;
+    background-color: #f5f5f5;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-button {
+    padding: 10px 20px;
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    text-align: left;
+    text-decoration: none;
+    color: inherit;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.sidebar-button:hover {
+    background-color: #e0e0e0;
+}
+
+.sidebar-button.active {
+    background-color: #4a3a8b;
+    color: white;
+}
+
+/* Subjects grid styles */
+.subjects-container {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #ffffff;
+}
+
+.subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.subject-card {
+    background-color: #d6e8ff;
+    border-radius: 10px;
+    aspect-ratio: 1;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.subject-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* Style for images */
+.subject-icon-space{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.subject-icon{
+    width: 80%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.subject-content {
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+}
+
+.subject-content p {
+    margin: 0;
+    color: #333;
+    font-size: 16px;
+}
+
+/* Styling from home */
+
+.header {
+    display: flex;
+    align-items: center;
+    background-color: #4a3a8b;
+    padding: 10px 20px;
+    color: white;
+}
+
+.menu-button {
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    flex-grow: 1;
+}
+
+.user-container {
+    background-color: white;
+    padding: 10px;
+    border-radius: 4px;
+    position: relative;
+    min-width: 150px;
+    height: 60px;
+    color: #4a3a8b;
+}
+  
+.user-names {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 14px;
+}
+  
+.class-field {
+    position: absolute;
+    bottom: 7px;
+    right: 9px;
+    font-size: 12px;
+  }
