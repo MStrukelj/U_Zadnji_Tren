@@ -53,7 +53,7 @@ function LogIn({ FormHandle, onAuthenticate }) {
   // Google Login handler
   const handleGoogleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/oauth/google');
+      const response = await fetch('https://backend-latest-in4o.onrender.com/api/oauth/google');
       const data = await response.json();
       window.location.href = data.url;
     } catch (err) {
@@ -66,7 +66,7 @@ function LogIn({ FormHandle, onAuthenticate }) {
     <div className="auth-wrapper">
       <div className="form-container">
         <h2>PRIJAVA</h2>
-        
+
         {/* Original login form */}
         <form onSubmit={handleLogin}>
           <div className="form-control">
@@ -98,7 +98,7 @@ function LogIn({ FormHandle, onAuthenticate }) {
 
         {/* Google login button */}
         <div className="google-login-container">
-          <button 
+          <button
             onClick={handleGoogleLogin}
             className="google-login-button"
             type="button"
