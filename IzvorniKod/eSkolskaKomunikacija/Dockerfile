@@ -10,5 +10,5 @@ COPY target/eSkolskaKomunikacija-0.0.1-SNAPSHOT.jar app.jar
 # Expose the application port
 EXPOSE 8080
 
-# Command to run both Cloud SQL Proxy and the Spring Boot application
-ENTRYPOINT ["java","-jar","/app.jar"]
+# Command to run the Spring Boot application
+ENTRYPOINT ["java","-jar","/app/app.jar"]

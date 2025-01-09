@@ -24,7 +24,7 @@ function Predmeti({ onLogout }) {
         const fetchSubjects = async () => {
             try {
                 const response = await fetch(
-                    "http://localhost:8080/api/ucenici/241/predmeti",
+                    "http://backend-latest-in4o.onrender.com/api/ucenici/241/predmeti",
                     {
                         credentials: "include",
                     },

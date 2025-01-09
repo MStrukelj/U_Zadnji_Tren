@@ -1,23 +1,26 @@
 package com.uzadnjitren.eskolskakomunikacija.controller;
 
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.HashMap;
 import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/oauth")
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class GoogleOAuthController {
-    
-    @Value("${google.oauth.client.id}")
+
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String clientId;
-    
-    @Value("${google.oauth.client.secret}")
+
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     private String clientSecret;
     private final String redirectUri = "http://localhost:5173/oauth/callback";
 

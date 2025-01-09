@@ -12,7 +12,7 @@ function OAuthCallback() {
 
       if (code) {
         try {
-          const response = await fetch('http://localhost:8080/api/oauth/callback', {
+          const response = await fetch('https://backend-latest-in4o.onrender.com/api/oauth/callback', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
