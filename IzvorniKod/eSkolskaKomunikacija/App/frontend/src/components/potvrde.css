@@ -1,0 +1,41 @@
+/* Container for the buttons */
+.buttons-container {
+   display: flex;
+   flex-direction: column; /* Arrange buttons vertically */
+   align-items: center;    /* Center align the buttons */
+   gap: 20px;              /* Add space between the buttons */
+   margin-top: 20px;
+}
+
+/* Style for each button */
+.potvrda-button {
+   width: 100%;                  /* Make the button wider */
+   padding: 15px 20px;          /* Increase padding for larger buttons */
+   background-color: #d6e8ff ; /* Button background color */
+   color: black;                /* Button text color */
+   border: none;                /* Remove border */
+   border-radius: 8px;          /* Rounded corners */
+   font-size: 18px;             /* Increase font size */
+   font-weight: bold;           /* Make the text bold */
+   cursor: pointer;             /* Pointer cursor on hover */
+   text-align: center;          /* Center-align text */
+}
+
+/* Hover effect for buttons */
+.potvrda-button:hover {
+   background-color: #4a3a8b;   /* Darker shade on hover */
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}
+
+/* Active state for buttons */
+.potvrda-button:active {
+   background-color: #291f53;   /* Even darker shade when clicked */
+   transform: scale(0.98);      /* Slightly reduce size */
+}
+
+.content-area p {
+   font-size: 24px; /* Larger font size */
+   font-weight: bold; /* Bold text */
+   text-align: center; /* Center alignment */
+   margin-bottom: 20px; /* Space below the text */
+}

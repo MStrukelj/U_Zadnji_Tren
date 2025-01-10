@@ -68,6 +68,23 @@ function Potvrde() {
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
                     </aside>
                 )}
+
+                  {/* Potvrde Buttons */}
+                  <div className="content-area">
+                    <p>Odaberite potvrdu:</p>
+                    <div className="buttons-container">
+                        {/* Buttons for downloading PDFs */}
+                        <a href="/downloads/potvrda1.pdf" download className="potvrda-button">
+                            Potvrda 1
+                        </a>
+                        <a href="/downloads/potvrda2.pdf" download className="potvrda-button">
+                            Potvrda 2
+                        </a>
+                        <a href="/downloads/potvrda3.pdf" download className="potvrda-button">
+                            Potvrda 3
+                        </a>
+                    </div>
+                </div>
             </div>
 
         </div>
