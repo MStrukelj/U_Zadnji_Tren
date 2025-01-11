@@ -140,3 +140,29 @@
     right: 9px;
     font-size: 12px;
   }
+
+  .upload-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.upload-button {
+    padding: 10px 20px;
+    background-color: #d6e8ff;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    /*font-weight: bold;*/
+    display: inline-block;
+}
+
+.upload-button:hover {
+    background-color: #4a3a8b;
+}
+
+.upload-button:active {
+    background-color: #291f53;
+    transform: scale(0.98);
+}

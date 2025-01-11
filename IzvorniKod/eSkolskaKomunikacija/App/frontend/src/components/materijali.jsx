@@ -153,6 +153,19 @@ function Materijali({ onLogout }) {
                             ))}
                         </div>
                     )}
+
+                    {/* Upload Button */}
+                    <div className="upload-container">
+                        <label htmlFor="file-upload" className="upload-button">
+                            Dodaj datoteku
+                        </label>
+                        <input
+                            id="file-upload"
+                            type="file"
+                            onChange={handleUploadClick}
+                            style={{ display: 'none' }}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
