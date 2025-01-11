@@ -73,4 +73,5 @@ public class Korisnik {
     public void setUloga2(String uloga2) {
         this.uloga2 = uloga2;
     }
+
 }
