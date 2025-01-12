@@ -2,6 +2,7 @@ package com.uzadnjitren.eskolskakomunikacija.controller;
 
 import com.uzadnjitren.eskolskakomunikacija.dto.MaterijalDownloadsDto;
 import com.uzadnjitren.eskolskakomunikacija.dto.MaterijalPredmetDto;
+import com.uzadnjitren.eskolskakomunikacija.dto.MaterijalStats;
 import com.uzadnjitren.eskolskakomunikacija.dto.MaterijalViewsDto;
 import com.uzadnjitren.eskolskakomunikacija.repository.MaterijalRepository;
 import com.uzadnjitren.eskolskakomunikacija.service.MaterijalStatsService;
@@ -37,5 +38,10 @@ public class MaterijalStatsController {
     public ResponseEntity<?> materijalpredmet(@PathVariable Integer sifnast) {
         List<MaterijalPredmetDto> materijali = materijalStatsService.findMaterijalPredmet(sifnast);
         return materijali.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok().body(materijali);
+    }
+    @GetMapping("/{sifnast}/{sifmaterijal}")
+    public ResponseEntity<?> materijalpredmet(@PathVariable Integer sifnast,@PathVariable Integer sifmaterijal) {
+        MaterijalStats materijalStats = materijalStatsService.findMaterijalStats(sifnast, sifmaterijal);
+        return materijalStats == null ? ResponseEntity.noContent().build() : ResponseEntity.ok().body(materijalStats);
     }
 }

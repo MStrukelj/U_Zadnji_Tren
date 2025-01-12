@@ -2,6 +2,7 @@ package com.uzadnjitren.eskolskakomunikacija.repository;
 
 import com.uzadnjitren.eskolskakomunikacija.dto.MaterijalDownloadsDto;
 import com.uzadnjitren.eskolskakomunikacija.dto.MaterijalPredmetDto;
+import com.uzadnjitren.eskolskakomunikacija.dto.MaterijalStats;
 import com.uzadnjitren.eskolskakomunikacija.dto.MaterijalViewsDto;
 import com.uzadnjitren.eskolskakomunikacija.model.Materijal;
 import org.springframework.data.domain.Pageable;
@@ -34,4 +35,9 @@ public interface MaterijalRepository extends JpaRepository<Materijal, Integer> {
             "ORDER BY COUNT(m.sifMaterijal) DESC")
     List<MaterijalPredmetDto> findMaterijalPredmet(@Param("sifnast") Integer sifnast);
 
+    @Query("SELECT new com.uzadnjitren.eskolskakomunikacija.dto.MaterijalStats(m.nazMaterijal,m.brPregleda,m.brSkidanja) "+
+            "FROM Materijal m "+
+            "WHERE m.nastavnik.sifNast = :sifnast "+
+            "AND m.sifMaterijal = :sifmaterijal")
+    MaterijalStats findMaterijalStats(@Param("sifnast") Integer sifnast,@Param("sifmaterijal") Integer sifmaterijal);
 }
