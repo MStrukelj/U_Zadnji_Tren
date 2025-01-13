@@ -75,13 +75,16 @@ function Potvrde() {
                     <div className="buttons-container">
                         {/* Buttons for downloading PDFs */}
                         <a href="/downloads/potvrda1.pdf" download className="potvrda-button">
-                            Potvrda 1
+                            Potvrda o statusu učenika
                         </a>
                         <a href="/downloads/potvrda2.pdf" download className="potvrda-button">
-                            Potvrda 2
+                            ZET potvrda 
                         </a>
                         <a href="/downloads/potvrda3.pdf" download className="potvrda-button">
-                            Potvrda 3
+                            Ispričnica
+                        </a>
+                        <a href="/downloads/potvrda3.pdf" download className="potvrda-button">
+                            Ispisnica
                         </a>
                     </div>
                 </div>
