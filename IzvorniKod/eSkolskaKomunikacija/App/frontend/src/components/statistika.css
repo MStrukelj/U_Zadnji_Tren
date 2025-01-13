@@ -1,0 +1,124 @@
+.statistics-container {
+    flex: 1;
+    padding: 20px;
+    background-color: #f4faff;
+    overflow-y: auto;
+}
+
+.statistics-container h2 {
+    color: #4a3a8b;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.chart-container {
+    background-color: #d6e8ff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container h3 {
+    color: #4a3a8b;
+    margin-bottom: 15px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.search-container {
+    background-color: #d6e8ff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-form {
+    display: flex;
+    /* flex-wrap: wrap; */
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.search-form input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;  /* More rounded corners */
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-form input:focus {
+    border-color: #4a3a8b;
+    box-shadow: 0 0 0 2px rgba(74, 58, 139, 0.1);
+}
+
+.search-form button {
+    padding: 12px 30px;
+    background-color: #4a3a8b;
+    color: white;
+    border: none;
+    border-radius: 25px;  /* Match input roundness */
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    font-weight: 500;
+    min-width: 120px;
+}
+
+.search-form button:hover {
+    background-color: #3a2d6e;
+}
+
+.search-form button:active {
+    transform: scale(0.98);
+}
+
+.stats-result {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.stats-result h4 {
+    color: #4a3a8b;
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.stats-result p {
+    margin: 8px 0;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.stats-result p:last-child {
+    border-bottom: none;
+}
+
+/* Add this if you want to style the numbers specifically */
+.stats-number {
+    font-weight: 500;
+    color: #4a3a8b;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
