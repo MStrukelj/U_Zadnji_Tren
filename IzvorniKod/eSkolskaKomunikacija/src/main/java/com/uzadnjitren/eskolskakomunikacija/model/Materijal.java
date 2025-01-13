@@ -26,6 +26,10 @@ public class Materijal {
     @JoinColumn(name = "sifPredmet") // Exact foreign key column name
     private Predmet predmet;
 
+    @ManyToOne
+    @JoinColumn(name = "sifnast") // Foreign key column
+    private Nastavnik nastavnik;
+
     // Getters and Setters
     public Integer getSifMaterijal() { return sifMaterijal; }
     public void setSifMaterijal(Integer sifMaterijal) { this.sifMaterijal = sifMaterijal; }
