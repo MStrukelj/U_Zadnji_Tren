@@ -64,6 +64,12 @@ function Home({ onLogout }) {
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
                         <button className="sidebar-button">CHAT</button>
+                        {userData?.role === 'teacher' && (
+                            <>
+                                <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
+                                <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                            </>
+                        )}
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
                     </aside>
                 )}
