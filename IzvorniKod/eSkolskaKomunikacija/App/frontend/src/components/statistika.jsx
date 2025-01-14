@@ -85,7 +85,6 @@ function Statistika({ onLogout }) {
         
         setUserData(user);
         fetchTeacherSubjects(user.id);
-        fetchStatistics(user.id);
     }, [navigate]);
 
     const fetchTeacherSubjects = async (teacherId) => {
