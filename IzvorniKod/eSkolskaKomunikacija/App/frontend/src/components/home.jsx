@@ -64,7 +64,7 @@ function Home({ onLogout }) {
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
                         <button className="sidebar-button">CHAT</button>
-                        {userData?.role === 'teacher' && (
+                        {['N', 'A', 'R'].includes(userData?.role) && (              //N(astavnik), A(dmin), R(avnatelj)
                             <>
                                 <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
                                 <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>

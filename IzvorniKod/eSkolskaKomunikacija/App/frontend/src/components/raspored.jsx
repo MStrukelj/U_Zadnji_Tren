@@ -59,12 +59,18 @@ function Raspored({ onLogout }) {
             {/* Needs missing materials to style properly! Working functionality*/}
             <div className="main-content">
                 {sidebarVisible && (
-                    <aside className="left-sidebar">
+                    <aside className="sidebar">
                         <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
                         <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
                         <Link to="/raspored" className="sidebar-button active">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
                         <button className="sidebar-button">CHAT</button>
+                        {['N', 'A', 'R'].includes(userData?.role) && (              //N(astavnik), A(dmin), R(avnatelj)
+                            <>
+                                <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
+                                <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                            </>
+                        )}
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
                     </aside>
                 )}
