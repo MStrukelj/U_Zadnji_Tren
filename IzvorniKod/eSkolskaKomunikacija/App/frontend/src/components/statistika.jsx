@@ -9,6 +9,7 @@ function Statistika({ onLogout }) {
     const navigate = useNavigate();
     
     // States for different statistics
+    const [teacherSubjects, setTeacherSubjects] = useState([]);
     const [mostViewed, setMostViewed] = useState([]);
     const [mostDownloaded, setMostDownloaded] = useState([]);
     const [subjectMaterials, setSubjectMaterials] = useState([]);
@@ -23,33 +24,25 @@ function Statistika({ onLogout }) {
     /* useEffect(() => {                                                       //FRONT TESTING!!! 
         // Simulate fetching data
         const generateFakeData = () => {
-            // Most viewed materials
+            // Example teacher subjects
+            const teacherSubjects = ['Matematika', 'Fizika'];
+
+            // Filter fake data to only include teacher's subjects
             const fakeViewedMaterials = [
                 { name: "Matematika - Poglavlje 1", views: 245 },
                 { name: "Fizika - Uvod", views: 198 },
-                { name: "Hrvatski - Esej", views: 187 },
-                { name: "Biologija - Stanica", views: 165 },
-                { name: "Kemija - Spojevi", views: 156 },
-                { name: "Povijest - WWII", views: 143 },
-                { name: "Geografija - Klima", views: 134 },
-                { name: "Informatika - Python", views: 123 },
-                { name: "Engleski - Grammar", views: 112 },
-                { name: "Latinski - Glagoli", views: 98 }
+                { name: "Matematika - Formule", views: 187 },
+                { name: "Fizika - Zadaci", views: 165 },
+                // ... only materials from teacher's subjects
             ];
             setMostViewed(fakeViewedMaterials);
-    
-            // Most downloaded materials
+
             const fakeDownloadedMaterials = [
                 { name: "Matematika - Formule", downloads: 156 },
                 { name: "Fizika - Zadaci", downloads: 145 },
-                { name: "Hrvatski - Književnost", downloads: 134 },
-                { name: "Biologija - Sažetak", downloads: 123 },
-                { name: "Kemija - Tablice", downloads: 112 },
-                { name: "Povijest - Bilješke", downloads: 98 },
-                { name: "Geografija - Karte", downloads: 87 },
-                { name: "Informatika - Code", downloads: 76 },
-                { name: "Engleski - Vocabulary", downloads: 65 },
-                { name: "Latinski - Prijevodi", downloads: 54 }
+                { name: "Matematika - Vježbe", downloads: 134 },
+                { name: "Fizika - Laboratorij", downloads: 123 },
+                // ... only materials from teacher's subjects
             ];
             setMostDownloaded(fakeDownloadedMaterials);
     
@@ -85,14 +78,30 @@ function Statistika({ onLogout }) {
         }
         
         const user = JSON.parse(userStr);
-        if (user.role !== 'teacher') {
+        if (user.role !== 'teacher') {         //uloga1???   change every instance
             navigate('/home');
             return;
         }
         
         setUserData(user);
+        fetchTeacherSubjects(user.id);
         fetchStatistics(user.id);
     }, [navigate]);
+
+    const fetchTeacherSubjects = async (teacherId) => {
+        try {
+            const response = await fetch(`http://backend-latest-in4o.onrender.com/api/teachers/${teacherId}/subjects`, {   //BACKEND: PROMIJENII SVE API CALLS :)
+                credentials: 'include'
+            });
+            if (!response.ok) throw new Error('Failed to fetch teacher subjects');
+            const subjects = await response.json();
+            setTeacherSubjects(subjects);
+            // After getting subjects, fetch statistics with them
+            fetchStatistics(teacherId, subjects);
+        } catch (error) {
+            console.error('Error fetching teacher subjects:', error);
+        }
+    };
 
     // Mock handlers for the search functionalities - FRONT TESTING!!
     /* const handleMaterialSearch = (e) => {
@@ -114,45 +123,66 @@ function Statistika({ onLogout }) {
         ]);
     }; */
 
-    const fetchStatistics = async (teacherId) => {
+    const fetchStatistics = async (teacherId, subjects) => {
         try {
-            // Most viewed materials
-            const viewedResponse = await fetch('http://backend-latest-in4o.onrender.com/api/statistics/most-viewed', {
-                credentials: 'include'
-            });
-            const viewedData = await viewedResponse.json();
-            setMostViewed(viewedData);
+          // Most viewed materials for teacher's subjects
+          const viewedResponse = await fetch(
+            "http://backend-latest-in4o.onrender.com/api/statistics/most-viewed",
+            {
+              method: "POST", // Changed to POST to send subjects in body
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+              body: JSON.stringify({ subjects: subjects }), // Send subjects to filter by
+            }
+          );
+          const viewedData = await viewedResponse.json();
+          setMostViewed(viewedData);
 
-            // Most downloaded materials
-            const downloadedResponse = await fetch('http://backend-latest-in4o.onrender.com/api/statistics/most-downloaded', {
-                credentials: 'include'
-            });
-            const downloadedData = await downloadedResponse.json();
-            setMostDownloaded(downloadedData);
+          // Most downloaded materials for teacher's subjects
+          const downloadedResponse = await fetch(
+            "http://backend-latest-in4o.onrender.com/api/statistics/most-downloaded",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+              body: JSON.stringify({ subjects: subjects }),
+            }
+          );
+          const downloadedData = await downloadedResponse.json();
+          setMostDownloaded(downloadedData);
 
-            // Teacher's materials
-            /* const teacherResponse = await fetch(`http://backend-latest-in4o.onrender.com/api/statistics/teacher/${teacherId}/materials`, {
+          // Teacher's materials
+          /* const teacherResponse = await fetch(`http://backend-latest-in4o.onrender.com/api/statistics/teacher/${teacherId}/materials`, {
                 credentials: 'include'
             });
             const teacherData = await teacherResponse.json();
             setTeacherMaterials(teacherData); */
 
-            // Subject materials count
-            const subjectsResponse = await fetch(`http://backend-latest-in4o.onrender.com/api/statistics/subjects/materials`, {
-                credentials: 'include'
-            });
-            const subjectsData = await subjectsResponse.json();
-            setSubjectMaterials(subjectsData);
+          // Subject materials count
+          const subjectsResponse = await fetch(
+            `http://backend-latest-in4o.onrender.com/api/statistics/subjects/materials`,
+            {
+              credentials: "include",
+            }
+          );
+          const subjectsData = await subjectsResponse.json();
+          setSubjectMaterials(subjectsData);
 
-            // Certificate statistics
-            const certResponse = await fetch('http://backend-latest-in4o.onrender.com/api/statistics/certificates', {
-                credentials: 'include'
-            });
-            const certData = await certResponse.json();
-            setCertificateStats(certData);
-
+          // Certificate statistics
+          const certResponse = await fetch(
+            "http://backend-latest-in4o.onrender.com/api/statistics/certificates",
+            {
+              credentials: "include",
+            }
+          );
+          const certData = await certResponse.json();
+          setCertificateStats(certData);
         } catch (error) {
-            console.error('Error fetching statistics:', error);
+          console.error("Error fetching statistics:", error);
         }
     };
 
