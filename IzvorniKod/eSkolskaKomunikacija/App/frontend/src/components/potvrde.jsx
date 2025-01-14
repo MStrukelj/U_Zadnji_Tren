@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import './home.css';
+/* import './home.css'; */
+import './potvrde.css';
  
 function Potvrde() {
     const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -49,22 +50,27 @@ function Potvrde() {
                 <h1 className="logo">eŠkola</h1>
                 <div className="user-container">
                     <div className="user-names">
-                        <span className="user-field">Ime</span>
-                        <span className="user-field">Prezime</span>
+                        <span className="user-field">{userData?.ime || "Ime"}</span>
+                        <span className="user-field">{userData?.prezime || "Prezime"}</span>
                     </div>
-                    <span className="class-field">Class</span>
+                    <span className="class-field">{userData?.razred || "Razred"}</span>
                 </div>
             </header>
 
-            {/* Also needs missing materials to style properly! Working functionality */}
             <div className="main-content">
                 {sidebarVisible && (
-                    <aside className="left-sidebar">
+                    <aside className="sidebar">
                         <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
                         <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button active">POTVRDE</Link>
                         <button className="sidebar-button">CHAT</button>
+                        {['N', 'A', 'R'].includes(userData?.role) && (              //N(astavnik), A(dmin), R(avnatelj)
+                            <>
+                                <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
+                                <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                            </>
+                        )}
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
                     </aside>
                 )}
