@@ -16,11 +16,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors().configurationSource(corsConfigurationSource())
-            .and()
-            .authorizeHttpRequests(authorize -> authorize
-                .anyRequest().permitAll())
-            .csrf().disable();
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().permitAll())
+                .csrf().disable();
 
         return http.build();
     }
@@ -28,14 +28,15 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://frontend-latest-1126.onrender.com"));
+        configuration
+                .setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://frontend-latest-1126.onrender.com"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }
-
