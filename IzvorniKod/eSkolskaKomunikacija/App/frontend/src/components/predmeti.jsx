@@ -24,7 +24,7 @@ function Predmeti({ onLogout }) {
         const fetchSubjects = async () => {
             try {
                 const response = await fetch(
-                    `https://backend-latest-in4o.onrender.com/api/ucenici/${user.jmbag}/predmeti`, // Koristi JMBAG iz user objekta
+                    `https://backend-latest-in4o.onrender.com/api/ucenici/148/predmeti`, // Koristi JMBAG iz user objekta
                     {
                         credentials: "include",
                     }
