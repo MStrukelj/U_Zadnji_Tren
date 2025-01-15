@@ -20,13 +20,14 @@ function Predmeti({ onLogout }) {
         const user = JSON.parse(userStr);
         setUserData(user);
 
+        // Koristi JMBAG iz prijavljenog korisnika
         const fetchSubjects = async () => {
             try {
                 const response = await fetch(
-                    "http://backend-latest-in4o.onrender.com/api/ucenici/241/predmeti",
+                    `http://backend-latest-in4o.onrender.com/api/ucenici/${user.jmbag}/predmeti`, // Koristi JMBAG iz user objekta
                     {
                         credentials: "include",
-                    },
+                    }
                 );
 
                 if (!response.ok) {
@@ -45,7 +46,7 @@ function Predmeti({ onLogout }) {
                 console.error("Greška prilikom dohvaćanja predmeta:", error);
             }
         };
-        
+
         fetchSubjects();
     }, [navigate]);
 

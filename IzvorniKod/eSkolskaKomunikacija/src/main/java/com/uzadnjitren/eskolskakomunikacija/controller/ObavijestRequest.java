@@ -3,33 +3,32 @@ package com.uzadnjitren.eskolskakomunikacija.controller;
 import java.util.List;
 
 public class ObavijestRequest {
-    private String naslov;
-    private String tekst;
-    private List<Integer> sifrePredmeta;
+    private List<String> classes; // Updated to match frontend
+    private String subject;
+    private String description;
 
-    // Getteri i setteri
-    public String getNaslov() {
-        return naslov;
+    // Getters and setters
+    public List<String> getClasses() {
+        return classes;
     }
 
-    public void setNaslov(String naslov) {
-        this.naslov = naslov;
+    public void setClasses(List<String> classes) {
+        this.classes = classes;
     }
 
-    public String getTekst() {
-        return tekst;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setTekst(String tekst) {
-        this.tekst = tekst;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-    public List<Integer> getSifrePredmeta() {
-        return sifrePredmeta;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSifrePredmeta(List<Integer> sifrePredmeta) {
-        this.sifrePredmeta = sifrePredmeta;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
-

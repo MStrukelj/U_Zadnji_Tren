@@ -20,18 +20,18 @@ public class ObavijestService {
         this.emailService = emailService;
     }
 
-    public void posaljiObavijest(String naslov, String tekst, List<Integer> sifrePredmeta) throws Exception {
-        // Dohvati učenike upisane u odabrane predmete
-        List<Ucenik> ucenici = ucenikRepository.findAllByPredmetSifre(sifrePredmeta);
+    public void posaljiObavijest(String subject, String description, List<String> classes) throws Exception {
+        // Fetch students based on selected classes
+        List<Ucenik> ucenici = ucenikRepository.findAllByRazredSmjerovi(classes);
 
         if (ucenici.isEmpty()) {
-            throw new Exception("Nema učenika upisanih u odabrane predmete.");
+            throw new Exception("Nema učenika u odabranim razredima.");
         }
 
-        // Pošalji obavijest svakom učeniku
+        // Send email to each student
         for (Ucenik ucenik : ucenici) {
             try {
-                emailService.sendEmail(ucenik.getEmail(), naslov, tekst);
+                emailService.sendEmail(ucenik.getEmail(), subject, description);
             } catch (MessagingException e) {
                 throw new Exception("Greška prilikom slanja e-maila učeniku: " + ucenik.getEmail(), e);
             }

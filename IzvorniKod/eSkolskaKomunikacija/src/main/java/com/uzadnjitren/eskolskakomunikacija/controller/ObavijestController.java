@@ -5,10 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/obavijesti")
+@RequestMapping("/api/activities")
 public class ObavijestController {
 
     private final ObavijestService obavijestService;
@@ -18,13 +16,13 @@ public class ObavijestController {
         this.obavijestService = obavijestService;
     }
 
-    @PostMapping("/posalji")
+    @PostMapping
     public ResponseEntity<?> posaljiObavijest(@RequestBody ObavijestRequest obavijestRequest) {
         try {
             obavijestService.posaljiObavijest(
-                    obavijestRequest.getNaslov(),
-                    obavijestRequest.getTekst(),
-                    obavijestRequest.getSifrePredmeta()
+                    obavijestRequest.getSubject(),
+                    obavijestRequest.getDescription(),
+                    obavijestRequest.getClasses()
             );
             return ResponseEntity.ok("Obavijest uspješno poslana učenicima.");
         } catch (Exception e) {
@@ -32,4 +30,3 @@ public class ObavijestController {
         }
     }
 }
-

@@ -7,11 +7,9 @@ function ObavijestForm({ onLogout }) {
     const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        classes: [],  
-        subject: '',  
-        description: '',
-        needsLocation: false,
-        location: ''
+        classes: [],
+        subject: '',  // Naslov
+        description: '' // Tekst
     });
 
     const availableClasses = ['A', 'B', 'C', 'D', 'E', 'F'];
@@ -22,42 +20,44 @@ function ObavijestForm({ onLogout }) {
             navigate('/');
             return;
         }
-        
+
         const user = JSON.parse(userStr);
         if (user.uloga1 !== 'N') {
             navigate('/home');
             return;
         }
-        
+
         setUserData(user);
     }, [navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://backend-latest-in4o.onrender.com/api/activities', {   //BACKEND: POPRAVI OVO ...api/...
+            const response = await fetch('http://backend-latest-in4o.onrender.com/api/activities', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    naslov: formData.subject,
+                    tekst: formData.description,
+                    classes: formData.classes
+                })
             });
 
-            if (!response.ok) throw new Error('Greška pri dodavanju aktivnosti');
-            
+            if (!response.ok) throw new Error('Greška pri slanju obavijesti.');
+
             setFormData({
                 classes: [],
                 subject: '',
-                description: '',
-                needsLocation: false,
-                location: ''
+                description: ''
             });
-            
-            alert('Aktivnost uspješno dodana!');
+
+            alert('Obavijest uspješno poslana!');
         } catch (error) {
             console.error('Error:', error);
-            alert('Greška pri dodavanju aktivnosti');
+            alert('Greška pri slanju obavijesti.');
         }
     };
 
@@ -71,10 +71,10 @@ function ObavijestForm({ onLogout }) {
     };
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: value
         }));
     };
 
@@ -84,7 +84,7 @@ function ObavijestForm({ onLogout }) {
                 method: 'POST',
                 credentials: 'include'
             });
-            
+
             if (response.ok) {
                 sessionStorage.clear();
                 if (typeof onLogout === 'function') {
@@ -109,7 +109,6 @@ function ObavijestForm({ onLogout }) {
                         <span className="user-field">{userData?.ime || 'Ime'}</span>
                         <span className="user-field">{userData?.prezime || 'Prezime'}</span>
                     </div>
-                    <span className="class-field">{userData?.razred || 'Razred'}</span>
                 </div>
             </header>
 
@@ -169,32 +168,6 @@ function ObavijestForm({ onLogout }) {
                                 required
                             />
                         </div>
-
-                        <div className="form-group checkbox-group">
-                            <label className="checkbox-container">
-                                <input
-                                    type="checkbox"
-                                    name="needsLocation"
-                                    checked={formData.needsLocation}
-                                    onChange={handleChange}
-                                />
-                                Želite li označiti lokaciju?
-                            </label>
-                        </div>
-
-                        {formData.needsLocation && (
-                            <div className="form-group">
-                                <label>Lokacija:</label>
-                                <input
-                                    type="text"
-                                    name="location"
-                                    value={formData.location}
-                                    onChange={handleChange}
-                                    placeholder="Unesite lokaciju"
-                                    required={formData.needsLocation}
-                                />
-                            </div>
-                        )}
 
                         <button type="submit" className="submit-button">
                             Izradi

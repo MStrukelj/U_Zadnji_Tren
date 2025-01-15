@@ -1,5 +1,6 @@
 package com.uzadnjitren.eskolskakomunikacija.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -8,6 +9,7 @@ public class Mjesto {
 
     @Id
     private Integer pbr;
+    @Column(name = "nazmjesto")
     private String nazMjesto;
 
     public Integer getPbr() {
