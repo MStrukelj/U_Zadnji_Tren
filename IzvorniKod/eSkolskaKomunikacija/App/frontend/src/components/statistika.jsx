@@ -78,7 +78,7 @@ function Statistika({ onLogout }) {
         }
         
         const user = JSON.parse(userStr);
-        if (user.role !== 'teacher') {         //uloga1???   change every instance
+        if (user.uloga1 !== 'N') {         //uloga1???   change every instance
             navigate('/home');
             return;
         }

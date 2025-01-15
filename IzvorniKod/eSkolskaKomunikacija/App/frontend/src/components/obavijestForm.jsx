@@ -24,7 +24,7 @@ function ObavijestForm({ onLogout }) {
         }
         
         const user = JSON.parse(userStr);
-        if (user.role !== 'teacher') {
+        if (user.uloga1 !== 'N') {
             navigate('/home');
             return;
         }
