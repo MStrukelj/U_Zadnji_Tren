@@ -103,6 +103,42 @@ function Materijali({ onLogout }) {
         link.click();
         document.body.removeChild(link);
     };
+
+    // Upload materijala
+    const handleUploadClick = async (event) => {
+        const file = event.target.files[0];
+        if (!file) {
+            alert("Molimo odaberite datoteku.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            if (!subjectId) {
+                alert("ID predmeta nije dostupan.");
+                return;
+            }
+
+            const response = await fetch(`http://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali/upload`, {
+                method: "POST",
+                body: formData,
+                credentials: "include",
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert("Datoteka uspješno učitana!");
+                setMaterials((prevMaterials) => [...prevMaterials, result]);
+            } else {
+                throw new Error(`Greška: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error("Greška prilikom učitavanja datoteke:", error);
+            alert("Nije moguće učitati datoteku. Molimo pokušajte kasnije.");
+        }
+    };
     
     return (
         <div className="container">

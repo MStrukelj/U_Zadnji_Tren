@@ -7,30 +7,30 @@ public class Materijal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sifMaterijal") // Exact database column name
+    @Column(name = "sifmaterijal")
     private Integer sifMaterijal;
 
-    @Column(name = "nazMaterijal")
+    @Column(name = "nazmaterijal")
     private String nazMaterijal;
 
-    @Column(name = "brPregleda")
+    @Column(name = "brpregleda")
     private Integer brPregleda;
 
-    @Column(name = "brSkidanja")
+    @Column(name = "brskidanja")
     private Integer brSkidanja;
 
     @Column(name = "URL")
     private String url;
 
     @ManyToOne
-    @JoinColumn(name = "sifPredmet") // Exact foreign key column name
+    @JoinColumn(name = "sifpredmet", nullable = false)
     private Predmet predmet;
 
     @ManyToOne
-    @JoinColumn(name = "sifnast") // Foreign key column
+    @JoinColumn(name = "sifnast", nullable = false) // Dodaj vezu s nastavnikom
     private Nastavnik nastavnik;
 
-    // Getters and Setters
+    // Getteri i setteri
     public Integer getSifMaterijal() { return sifMaterijal; }
     public void setSifMaterijal(Integer sifMaterijal) { this.sifMaterijal = sifMaterijal; }
 
@@ -48,4 +48,9 @@ public class Materijal {
 
     public Predmet getPredmet() { return predmet; }
     public void setPredmet(Predmet predmet) { this.predmet = predmet; }
+
+    public Nastavnik getNastavnik() { return nastavnik; }
+    public void setNastavnik(Nastavnik nastavnik) { this.nastavnik = nastavnik; }
 }
+
+

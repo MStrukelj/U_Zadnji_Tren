@@ -24,4 +24,12 @@ public interface UcenikRepository extends JpaRepository<Ucenik, Integer> {
 
     @Query("SELECT r FROM Razred r, Upisao u WHERE r.oznRaz = u.oznRaz AND u.jmbag = :jmbag AND r.izboran IS NULL")
     Optional<Razred> findMainRazredByJmbag(@Param("jmbag") Integer jmbag);
+
+    @Query("SELECT DISTINCT u FROM Ucenik u " +
+            "JOIN Upisao up ON u.JMBAG = up.jmbag " +
+            "JOIN PredmetRazred pr ON up.oznRaz = pr.oznRaz " +
+            "WHERE pr.predmet.sifPredmet IN :sifrePredmeta")
+    List<Ucenik> findAllByPredmetSifre(@Param("sifrePredmeta") List<Integer> sifrePredmeta);
+
+
 }

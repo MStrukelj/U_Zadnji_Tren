@@ -9,19 +9,27 @@ public class Ucenik {
 
     @Id
     private Integer JMBAG;
+
     private String OIB;
+
+    @Column(name = "datrod") // Mala slova jer PostgreSQL automatski konvertira u mala slova
     private Date datRod;
+
+    @Column(name = "pbrstan")
     private Integer pbrStan;
+
+    @Column(name = "pbrrod")
     private Integer pbrRod;
+
     private String email;
     private String lozinka;
 
     @ManyToOne
-    @JoinColumn(name = "pbrStan", insertable = false, updatable = false)
+    @JoinColumn(name = "pbrstan", insertable = false, updatable = false)
     private Mjesto mjestoStanovanja;
 
     @ManyToOne
-    @JoinColumn(name = "pbrRod", insertable = false, updatable = false)
+    @JoinColumn(name = "pbrrod", insertable = false, updatable = false)
     private Mjesto mjestoRodenja;
 
     @ManyToOne

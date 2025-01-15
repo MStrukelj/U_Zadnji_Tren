@@ -4,6 +4,7 @@ import com.uzadnjitren.eskolskakomunikacija.service.MaterijalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,4 +27,18 @@ public class MaterijalController {
 
         return materialUrls.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(materialUrls);
     }
+
+    @PostMapping("/{sifPredmet}/materijali/upload")
+    public ResponseEntity<?> uploadMaterijal(
+            @PathVariable Integer sifPredmet,
+            @RequestParam("file") MultipartFile file) {
+        try {
+            String uploadedUrl = materijalService.uploadMaterijal(sifPredmet, file);
+            return ResponseEntity.ok(uploadedUrl);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
+
+
 }
