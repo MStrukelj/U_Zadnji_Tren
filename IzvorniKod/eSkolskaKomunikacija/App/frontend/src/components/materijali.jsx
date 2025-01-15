@@ -35,7 +35,7 @@ function Materijali({ onLogout }) {
             }
 
             try {
-                const response = await fetch(`http://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali`, {
+                const response = await fetch(`https://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali`, {
                     credentials: 'include',
                 });
                 if (!response.ok) throw new Error(`Greška: ${response.statusText}`);
@@ -121,7 +121,7 @@ function Materijali({ onLogout }) {
                 return;
             }
 
-            const response = await fetch(`http://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali/upload`, {
+            const response = await fetch(`https://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali/upload`, {
                 method: "POST",
                 body: formData,
                 credentials: "include",

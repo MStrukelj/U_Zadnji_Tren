@@ -33,7 +33,7 @@ function ObavijestForm({ onLogout }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://backend-latest-in4o.onrender.com/api/activities', {
+            const response = await fetch('https://backend-latest-in4o.onrender.com/api/activities', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
