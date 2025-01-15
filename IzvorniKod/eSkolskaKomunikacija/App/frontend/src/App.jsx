@@ -15,6 +15,7 @@ import Potvrde from "./components/potvrde.jsx";
 import Materijali from "./components/materijali.jsx";
 import ObavijestForm from "./components/obavijestForm.jsx";
 import Statistika from "./components/statistika.jsx";
+import Chat from "./components/chat.jsx"
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -132,6 +133,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Statistika onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <Chat onLogout={handleLogout} />
             </ProtectedRoute>
           }
         />
