@@ -64,7 +64,7 @@ function Potvrde() {
                         <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button active">POTVRDE</Link>
-                        <button className="sidebar-button">CHAT</button>
+                        <Link to="/chat" className="sidebar-button">CHAT</Link>
                         {['N', 'A', 'R'].includes(userData?.uloga1) && (              //N(astavnik), A(dmin), R(avnatelj)
                             <>
                                 <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>

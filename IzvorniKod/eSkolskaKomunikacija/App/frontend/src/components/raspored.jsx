@@ -64,7 +64,7 @@ function Raspored({ onLogout }) {
                         <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
                         <Link to="/raspored" className="sidebar-button active">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
-                        <button className="sidebar-button">CHAT</button>
+                        <Link to="/chat" className="sidebar-button">CHAT</Link>
                         {['N', 'A', 'R'].includes(userData?.uloga1) && (              //N(astavnik), A(dmin), R(avnatelj)
                             <>
                                 <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
