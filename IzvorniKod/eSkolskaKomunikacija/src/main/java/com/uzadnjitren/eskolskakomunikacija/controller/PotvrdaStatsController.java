@@ -20,11 +20,13 @@ public class PotvrdaStatsController {
         this.potvrdaStatsService = potvrdaStatsService;
     }
 
+    // Endpoint koji vraća broj ukupno skidanih potvrda za svaku vrstu potvrde
     @GetMapping
     public ResponseEntity<?> getPotvrdaStats() {
         List<VrstaPotvrdeDto>  vrstaPotvrdeDtos = potvrdaStatsService.getStatsVrstaPotvrda();
         return vrstaPotvrdeDtos.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(vrstaPotvrdeDtos);
     }
+    // Endpoint koji vraća broj ukupno skidanih potvrda po vrsti za određenog učenika
     @GetMapping("/{JMBAG}")
     public ResponseEntity<?> getPotvrdaStatsByJmbag(@PathVariable Integer JMBAG) {
         List<UcenikPotvrdaDto> ucenikPotvrdaDtos = potvrdaStatsService.getStatsUcenikPotvrda(JMBAG);

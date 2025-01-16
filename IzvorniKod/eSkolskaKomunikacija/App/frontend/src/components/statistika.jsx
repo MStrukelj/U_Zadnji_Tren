@@ -1,6 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { PieChart, Pie, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import React, {useEffect, useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import {
+    Bar,
+    BarChart,
+    CartesianGrid,
+    Legend,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis
+} from 'recharts';
 import './statistika.css';
 
 function Statistika({ onLogout }) {
@@ -9,7 +20,7 @@ function Statistika({ onLogout }) {
     const navigate = useNavigate();
     
     // States for different statistics
-    const [teacherSubjects, setTeacherSubjects] = useState([]);
+    const [sifNast, setSifNast] = useState(null);
     const [mostViewed, setMostViewed] = useState([]);
     const [mostDownloaded, setMostDownloaded] = useState([]);
     const [subjectMaterials, setSubjectMaterials] = useState([]);
@@ -21,54 +32,23 @@ function Statistika({ onLogout }) {
     const [jmbag, setJmbag] = useState('');
     const [studentCertStats, setStudentCertStats] = useState(null);
 
-    /* useEffect(() => {                                                       //FRONT TESTING!!! 
-        // Simulate fetching data
-        const generateFakeData = () => {
-            // Example teacher subjects
-            const teacherSubjects = ['Matematika', 'Fizika'];
+    const fetchSifNast = async (email) => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/nastavnik/${email}`, {
+                credentials: 'include',
+            });
 
-            // Filter fake data to only include teacher's subjects
-            const fakeViewedMaterials = [
-                { name: "Matematika - Poglavlje 1", views: 245 },
-                { name: "Fizika - Uvod", views: 198 },
-                { name: "Matematika - Formule", views: 187 },
-                { name: "Fizika - Zadaci", views: 165 },
-                // ... only materials from teacher's subjects
-            ];
-            setMostViewed(fakeViewedMaterials);
+            if (!response.ok) {
+                throw new Error(`Pogreška pri dohvaćanju šifre nastavnika: ${response.statusText}`);
+            }
+            const sifNastData = await response.json();
+            console.log(sifNastData)
+            setSifNast(sifNastData);
+        } catch (error) {
+            console.error('Pogreška pri dohvaćanju šifre nastavnika:', error);
+        }
+    };
 
-            const fakeDownloadedMaterials = [
-                { name: "Matematika - Formule", downloads: 156 },
-                { name: "Fizika - Zadaci", downloads: 145 },
-                { name: "Matematika - Vježbe", downloads: 134 },
-                { name: "Fizika - Laboratorij", downloads: 123 },
-                // ... only materials from teacher's subjects
-            ];
-            setMostDownloaded(fakeDownloadedMaterials);
-    
-            // Subject materials count
-            const fakeSubjectMaterials = [
-                { subject: "Matematika", count: 45 },
-                { subject: "Hrvatski", count: 38 },
-                { subject: "Engleski", count: 32 },
-                { subject: "Fizika", count: 28 },
-                { subject: "Kemija", count: 25 },
-                { subject: "Biologija", count: 22 }
-            ];
-            setSubjectMaterials(fakeSubjectMaterials);
-    
-            // Certificate statistics
-            const fakeCertificateStats = [
-                { type: "Potvrda o redovitom školovanju", downloads: 234 },
-                { type: "Prijepis ocjena", downloads: 156 },
-                { type: "Pohvalnica", downloads: 89 },
-                { type: "Diploma", downloads: 67 }
-            ];
-            setCertificateStats(fakeCertificateStats);
-        };
-    
-        generateFakeData();
-    }, []); */
 
     useEffect(() => {
         const userStr = sessionStorage.getItem('user');
@@ -76,110 +56,78 @@ function Statistika({ onLogout }) {
             navigate('/');
             return;
         }
-        
+
         const user = JSON.parse(userStr);
-        if (user.uloga1 !== 'N') {         //uloga1???   change every instance
+        if (user.uloga1 !== 'N') {
             navigate('/home');
             return;
         }
-        
-        setUserData(user);
-        fetchTeacherSubjects(user.id);
-    }, [navigate]);
+        fetchSifNast(user.email);
+    }, [navigate])
 
-    const fetchTeacherSubjects = async (teacherId) => {
-        try {
-            const response = await fetch(`http://backend-latest-in4o.onrender.com/api/teachers/${teacherId}/subjects`, {   //BACKEND: PROMIJENII SVE API CALLS :)
-                credentials: 'include'
-            });
-            if (!response.ok) throw new Error('Failed to fetch teacher subjects');
-            const subjects = await response.json();
-            setTeacherSubjects(subjects);
-            // After getting subjects, fetch statistics with them
-            fetchStatistics(teacherId, subjects);
-        } catch (error) {
-            console.error('Error fetching teacher subjects:', error);
-        }
-    };
+    useEffect(() => {
+        if (sifNast) {
+            const userStr = sessionStorage.getItem('user');
+            const user = JSON.parse(userStr)
+            console.log(sifNast)
+            const updatedUser = { ...user, sifNast };
+            sessionStorage.setItem('user', JSON.stringify(updatedUser));
+            setUserData(updatedUser);
+            fetchStatistics(user.sifNast); }
+    }, [sifNast]);
 
-    // Mock handlers for the search functionalities - FRONT TESTING!!
-    /* const handleMaterialSearch = (e) => {
-        e.preventDefault();
-        // Mock response for material search
-        setMaterialStats({
-            name: `Material ${materialCode}`,
-            views: Math.floor(Math.random() * 200) + 50,
-            downloads: Math.floor(Math.random() * 100) + 20
-        });
-    };
-
-    const handleJmbagSearch = (e) => {
-        e.preventDefault();
-        // Mock response for JMBAG search
-        setStudentCertStats([
-            { type: "Potvrda o redovitom školovanju", downloads: Math.floor(Math.random() * 10) + 1 },
-            { type: "Prijepis ocjena", downloads: Math.floor(Math.random() * 5) + 1 }
-        ]);
-    }; */
-
-    const fetchStatistics = async (teacherId, subjects) => {
+    const fetchStatistics = async (teacherId) => {
         try {
           // Most viewed materials for teacher's subjects
           const viewedResponse = await fetch(
-            "http://backend-latest-in4o.onrender.com/api/statistics/most-viewed",
-            {
-              method: "POST", // Changed to POST to send subjects in body
-              headers: {
-                "Content-Type": "application/json",
-              },
-              credentials: "include",
-              body: JSON.stringify({ subjects: subjects }), // Send subjects to filter by
-            }
-          );
+            `https://backend-latest-in4o.onrender.com/api/materijal/stats/mostviewed/${teacherId}`,
+            {credentials: "include"});
           const viewedData = await viewedResponse.json();
-          setMostViewed(viewedData);
+          const formattedViewedData = viewedData.map(item => ({
+                name: item.nazMaterijal,
+                views: item.brPregleda
+            }));
+          setMostViewed(formattedViewedData);
 
           // Most downloaded materials for teacher's subjects
           const downloadedResponse = await fetch(
-            "http://backend-latest-in4o.onrender.com/api/statistics/most-downloaded",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              credentials: "include",
-              body: JSON.stringify({ subjects: subjects }),
-            }
-          );
+              `https://backend-latest-in4o.onrender.com/api/materijal/stats/mostdownloaded/${teacherId}`,
+              {credentials: "include"});
           const downloadedData = await downloadedResponse.json();
-          setMostDownloaded(downloadedData);
+          const formattedDownloadsData = downloadedData.map(item => ({
+                name: item.nazmaterijal,
+                downloads: item.brskidanja
+            }));
+          setMostDownloaded(formattedDownloadsData);
 
-          // Teacher's materials
-          /* const teacherResponse = await fetch(`http://backend-latest-in4o.onrender.com/api/statistics/teacher/${teacherId}/materials`, {
-                credentials: 'include'
-            });
-            const teacherData = await teacherResponse.json();
-            setTeacherMaterials(teacherData); */
 
           // Subject materials count
           const subjectsResponse = await fetch(
-            `http://backend-latest-in4o.onrender.com/api/statistics/subjects/materials`,
+            `https://backend-latest-in4o.onrender.com/api/materijal/stats/materijalpredmet/${teacherId}`,
             {
               credentials: "include",
             }
           );
           const subjectsData = await subjectsResponse.json();
-          setSubjectMaterials(subjectsData);
+            const formatedSubjectsData = subjectsData.map(item => ({
+                subject: item.nazpred,
+                count: item.ukupnoMaterijala
+            }));
+          setSubjectMaterials(formatedSubjectsData);
 
           // Certificate statistics
           const certResponse = await fetch(
-            "http://backend-latest-in4o.onrender.com/api/statistics/certificates",
+            "https://backend-latest-in4o.onrender.com/api/potvrda/stats",
             {
               credentials: "include",
             }
           );
           const certData = await certResponse.json();
-          setCertificateStats(certData);
+          const formatedCertData = certData.map(item => ({
+                type: item.vrsta,
+                downloads: item.ukupno
+            }));
+          setCertificateStats(formatedCertData);
         } catch (error) {
           console.error("Error fetching statistics:", error);
         }
@@ -206,12 +154,19 @@ function Statistika({ onLogout }) {
 
     const handleMaterialSearch = async (e) => {
         e.preventDefault();
+        const userStr = sessionStorage.getItem('user');
+        const user = JSON.parse(userStr);
         try {
-            const response = await fetch(`http://backend-latest-in4o.onrender.com/api/statistics/material/${materialCode}`, {
+            const response = await fetch(`https://backend-latest-in4o.onrender.com/api/materijal/stats/${user.sifNast}/${materialCode}`, {
                 credentials: 'include'
             });
             const data = await response.json();
-            setMaterialStats(data);
+            const formatedData = {
+                name: data.nazmaterijal,
+                views: data.brpregleda,
+                downloads : data.brskidanja
+            };
+            setMaterialStats(formatedData);
         } catch (error) {
             console.error('Error fetching material stats:', error);
         }
@@ -220,11 +175,15 @@ function Statistika({ onLogout }) {
     const handleJmbagSearch = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://backend-latest-in4o.onrender.com/api/statistics/student/${jmbag}/certificates`, {
+            const response = await fetch(`https://backend-latest-in4o.onrender.com/api/potvrda/stats/${jmbag}`, {
                 credentials: 'include'
             });
             const data = await response.json();
-            setStudentCertStats(data);
+            const formatedCertData = data.map(item => ({
+                type: item.vrsta,
+                downloads: item.brskidanja
+            }));
+            setStudentCertStats(formatedCertData);
         } catch (error) {
             console.error('Error fetching student certificate stats:', error);
         }
@@ -262,7 +221,7 @@ function Statistika({ onLogout }) {
 
             <div className="statistics-container">
                 <h2>Statistika</h2>
-                
+
                 <div className="charts-grid">
                     {/* First section - Most viewed materials */}
                     <div className="chart-container">
@@ -329,7 +288,7 @@ function Statistika({ onLogout }) {
                         </form>
                         {materialStats && (
                             <div className="stats-result">
-                                <h4>Material {materialCode}</h4>
+                                <h4>Material {materialStats.name}</h4>
                                 <p>
                                     <span>Broj pregleda:</span>
                                     <span className="stats-number">{materialStats.views}</span>

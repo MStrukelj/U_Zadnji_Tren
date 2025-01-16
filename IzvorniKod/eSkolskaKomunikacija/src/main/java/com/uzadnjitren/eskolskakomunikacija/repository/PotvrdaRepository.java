@@ -13,7 +13,8 @@ import java.util.List;
 public interface PotvrdaRepository extends JpaRepository<Potvrda, PotvrdaId> {
     @Query("SELECT new com.uzadnjitren.eskolskakomunikacija.dto.VrstaPotvrdeDto(p.vrsta,SUM(p.brSkidanja)) "+
             "FROM Potvrda p "+
-            "GROUP BY p.vrsta")
+            "GROUP BY p.vrsta "+
+            "ORDER BY SUM(p.brSkidanja) DESC")
     List<VrstaPotvrdeDto> getStatsVrstaPotvrda();
 
     @Query("SELECT new com.uzadnjitren.eskolskakomunikacija.dto.UcenikPotvrdaDto(p.vrsta,p.brSkidanja) "+

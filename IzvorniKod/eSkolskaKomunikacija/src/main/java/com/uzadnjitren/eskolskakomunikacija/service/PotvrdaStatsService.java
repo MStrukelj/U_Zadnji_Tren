@@ -14,9 +14,13 @@ public class PotvrdaStatsService {
     public PotvrdaStatsService(PotvrdaRepository potvrdaRepository) {
         this.potvrdaRepository = potvrdaRepository;
     }
+
+    // Funkcija koja vraća broj ukupno skidanih potvrda za svaku vrstu potvrde
     public List<VrstaPotvrdeDto> getStatsVrstaPotvrda(){
         return potvrdaRepository.getStatsVrstaPotvrda();
     }
+
+    // Funkcija koja vraća broj ukupno skidanih potvrda po vrsti za određenog učenika
     public List<UcenikPotvrdaDto> getStatsUcenikPotvrda(Integer JMBAG){
         return potvrdaRepository.getStatsPotvrdaByJmbag(JMBAG);
     }
