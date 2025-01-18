@@ -31,6 +31,16 @@
 	</properties>
 	<dependencies>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.xhtmlrenderer</groupId>
+			<artifactId>flying-saucer-pdf</artifactId>
+			<version>9.11.2</version>
+		</dependency>
+		<dependency>
 			<groupId>io.getstream</groupId>
 			<artifactId>stream-chat-java</artifactId>
 			<version>1.27.0</version>

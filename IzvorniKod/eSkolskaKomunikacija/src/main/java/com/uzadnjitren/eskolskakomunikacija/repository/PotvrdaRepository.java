@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PotvrdaRepository extends JpaRepository<Potvrda, PotvrdaId> {
     @Query("SELECT new com.uzadnjitren.eskolskakomunikacija.dto.VrstaPotvrdeDto(p.vrsta,SUM(p.brSkidanja)) "+
@@ -21,4 +22,6 @@ public interface PotvrdaRepository extends JpaRepository<Potvrda, PotvrdaId> {
             "FROM Potvrda p "+
             "WHERE p.JMBAG = :JMBAG")
     List<UcenikPotvrdaDto> getStatsPotvrdaByJmbag(@Param("JMBAG") Integer JMBAG);
+
+    Optional<Potvrda> findPotvrdaByJMBAGAndVrsta(Integer JMBAG, String vrsta);
 }

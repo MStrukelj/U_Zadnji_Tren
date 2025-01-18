@@ -34,7 +34,7 @@ function Statistika({ onLogout }) {
 
     const fetchSifNast = async (email) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/nastavnik/${email}`, {
+            const response = await fetch(`https://backend-latest-in4o.onrender.com/api/nastavnik/${email}`, {
                 credentials: 'include',
             });
 

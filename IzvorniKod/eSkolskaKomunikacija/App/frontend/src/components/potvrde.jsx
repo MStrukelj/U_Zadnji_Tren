@@ -39,6 +39,37 @@ function Potvrde() {
             console.error('Logout error:', error);
         }
     };
+    const handleDownload =async (event,vrsta) => {
+        event.preventDefault();
+        const email = userData?.email;
+        if (!email) {
+            console.error('User email not found!');
+            return;
+        }
+
+        try {
+            const response = await fetch(`https://backend-latest-in4o.onrender.com/api/potvrda/${vrsta}/${email}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/pdf',
+                },
+            });
+
+            if (response.ok) {
+                const blob = await response.blob();
+                const pdfUrl = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = pdfUrl;
+                link.target = '_blank';
+                link.download = `potvrda_${vrsta}_${email}.pdf`; // Set the file name
+                link.click();
+            } else {
+                console.error('Error generating PDF');
+            }
+        } catch (error) {
+            console.error('Download error:', error);
+        }
+    };
 
     return (
         <div className="container">
@@ -78,19 +109,19 @@ function Potvrde() {
                   {/* Potvrde Buttons */}
                   <div className="content-area">
                     <p>Odaberite potvrdu:</p>
-                    <div className="buttons-container">
-                        {/* Buttons for downloading PDFs */}
-                        <a href="/downloads/potvrda1.pdf" download className="potvrda-button">
-                            Potvrda 1
-                        </a>
-                        <a href="/downloads/potvrda2.pdf" download className="potvrda-button">
-                            Potvrda 2
-                        </a>
-                        <a href="/downloads/potvrda3.pdf" download className="potvrda-button">
-                            Potvrda 3
-                        </a>
-                    </div>
-                </div>
+                      <div className="buttons-container">
+                          {/* Buttons for downloading PDFs */}
+                          <button className="potvrda-button" onClick={(event) => handleDownload(event,"S")}>
+                              Potvrda o statusu učenika
+                          </button>
+                          <button className="potvrda-button" onClick={(event) => handleDownload(event,'V')}>
+                              Potvrda o volontiranju
+                          </button>
+                          <button className="potvrda-button" onClick={(event) => handleDownload(event,'I')}>
+                              Potvrda o izostanku
+                          </button>
+                      </div>
+                  </div>
             </div>
 
         </div>
