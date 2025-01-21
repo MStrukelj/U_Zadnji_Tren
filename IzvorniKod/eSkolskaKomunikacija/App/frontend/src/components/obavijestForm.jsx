@@ -8,56 +8,138 @@ function ObavijestForm({ onLogout }) {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         classes: [],
-        subject: '',  // Naslov
-        description: '' // Tekst
+        subject: '',
+        description: '',
+        location: null
     });
+    const [availableClasses, setAvailableClasses] = useState([]);
+    const [showMap, setShowMap] = useState(false);
+    const [mapInstance, setMapInstance] = useState(null);
+    const [marker, setMarker] = useState(null);
 
-    const availableClasses = ['A', 'B', 'C', 'D', 'E', 'F'];
 
     useEffect(() => {
-        const userStr = sessionStorage.getItem('user');
+        const fetchClasses = async () => {
+            try {
+                const response = await fetch("http://localhost:8080/api/ucenici/classes", {
+                    credentials: "include",
+                });
+
+                if (!response.ok) throw new Error("Greška prilikom dohvaćanja razreda.");
+
+                const data = await response.json();
+                setAvailableClasses(data);
+            } catch (error) {
+                console.error("Error fetching classes:", error);
+                alert("Nije moguće dohvatiti razrede.");
+            }
+        };
+
+        fetchClasses();
+
+        const userStr = sessionStorage.getItem("user");
         if (!userStr) {
-            navigate('/');
+            navigate("/");
             return;
         }
 
         const user = JSON.parse(userStr);
-        if (user.uloga1 !== 'N') {
-            navigate('/home');
+        if (user.uloga1 !== "N") {
+            navigate("/home");
             return;
         }
 
         setUserData(user);
     }, [navigate]);
 
+
+    useEffect(() => {
+        if (showMap) {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 45.815, lng: 15.981 },
+                zoom: 8,
+            });
+
+            let localMarker = null;
+
+            map.addListener("click", (e) => {
+                const clickedLocation = {
+                    lat: e.latLng.lat(),
+                    lng: e.latLng.lng()
+                };
+
+                setFormData(prev => ({
+                    ...prev,
+                    location: clickedLocation
+                }));
+
+
+                if (localMarker) {
+                    localMarker.setPosition(e.latLng);
+                } else {
+
+                    localMarker = new google.maps.Marker({
+                        position: e.latLng,
+                        map: map,
+                        title: "Odabrana lokacija"
+                    });
+                }
+            });
+
+            setMapInstance(map);
+
+
+            return () => {
+                setMapInstance(null);
+                setMarker(null);
+            };
+        }
+    }, [showMap]);
+
+
+
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const requestBody = {
+            subject: formData.subject,
+            description: formData.description,
+            classes: formData.classes,
+            location: formData.location,
+        };
+
+
+
+        console.log("Request body:", requestBody);
+
         try {
-            const response = await fetch('https://backend-latest-in4o.onrender.com/api/activities', {
+            const response = await fetch('http://localhost:8080/api/activities', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({
-                    naslov: formData.subject,
-                    tekst: formData.description,
-                    classes: formData.classes
-                })
+                body: JSON.stringify(requestBody)
             });
 
-            if (!response.ok) throw new Error('Greška pri slanju obavijesti.');
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || 'Greška pri slanju obavijesti.');
+            }
 
             setFormData({
                 classes: [],
                 subject: '',
-                description: ''
+                description: '',
+                location: null
             });
 
             alert('Obavijest uspješno poslana!');
         } catch (error) {
             console.error('Error:', error);
-            alert('Greška pri slanju obavijesti.');
+            alert(`Greška pri slanju obavijesti: ${error.message}`);
         }
     };
 
@@ -131,13 +213,36 @@ function ObavijestForm({ onLogout }) {
                     <form onSubmit={handleSubmit} className="extra-curricular-form">
                         <div className="form-group">
                             <label>Razredi:</label>
-                            <div className="class-select-container">
+                            <div
+                                style={{
+                                    display: "grid",
+                                    gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))",
+                                    gap: "10px",
+                                    padding: "10px",
+                                    maxHeight: "200px",
+                                    overflowY: "auto",
+                                    border: "1px solid #ccc",
+                                    borderRadius: "5px",
+                                }}
+                            >
                                 {availableClasses.map((classOption) => (
-                                    <label key={classOption} className="class-checkbox">
+                                    <label
+                                        key={classOption}
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "start",
+                                            fontSize: "14px",
+                                            whiteSpace: "nowrap",
+                                        }}
+                                    >
                                         <input
                                             type="checkbox"
                                             checked={formData.classes.includes(classOption)}
                                             onChange={() => handleClassChange(classOption)}
+                                            style={{
+                                                marginRight: "10px",
+                                            }}
                                         />
                                         {classOption}
                                     </label>
@@ -168,6 +273,29 @@ function ObavijestForm({ onLogout }) {
                                 required
                             />
                         </div>
+
+                        <div className="form-group" style={{marginBottom: '15px'}}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    onChange={(e) => setShowMap(e.target.checked)}
+                                />
+                                Lokacija za terensku nastavu
+                            </label>
+                            {showMap && (
+                                <div
+                                    id="map"
+                                    style={{
+                                        width: "100%",
+                                        height: "400px",
+                                        marginTop: "10px",
+                                        border: "1px solid #ccc",
+                                        borderRadius: "5px",
+                                    }}
+                                ></div>
+                            )}
+                        </div>
+
 
                         <button type="submit" className="submit-button">
                             Izradi

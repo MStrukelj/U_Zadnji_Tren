@@ -125,14 +125,13 @@ CREATE TABLE PREDAVANJE
 
 CREATE TABLE MATERIJAL
 (
-    sifMaterijal INT NOT NULL,
+    sifMaterijal SERIAL PRIMARY KEY,
     nazMaterijal VARCHAR(50) NOT NULL,
     brPregleda INT NOT NULL,
     brSkidanja INT NOT NULL,
     URL VARCHAR NOT NULL,
     sifPredmet INT NOT NULL,
     sifNast INT NOT NULL,
-    PRIMARY KEY (sifMaterijal),
     FOREIGN KEY (sifPredmet) REFERENCES PREDMET(sifPredmet),
     FOREIGN KEY (sifNast) REFERENCES NASTAVNIK(sifNast)
 );

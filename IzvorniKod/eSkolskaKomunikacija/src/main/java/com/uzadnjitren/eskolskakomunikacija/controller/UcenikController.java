@@ -14,7 +14,6 @@ import java.util.List;
 @CrossOrigin(origins = { "http://localhost:5173",
         "https://frontend-latest-1126.onrender.com" }, allowCredentials = "true")
 public class UcenikController {
-    // Injecta UcenikService koristeci konstruktor
     private final UcenikService ucenikService;
 
     @Autowired
@@ -25,8 +24,6 @@ public class UcenikController {
     // Endpoint za dobavljanje predmeta po JMBAG-u ucenika
     @GetMapping("/{jmbag}/predmeti")
     public ResponseEntity<List<Predmet>> getPredmetiByUcenik(@PathVariable Integer jmbag) {
-        // Dobavljaju se predmeti pomocu UcenikService-a i vraca se odgovarajuci HTTP
-        // odgovor
         List<Predmet> predmeti = ucenikService.findPredmetiByUcenik(jmbag);
         return predmeti.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(predmeti);
     }
@@ -34,16 +31,19 @@ public class UcenikController {
     // Endpoint za dobavljanje predmeta prijavljenog ucenika koristeci session
     @GetMapping("/predmeti")
     public ResponseEntity<?> getPredmetiForLoggedUcenik(HttpSession session) {
-        // Dohvaca JMBAG ucenika iz sessiona
         Integer jmbag = (Integer) session.getAttribute("jmbag");
 
         if (jmbag == null) {
             return ResponseEntity.status(403).body("Korisnik nije prijavljen ili nema JMBAG.");
         }
 
-        // Dobavljaju se predmeti pomocu UcenikService-a i vraca se odgovarajuci HTTP
-        // odgovor
         List<Predmet> predmeti = ucenikService.findPredmetiByUcenik(jmbag);
         return predmeti.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(predmeti);
+    }
+
+    @GetMapping("/classes")
+    public ResponseEntity<List<String>> getAllClasses() {
+        List<String> classes = ucenikService.findAllClassIdentifiers();
+        return classes.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(classes);
     }
 }
