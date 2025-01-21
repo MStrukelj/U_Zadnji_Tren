@@ -41,4 +41,10 @@ public class KorisnikController {
     public ResponseEntity<Korisnik> updateKorisnik(@PathVariable String email, @RequestBody Korisnik korisnik) {
         return ResponseEntity.ok(korisnikService.updateKorisnik(email,korisnik));
     }
+
+    @DeleteMapping ("/{email}")
+    public ResponseEntity<Korisnik> deleteKorisnik(@PathVariable String email) {
+        return ResponseEntity.ok(korisnikService.deleteKorisnik(email));
+    }
+
 }

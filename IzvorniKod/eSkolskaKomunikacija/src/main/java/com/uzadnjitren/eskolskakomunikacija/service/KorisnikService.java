@@ -3,6 +3,8 @@ package com.uzadnjitren.eskolskakomunikacija.service;
 import com.uzadnjitren.eskolskakomunikacija.exception.KorisnikCRUDException;
 import com.uzadnjitren.eskolskakomunikacija.model.Korisnik;
 import com.uzadnjitren.eskolskakomunikacija.repository.KorisnikRepository;
+import com.uzadnjitren.eskolskakomunikacija.repository.NastavnikRepository;
+import com.uzadnjitren.eskolskakomunikacija.repository.UcenikRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -87,5 +89,12 @@ public class KorisnikService {
             throw new KorisnikCRUDException("Korisnik ne smije istovremeno imati uloge nastavnog osoblja i studenta.",HttpStatus.FORBIDDEN);
         }
         return korisnikRepository.save(korisnik);
+    }
+
+    public Korisnik deleteKorisnik(String email) {
+        Korisnik korisnik = korisnikRepository.findById(email).orElseThrow(
+                () -> new KorisnikCRUDException("Korisnik s email adresom:"+email+" nije pronađen.", HttpStatus.NOT_FOUND));
+        korisnikRepository.delete(korisnik);
+        return korisnik;
     }
 }
