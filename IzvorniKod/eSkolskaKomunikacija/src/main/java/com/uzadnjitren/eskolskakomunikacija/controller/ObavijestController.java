@@ -22,7 +22,8 @@ public class ObavijestController {
             obavijestService.posaljiObavijest(
                     obavijestRequest.getSubject(),
                     obavijestRequest.getDescription(),
-                    obavijestRequest.getClasses()
+                    obavijestRequest.getClasses(),
+                    obavijestRequest.getLocation()
             );
             return ResponseEntity.ok("Obavijest uspješno poslana učenicima.");
         } catch (Exception e) {

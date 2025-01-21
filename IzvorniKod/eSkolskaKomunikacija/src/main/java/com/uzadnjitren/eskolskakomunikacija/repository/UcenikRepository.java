@@ -37,6 +37,17 @@ public interface UcenikRepository extends JpaRepository<Ucenik, Integer> {
             "WHERE r.smjer IN :smjerovi")
     List<Ucenik> findAllByRazredSmjerovi(@Param("smjerovi") List<String> smjerovi);
 
+    @Query("SELECT r.oznRaz FROM Razred r ORDER BY r.godina ASC, r.oznRaz ASC")
+    List<String> findAllClassIdentifiers();
+
+
+    @Query("SELECT DISTINCT u FROM Ucenik u " +
+            "JOIN Upisao up ON u.JMBAG = up.jmbag " +
+            "WHERE up.oznRaz IN :classes")
+    List<Ucenik> findAllByClasses(@Param("classes") List<String> classes);
+
+
+
 
 
 }

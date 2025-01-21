@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MaterijalService {
@@ -43,28 +45,32 @@ public class MaterijalService {
     }
 
     // Metoda za dohvaćanje URL-ova materijala unutar foldera određenog predmeta
-    public List<String> listMaterialsBySubjectFolder(String subjectFolder) {
-        List<String> materialUrls = new ArrayList<>();
+    public List<Map<String, String>> listMaterialsBySubjectFolder(String subjectFolder) {
+        List<Map<String, String>> materials = new ArrayList<>();
         Bucket bucket = storage.get(bucketName);
 
-        // Provjera je li bucket pronađen
         if (bucket == null) {
-            return materialUrls;
+            return materials;
         }
 
         String prefix = subjectFolder + "/";
 
-        // Iteracija kroz sve objekte u bucketu koji odgovaraju prefiksu
         for (Blob blob : bucket.list(Storage.BlobListOption.prefix(prefix)).iterateAll()) {
             if (!blob.getName().endsWith("/")) {
-                // Konstruiranje javnog URL-a
                 String fileUrl = String.format("https://storage.googleapis.com/%s/%s", bucketName, blob.getName());
-                materialUrls.add(fileUrl);
+                String fileName = blob.getName().substring(blob.getName().lastIndexOf("/") + 1);
+
+                Map<String, String> material = new HashMap<>();
+                material.put("fileUrl", fileUrl);
+                material.put("fileName", fileName);
+
+                materials.add(material);
             }
         }
 
-        return materialUrls;
+        return materials;
     }
+
 
     // Metoda za upload materijala u bucket i spremanje u bazu
     public String uploadMaterijal(Integer sifPredmet, MultipartFile file) throws Exception {

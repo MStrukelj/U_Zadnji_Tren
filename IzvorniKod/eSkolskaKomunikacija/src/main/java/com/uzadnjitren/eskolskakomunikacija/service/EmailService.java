@@ -1,12 +1,13 @@
 package com.uzadnjitren.eskolskakomunikacija.service;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.Session;
+import jakarta.mail.*;
+import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Properties;
 
 @Service
@@ -18,29 +19,44 @@ public class EmailService {
     @Value("${spring.mail.password}")
     private String senderPassword;
 
-    public void sendEmail(String to, String subject, String text) throws MessagingException {
-        // Konfiguracija za Gmail
+    private final Session session;
+
+    public EmailService() {
+        // Konfiguracija sesije za Gmail
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
 
-        // Sesija
-        Session session = Session.getInstance(props, new jakarta.mail.Authenticator() {
-            protected jakarta.mail.PasswordAuthentication getPasswordAuthentication() {
-                return new jakarta.mail.PasswordAuthentication(senderEmail, senderPassword);
+        this.session = Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(senderEmail, senderPassword);
             }
         });
+    }
 
-        // Kreiranje poruke
+    public void sendEmailToMultipleRecipients(List<String> recipients, String subject, String body) throws MessagingException {
+        // Priprema emaila
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(senderEmail));
-        message.setRecipients(jakarta.mail.Message.RecipientType.TO, InternetAddress.parse(to));
+        message.setRecipients(
+                Message.RecipientType.TO,
+                recipients.stream()
+                        .map(email -> {
+                            try {
+                                return new InternetAddress(email);
+                            } catch (AddressException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
+                        .toArray(InternetAddress[]::new)
+        );
         message.setSubject(subject);
-        message.setText(text);
+        message.setText(body);
 
-        // Slanje poruke
-        jakarta.mail.Transport.send(message);
+        // Slanje emaila
+        Transport.send(message);
     }
 }
