@@ -23,6 +23,7 @@ const getUsernameFromEmail = (email) => {
 function Chat() {
   const [channels, setChannels] = useState([]);
   const [currentChannel, setCurrentChannel] = useState(null);
+  const [users, setUsers] = useState([]);
   const [targetUserEmail, setTargetUserEmail] = useState("");
   const [clientIsReady, setClientIsReady] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -82,7 +83,7 @@ function Chat() {
         const response = await fetch('http://backend-latest-in4o.onrender.com/api/korisnici', {
           credentials: 'include',
         });
-        
+
         if (!response.ok) {
           throw new Error('Neuspješno dohvaćanje korisnika.');
         }
