@@ -201,9 +201,14 @@ function ObavijestForm({ onLogout }) {
                         <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
-                        <button className="sidebar-button">CHAT</button>
+                        <Link to="/chat" className="sidebar-button">CHAT</Link>
                         <Link to="/obavijestForm" className="sidebar-button active">IZRADI OBAVIJEST</Link>
                         <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                        {['A', 'R'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/upravljajKorisnicima" className="sidebar-button active">UPRAVLJANJE KORISNICIMA</Link>
+                            </>
+                        )}
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
                     </aside>
                 )}

@@ -134,17 +134,17 @@
 .info-weather-container {
     display: flex;
     flex-direction: row;
-    gap: 20px; /* Razmak između info i weather sekcija */
+    gap: 20px;
 }
 /* Weather section styling */
 .weather-section {
-    background-color: #d6e8ff; /* Ista boja kao info-section */
+    background-color: #d6e8ff;
     border-radius: 8px;
     padding: 40px 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    flex: 1; /* Weather sekcija zauzima manje prostora */
-    min-height: 300px; /* Postavljena minimalna visina */
-    max-width: 300px; /* Ograničenje širine */
+    flex: 1; 
+    min-height: 300px;
+    max-width: 300px; 
 }
 
 .weather-title {
@@ -194,7 +194,7 @@
 .weather-temp {
     font-size: 32px;
     font-weight: bold;
-    color: #ff6600; /* Narančasta za temperaturu */
+    color: #ff6600; 
 }
 
 .weather-condition,
@@ -208,7 +208,7 @@
 }
 
 .weather-error {
-    color: #f44336; /* Crvena za greške */
+    color: #f44336;
     font-size: 16px;
     text-align: center;
 }
