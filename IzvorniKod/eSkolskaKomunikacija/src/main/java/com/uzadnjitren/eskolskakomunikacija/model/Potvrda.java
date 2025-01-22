@@ -24,6 +24,14 @@ public class Potvrda {
     @JoinColumn(name = "JMBAG", insertable = false, updatable = false, nullable = false)
     private Ucenik ucenik;
 
+    public  Potvrda() {}
+    public Potvrda(String vrsta, Integer JMBAG, Integer brSkidanja) {
+        this.vrsta = vrsta;
+        this.JMBAG = JMBAG;
+        this.brSkidanja = brSkidanja;
+    }
+
+
     // Getteri i setteri
     public String getVrsta() {
         return vrsta;

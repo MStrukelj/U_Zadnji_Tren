@@ -23,22 +23,27 @@ public class MaterijalStatsController {
         this.materijalStatsService = materijalStatsService;
     }
 
+    // Endpoint koji vraća 10 najgledanijh materijala za određenog nastavnika
     @GetMapping("/mostviewed/{sifnast}")
     public ResponseEntity<?> mostviewed(@PathVariable Integer sifnast) {
         List<MaterijalViewsDto> materijali = materijalStatsService.findMostViewedMaterijal(sifnast);
         return materijali.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok().body(materijali);
     }
 
+    // Endpoint koji vraća 10 najskidanijih materijala za određenog nastavnika
     @GetMapping("/mostdownloaded/{sifnast}")
     public ResponseEntity<?> mostdownloaded(@PathVariable Integer sifnast) {
         List<MaterijalDownloadsDto> materijali = materijalStatsService.findMostDownloadedMaterijal(sifnast);
         return materijali.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok().body(materijali);
     }
+    // Endpoint koji vraća broj objavljenih materijala po predmetu za određenog nastavnika
     @GetMapping("/materijalpredmet/{sifnast}")
     public ResponseEntity<?> materijalpredmet(@PathVariable Integer sifnast) {
         List<MaterijalPredmetDto> materijali = materijalStatsService.findMaterijalPredmet(sifnast);
         return materijali.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok().body(materijali);
     }
+
+    // Endpoint koji vraća statistiku za određeni materijala koji je nastavnik postavio
     @GetMapping("/{sifnast}/{sifmaterijal}")
     public ResponseEntity<?> materijalpredmet(@PathVariable Integer sifnast,@PathVariable Integer sifmaterijal) {
         MaterijalStats materijalStats = materijalStatsService.findMaterijalStats(sifnast, sifmaterijal);

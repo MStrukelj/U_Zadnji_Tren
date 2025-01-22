@@ -26,7 +26,7 @@ function Potvrde() {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/auth/logout', {
+            const response = await fetch('https://backend-latest-in4o.onrender.com/api/auth/logout', {
                 method: 'POST',
                 credentials: 'include'
             });
@@ -37,6 +37,37 @@ function Potvrde() {
             }
         } catch (error) {
             console.error('Logout error:', error);
+        }
+    };
+    const handleDownload =async (event,vrsta) => {
+        event.preventDefault();
+        const email = userData?.email;
+        if (!email) {
+            console.error('User email not found!');
+            return;
+        }
+
+        try {
+            const response = await fetch(`https://backend-latest-in4o.onrender.com/api/potvrda/${vrsta}/${email}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/pdf',
+                },
+            });
+
+            if (response.ok) {
+                const blob = await response.blob();
+                const pdfUrl = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = pdfUrl;
+                link.target = '_blank';
+                link.download = `potvrda_${vrsta}_${email}.pdf`; // Set the file name
+                link.click();
+            } else {
+                console.error('Error generating PDF');
+            }
+        } catch (error) {
+            console.error('Download error:', error);
         }
     };
 
@@ -64,7 +95,7 @@ function Potvrde() {
                         <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button active">POTVRDE</Link>
-                        <button className="sidebar-button">CHAT</button>
+                        <Link to="/chat" className="sidebar-button">CHAT</Link>
                         {['N', 'A', 'R'].includes(userData?.uloga1) && (              //N(astavnik), A(dmin), R(avnatelj)
                             <>
                                 <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
@@ -78,19 +109,19 @@ function Potvrde() {
                   {/* Potvrde Buttons */}
                   <div className="content-area">
                     <p>Odaberite potvrdu:</p>
-                    <div className="buttons-container">
-                        {/* Buttons for downloading PDFs */}
-                        <a href="/downloads/potvrda1.pdf" download className="potvrda-button">
-                            Potvrda 1
-                        </a>
-                        <a href="/downloads/potvrda2.pdf" download className="potvrda-button">
-                            Potvrda 2
-                        </a>
-                        <a href="/downloads/potvrda3.pdf" download className="potvrda-button">
-                            Potvrda 3
-                        </a>
-                    </div>
-                </div>
+                      <div className="buttons-container">
+                          {/* Buttons for downloading PDFs */}
+                          <button className="potvrda-button" onClick={(event) => handleDownload(event,"S")}>
+                              Potvrda o statusu učenika
+                          </button>
+                          <button className="potvrda-button" onClick={(event) => handleDownload(event,'V')}>
+                              Potvrda o volontiranju
+                          </button>
+                          <button className="potvrda-button" onClick={(event) => handleDownload(event,'I')}>
+                              Potvrda o izostanku
+                          </button>
+                      </div>
+                  </div>
             </div>
 
         </div>

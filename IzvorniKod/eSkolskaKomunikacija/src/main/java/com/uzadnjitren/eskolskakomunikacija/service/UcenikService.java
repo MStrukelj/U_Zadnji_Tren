@@ -33,4 +33,8 @@ public class UcenikService {
     public Optional<Razred> findRazredByJmbag(Integer jmbag) {
         return ucenikRepository.findMainRazredByJmbag(jmbag);
     }
+
+    public List<String> findAllClassIdentifiers() {
+        return ucenikRepository.findAllClassIdentifiers();
+    }
 }

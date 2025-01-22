@@ -126,6 +126,37 @@
     color: #4a3a8b;
 }
 
+.error-message {
+    text-align: center;
+    color: #842029;
+    background-color: #f8d7da;
+    border: 1px solid #f5c2c7;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.error-message p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    width: 100%;
+    background-color: #f4faff;
+}
+
+.loading-spinner p {
+    color: #4a3a8b;
+    font-size: 18px;
+    font-weight: 500;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .charts-grid {

@@ -100,7 +100,6 @@ CREATE TABLE upisao
     CONSTRAINT checkoznRaz CHECK(CHAR_LENGTH(oznRaz) < 10)
 );
 
-
 CREATE TABLE kompatibilan
 (
     oznUcionica VARCHAR NOT NULL,
@@ -125,13 +124,14 @@ CREATE TABLE PREDAVANJE
 
 CREATE TABLE MATERIJAL
 (
-    sifMaterijal SERIAL PRIMARY KEY,
+    sifMaterijal INT NOT NULL,
     nazMaterijal VARCHAR(50) NOT NULL,
     brPregleda INT NOT NULL,
     brSkidanja INT NOT NULL,
     URL VARCHAR NOT NULL,
     sifPredmet INT NOT NULL,
     sifNast INT NOT NULL,
+    PRIMARY KEY (sifMaterijal),
     FOREIGN KEY (sifPredmet) REFERENCES PREDMET(sifPredmet),
     FOREIGN KEY (sifNast) REFERENCES NASTAVNIK(sifNast)
 );
