@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        @font-face {
+            font-family: 'Arial';
+            src: url('../potvrda-resource/arial.ttf') format('truetype');
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.5;
+            font-size: 14px;
+            margin: 40px;
+        }
+        img{
+            position: absolute;
+            left: 5%;
+            width: 100px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        .header p {
+            font-size: 14px;
+            margin: 0;
+        }
+        h2 {
+            font-size: 24px;
+            text-align: center;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+        .content {
+            margin: 20px;
+        }
+        .content p {
+            margin: 10px 0;
+        }
+        .signature {
+            margin-top: 50px;
+            text-align: right;
+            margin-right: 50px;
+            font-size: 14px;
+        }
+        .signature-line {
+            position: absolute;
+            width: 150px;
+            border-top: 1px solid black;
+            left: 72.5%;
+        }
+        .djelatnik{
+            position: absolute;
+            left: 70%;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 12px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+<img src="classpath:potvrda-resource/XV_Gymnasium_logo.png" alt="Logo"/>
+<div class="header">
+    <h1>XV. Gimnazija</h1>
+    <p>Adresa: Jordanovac ul. 8, 10000, Zagreb</p>
+    <p>Email: <span th:text="${email}"></span></p>
+    <p>Tel. učeničke službe: 0912345678</p>
+</div>
+
+<h2>POTVRDA O STATUSU UČENIKA</h2>
+
+<div class="content">
+    <p>Ovim dokumentom izdaje se potvrda da je osoba:</p>
+    <p><strong>Ime i prezime:</strong> <span th:text="${ime}"></span></p>
+    <p><strong>OIB:</strong> <span th:text="${oib}"></span></p>
+    <p><strong>Razred:</strong> <span th:text="${razred}"></span></p>
+    <p><strong>Školska godina:</strong> <span th:text="${skolskaGodina}"></span></p>
+    <p>redovno upisana u navedeni razred za navedenu školsku godinu.</p>
+</div>
+
+<div class="footer">
+    <p>Ova potvrda izdaje se na zahtjev učenika.</p>
+    <p><strong>Datum izdavanja:</strong> <span th:text="${datumIzdavanja}"></span></p>
+</div>
+
+<div class="signature">
+    <p><span th:text="${djelatnik}"></span></p>
+    <div class="signature-line"></div>
+    <p class="djelatnik">Djelatnik/ca učeničke službe.</p>
+</div>
+</body>
+</html>

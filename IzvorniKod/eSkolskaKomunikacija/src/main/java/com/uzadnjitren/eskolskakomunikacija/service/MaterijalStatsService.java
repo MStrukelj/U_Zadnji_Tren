@@ -18,17 +18,22 @@ public class MaterijalStatsService {
         this.materijalRepository = materijalRepository;
     }
 
+    // Funkcija koja vraća 10 najgledanijih materijala za određenog nastavnika
     public List<MaterijalViewsDto> findMostViewedMaterijal(Integer sifnast) {
         return materijalRepository.findMostViewedMaterijal(sifnast,PageRequest.of(0, 10));
     }
 
+    // Funkcija koja vraća 10 najskidanijih materijala za određenog nastavnika
     public List<MaterijalDownloadsDto> findMostDownloadedMaterijal(Integer sifnast) {
         return materijalRepository.findMostDownloadedMaterijal(sifnast, PageRequest.of(0, 10));
     }
 
+    // Funkcija koja vraća broj objavljenih materijala po predmetu za određenog nastavnika
     public List<MaterijalPredmetDto> findMaterijalPredmet(Integer sifnast) {
         return materijalRepository.findMaterijalPredmet(sifnast);
     }
+
+    // Funkcija koja vraća statistiku materijala koji je objavio određeni nastavnik
     public MaterijalStats findMaterijalStats(Integer sifnast,Integer sifmaterijal) {
         return materijalRepository.findMaterijalStats(sifnast,sifmaterijal);
     }

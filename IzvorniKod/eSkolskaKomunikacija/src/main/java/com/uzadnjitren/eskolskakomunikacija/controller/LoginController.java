@@ -19,7 +19,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:5173",
+        "https://frontend-latest-1126.onrender.com" }, allowCredentials = "true")
 public class LoginController {
 
     private final LoginService loginService;

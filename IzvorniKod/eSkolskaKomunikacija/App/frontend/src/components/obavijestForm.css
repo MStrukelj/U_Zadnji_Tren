@@ -1,0 +1,162 @@
+.extra-curricular-container {
+    flex: 1;
+    padding: 20px;
+    background-color: #f4faff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* Centers horizontally */
+}
+
+.extra-curricular-container h2 {
+    color: #4a3a8b;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.extra-curricular-form {
+    background-color: #d6e8ff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;         /* Take full width on mobile */
+    max-width: 500px;    /* But limit width on larger screens */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: white;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4a3a8b;
+    box-shadow: 0 0 0 2px rgba(74, 58, 139, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.checkbox-group {
+    display: flex;
+    /* align-items: center; */
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-container input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.class-select-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+    flex-direction: row;  
+    gap: 10px;
+    padding: 8px 15px;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    min-width: 100px;    /* Minimum width to look good */   
+}
+
+.class-select-container label{
+    display: flex;
+    margin: 0;
+}
+
+.class-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;          /* Increased gap between checkbox and letter */
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 4px;
+    user-select: none;
+}
+
+/* Make the checkboxes and letters align nicely */
+.class-checkbox input[type="checkbox"] {
+    margin: 0;
+    width: 16px;    /* Fixed width for checkbox */
+    height: 16px;   /* Fixed height for checkbox */
+}
+
+.class-checkbox span {
+    min-width: 20px;  /* Fixed width for the letter */
+    font-size: 14px;
+}
+
+.submit-button {
+    background-color: #4a3a8b;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.submit-button:hover {
+    background-color: #3a2d6e;
+}
+
+.submit-button:active {
+    transform: scale(0.98);
+}
+
+/* Error state styles */
+.form-group.error input,
+.form-group.error textarea {
+    border-color: #ff4444;
+}
+
+.error-message {
+    color: #ff4444;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .extra-curricular-form {
+        max-width: 100%;
+        margin: 0 10px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        font-size: 16px; /* Better for mobile input */
+    }
+}

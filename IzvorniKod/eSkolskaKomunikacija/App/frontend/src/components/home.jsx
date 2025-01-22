@@ -6,7 +6,12 @@ import SkolaImg from '../assets/skola.jpg';
 function Home({ onLogout }) {
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [userData, setUserData] = useState(null);
+    const [weather, setWeather] = useState(null);
+    const [city, setCity] = useState('Zagreb');
     const navigate = useNavigate();
+
+    const API_KEY = 'fef44a173c0db7329768c24b3085ce3d';
+    const API_URL = `https://api.openweathermap.org/data/2.5/weather`;
     
     useEffect(() => {
         // Dohvaćanje podataka o korisniku iz sessionStorage
@@ -23,6 +28,20 @@ function Home({ onLogout }) {
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
     };
+    
+    useEffect(() => {
+        // Fetch weather data
+        const fetchWeather = async () => {
+            try {
+                const response = await fetch(`${API_URL}?q=${city}&appid=${API_KEY}&units=metric`);
+                const data = await response.json();
+                setWeather(data);
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+            }
+        };
+        fetchWeather();
+    }, [city]);
 
     const handleLogout = async () => {
         try {
@@ -63,7 +82,13 @@ function Home({ onLogout }) {
                         <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
-                        <button className="sidebar-button">CHAT</button>
+                        <Link to="/chat" className="sidebar-button">CHAT</Link>
+                        {['N', 'A', 'R'].includes(userData?.uloga1) && (              //N(astavnik), A(dmin), R(avnatelj)
+                            <>
+                                <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
+                                <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                            </>
+                        )}  
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
                     </aside>
                 )}
@@ -78,6 +103,19 @@ function Home({ onLogout }) {
                             je nositelj doktorskog studija iz područja tehničkih znanosti, znanstvenog polja
                             elektrotehnike i znanstvenog polja računarstva.
                         </p>
+                    </section>
+                    <section className="weather-section">
+                        <h2 className="weather-title">Trenutno Vrijeme</h2>
+                        {weather ? (
+                            <div className="weather-container">
+                                <p className="weather-city">{weather.name}</p>
+                                <p className="weather-temp">{weather.main.temp}°C</p>
+                                <p className="weather-condition">{weather.weather[0].description}</p>
+                                <p className="weather-humidity">Vlažnost: {weather.main.humidity}%</p>
+                            </div>
+                        ) : (
+                            <p className="weather-loading">Učitavanje vremenskih podataka...</p>
+                        )}
                     </section>
                 </main>
             </div>

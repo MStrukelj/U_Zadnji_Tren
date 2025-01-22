@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import './home.css';
+/* import './home.css'; */
+import './potvrde.css';
  
 function Potvrde() {
     const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -38,6 +39,37 @@ function Potvrde() {
             console.error('Logout error:', error);
         }
     };
+    const handleDownload =async (event,vrsta) => {
+        event.preventDefault();
+        const email = userData?.email;
+        if (!email) {
+            console.error('User email not found!');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/potvrda/${vrsta}/${email}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/pdf',
+                },
+            });
+
+            if (response.ok) {
+                const blob = await response.blob();
+                const pdfUrl = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = pdfUrl;
+                link.target = '_blank';
+                link.download = `potvrda_${vrsta}_${email}.pdf`; // Set the file name
+                link.click();
+            } else {
+                console.error('Error generating PDF');
+            }
+        } catch (error) {
+            console.error('Download error:', error);
+        }
+    };
 
     return (
         <div className="container">
@@ -49,22 +81,27 @@ function Potvrde() {
                 <h1 className="logo">eŠkola</h1>
                 <div className="user-container">
                     <div className="user-names">
-                        <span className="user-field">Ime</span>
-                        <span className="user-field">Prezime</span>
+                        <span className="user-field">{userData?.ime || "Ime"}</span>
+                        <span className="user-field">{userData?.prezime || "Prezime"}</span>
                     </div>
-                    <span className="class-field">Class</span>
+                    <span className="class-field">{userData?.razred || "Razred"}</span>
                 </div>
             </header>
 
-            {/* Also needs missing materials to style properly! Working functionality */}
             <div className="main-content">
                 {sidebarVisible && (
-                    <aside className="left-sidebar">
+                    <aside className="sidebar">
                         <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
                         <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button active">POTVRDE</Link>
-                        <button className="sidebar-button">CHAT</button>
+                        <Link to="/chat" className="sidebar-button">CHAT</Link>
+                        {['N', 'A', 'R'].includes(userData?.uloga1) && (              //N(astavnik), A(dmin), R(avnatelj)
+                            <>
+                                <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
+                                <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                            </>
+                        )}
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
                     </aside>
                 )}
@@ -72,22 +109,19 @@ function Potvrde() {
                   {/* Potvrde Buttons */}
                   <div className="content-area">
                     <p>Odaberite potvrdu:</p>
-                    <div className="buttons-container">
-                        {/* Buttons for downloading PDFs */}
-                        <a href="/downloads/potvrda1.pdf" download className="potvrda-button">
-                            Potvrda o statusu učenika
-                        </a>
-                        <a href="/downloads/potvrda2.pdf" download className="potvrda-button">
-                            ZET potvrda 
-                        </a>
-                        <a href="/downloads/potvrda3.pdf" download className="potvrda-button">
-                            Ispričnica
-                        </a>
-                        <a href="/downloads/potvrda3.pdf" download className="potvrda-button">
-                            Ispisnica
-                        </a>
-                    </div>
-                </div>
+                      <div className="buttons-container">
+                          {/* Buttons for downloading PDFs */}
+                          <button className="potvrda-button" onClick={(event) => handleDownload(event,"S")}>
+                              Potvrda o statusu učenika
+                          </button>
+                          <button className="potvrda-button" onClick={(event) => handleDownload(event,'V')}>
+                              Potvrda o volontiranju
+                          </button>
+                          <button className="potvrda-button" onClick={(event) => handleDownload(event,'I')}>
+                              Potvrda o izostanku
+                          </button>
+                      </div>
+                  </div>
             </div>
 
         </div>

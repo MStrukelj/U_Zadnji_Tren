@@ -4,7 +4,12 @@
    flex-direction: column; /* Arrange buttons vertically */
    align-items: center;    /* Center align the buttons */
    gap: 20px;              /* Add space between the buttons */
-   margin-top: 20px;
+   margin: 20px;
+}
+
+.buttons-container a {
+   color: #4a3a8b;
+   text-decoration: none;
 }
 
 /* Style for each button */
@@ -31,6 +36,10 @@
 .potvrda-button:active {
    background-color: #291f53;   /* Even darker shade when clicked */
    transform: scale(0.98);      /* Slightly reduce size */
+}
+
+.content-area {
+   margin: 20px;
 }
 
 .content-area p {

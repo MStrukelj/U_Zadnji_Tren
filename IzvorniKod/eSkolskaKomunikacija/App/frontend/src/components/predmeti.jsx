@@ -1,4 +1,3 @@
-// Predmeti.jsx
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./predmeti.css";
@@ -9,25 +8,37 @@ function Predmeti({ onLogout }) {
     const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
 
-    // Dohvaca predmete iz backenda
+
     useEffect(() => {
-        // Dohvaćanje podataka o korisniku iz sessionStorage
         const userStr = sessionStorage.getItem("user");
+        console.log("Raw user data from sessionStorage:", userStr);
+
         if (!userStr) {
+            console.error("User data is missing from sessionStorage.");
             navigate("/");
             return;
         }
 
         const user = JSON.parse(userStr);
+        console.log("Parsed user object:", user);
+
+        if (!user?.JMBAG) {
+            console.error("JMBAG is missing in the user object:", user);
+            navigate("/");
+            return;
+        }
+
+        console.log("JMBAG:", user.JMBAG);
+
         setUserData(user);
 
         const fetchSubjects = async () => {
             try {
                 const response = await fetch(
-                    "http://backend-latest-in4o.onrender.com/api/ucenici/241/predmeti",
+                    `http://localhost:8080/api/ucenici/${user.JMBAG}/predmeti`,
                     {
                         credentials: "include",
-                    },
+                    }
                 );
 
                 if (!response.ok) {
@@ -41,27 +52,18 @@ function Predmeti({ onLogout }) {
                         imageUrl: `src/assets/${subject.sifPredmet}.png`,
                     };
                 });
-                setSubjects(subjectWithImage); // Spremaju se predmeti u stanje komponente
+                setSubjects(subjectWithImage);
             } catch (error) {
                 console.error("Greška prilikom dohvaćanja predmeta:", error);
             }
         };
-        
+
         fetchSubjects();
     }, [navigate]);
 
-    //Za dohvacanje podataka o useru iz backenda za dispay u navbaru
-    useEffect(() => {
-        // Dohvaćanje podataka o korisniku iz sessionStorage
-        const userStr = sessionStorage.getItem('user');
-        if (!userStr) {
-            navigate('/');
-            return;
-        }
-            
-        const user = JSON.parse(userStr);
-        setUserData(user);
-    }, [navigate]);
+
+
+
 
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
@@ -69,23 +71,24 @@ function Predmeti({ onLogout }) {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/auth/logout', {
-                method: 'POST',
-                credentials: 'include'
+            const response = await fetch("http://localhost:8080/api/auth/logout", {
+                method: "POST",
+                credentials: "include",
             });
-            
+
             if (response.ok) {
-                onLogout(); // Pozivamo onLogout iz App komponente
-                navigate('/');
+                onLogout();
+                navigate("/");
             }
         } catch (error) {
-            console.error('Logout error:', error);
+            console.error("Logout error:", error);
         }
     };
 
-    const handleSubjectClick = (sifPredmet) => {
-        navigate(`/predmet/${sifPredmet}`);  // Navigacijado stranice s materijalima
+    const handleSubjectClick = (sifPredmet, nazPred) => {
+        navigate(`/predmet/${sifPredmet}`, { state: { title: nazPred } });
     };
+
 
     return (
         <div className="container">
@@ -112,19 +115,17 @@ function Predmeti({ onLogout }) {
             <div className="main-content">
                 {sidebarVisible && (
                     <aside className="sidebar">
-                        <Link to="/home" className="sidebar-button">
-                            NASLOVNICA
-                        </Link>
-                        <Link to="/predmeti" className="sidebar-button active">
-                            PREDMETI
-                        </Link>
-                        <Link to="/raspored" className="sidebar-button">
-                            KALENDAR
-                        </Link>
-                        <Link to="/potvrde" className="sidebar-button">
-                            POTVRDE
-                        </Link>
-                        <button className="sidebar-button">CHAT</button>
+                        <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
+                        <Link to="/predmeti" className="sidebar-button active">PREDMETI</Link>
+                        <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
+                        <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+                        <Link to="/chat" className="sidebar-button">CHAT</Link>
+                        {['N', 'A', 'R'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
+                                <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                            </>
+                        )}
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
                     </aside>
                 )}
@@ -132,12 +133,13 @@ function Predmeti({ onLogout }) {
                 <div className="subjects-container">
                     <div className="subjects-grid">
                         {subjects.map(subject => (
-                            <div 
-                                key={subject.sifPredmet} 
+                            <div
+                                key={subject.sifPredmet}
                                 className="subject-card"
-                                onClick={() => handleSubjectClick(subject.sifPredmet)}
-                                style={{ cursor: 'pointer' }} 
-                                role="button">
+                                onClick={() => handleSubjectClick(subject.sifPredmet, subject.nazPred)}
+                                style={{cursor: "pointer"}}
+                                role="button"
+                            >
                                 <div className="subject-icon-space">
                                     {subject.imageUrl && (
                                         <img
@@ -151,6 +153,7 @@ function Predmeti({ onLogout }) {
                                     <p>{subject.nazPred}</p>
                                 </div>
                             </div>
+
                         ))}
                     </div>
                 </div>
