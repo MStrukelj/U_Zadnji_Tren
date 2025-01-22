@@ -11,10 +11,13 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  Cell
 } from "recharts";
 import "./statistika.css";
 
 function Statistika({ onLogout }) {
+  const COLORS = ['#4a3a8b', '#73a2cd', '#8884d8', '#82ca9d', '#ffc658', '#ff7300'];
+
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
@@ -348,7 +351,11 @@ function Statistika({ onLogout }) {
                           outerRadius={100}
                           fill="#4a3a8b"
                           label
-                        />
+                        >
+                          {subjectMaterials.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                          ))}
+                        </Pie>    
                         <Tooltip />
                         <Legend />
                       </PieChart>
