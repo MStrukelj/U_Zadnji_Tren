@@ -21,7 +21,7 @@ function ObavijestForm({ onLogout }) {
     useEffect(() => {
         const fetchClasses = async () => {
             try {
-                const response = await fetch("http://localhost:8080/api/ucenici/classes", {
+                const response = await fetch("https://backend-latest-in4o.onrender.com/api/ucenici/classes", {
                     credentials: "include",
                 });
 
@@ -115,7 +115,7 @@ function ObavijestForm({ onLogout }) {
         console.log("Request body:", requestBody);
 
         try {
-            const response = await fetch('http://localhost:8080/api/activities', {
+            const response = await fetch('https://backend-latest-in4o.onrender.com/api/activities', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ function ObavijestForm({ onLogout }) {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/auth/logout', {
+            const response = await fetch('https://backend-latest-in4o.onrender.com/api/auth/logout', {
                 method: 'POST',
                 credentials: 'include'
             });
