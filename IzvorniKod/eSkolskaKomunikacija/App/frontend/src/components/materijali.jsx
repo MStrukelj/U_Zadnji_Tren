@@ -25,7 +25,7 @@ function Materijali({ onLogout }) {
 
             try {
                 const response = await fetch(
-                    `https://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali`,
+                    `http://localhost:8080/api/predmeti/${subjectId}/materijali`,
                     { credentials: "include" }
                 );
 
@@ -55,7 +55,7 @@ function Materijali({ onLogout }) {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch("https://backend-latest-in4o.onrender.com/api/auth/logout", {
+            const response = await fetch("http://localhost:8080/api/auth/logout", {
                 method: "POST",
                 credentials: "include",
             });
@@ -74,7 +74,7 @@ function Materijali({ onLogout }) {
 
         try {
             const response = await fetch(
-                `https://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali/download?fileUrl=${encodeURIComponent(fileUrl)}`,
+                `http://localhost:8080/api/predmeti/${subjectId}/materijali/download?fileUrl=${encodeURIComponent(fileUrl)}`,
                 { method: "GET", credentials: "include" }
             );
 
@@ -103,7 +103,7 @@ function Materijali({ onLogout }) {
             if (!subjectId) return alert("ID predmeta nije dostupan.");
 
             const response = await fetch(
-                `https://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali/upload`,
+                `http://localhost:8080/api/predmeti/${subjectId}/materijali/upload`,
                 { method: "POST", body: formData, credentials: "include" }
             );
 

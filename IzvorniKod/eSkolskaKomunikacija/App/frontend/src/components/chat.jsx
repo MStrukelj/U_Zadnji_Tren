@@ -34,7 +34,7 @@ function Chat() {
     const setupClient = async () => {
       try {
         // Dohvati token za korisnika
-        const response = await fetch(`http://backend-latest-in4o.onrender.com/api/chat/token/${userEmail}`);
+        const response = await fetch(`http://localhost:8080/api/chat/token/${userEmail}`);
         const data = await response.json();
         const token = data.data;
 

@@ -35,7 +35,7 @@ function Predmeti({ onLogout }) {
         const fetchSubjects = async () => {
             try {
                 const response = await fetch(
-                    `https://backend-latest-in4o.onrender.com/api/ucenici/${user.JMBAG}/predmeti`,
+                    `http://localhost:8080/api/ucenici/${user.JMBAG}/predmeti`,
                     {
                         credentials: "include",
                     }
@@ -71,7 +71,7 @@ function Predmeti({ onLogout }) {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch("https://backend-latest-in4o.onrender.com/api/auth/logout", {
+            const response = await fetch("http://localhost:8080/api/auth/logout", {
                 method: "POST",
                 credentials: "include",
             });
