@@ -80,8 +80,9 @@ function Chat() {
     const fetchUsers = async () => {
       try {
         const response = await fetch('http://backend-latest-in4o.onrender.com/api/korisnici', {
-          credentials: 'include', // Ako vaš backend zahtijeva autentifikaciju
+          credentials: 'include',
         });
+        
         if (!response.ok) {
           throw new Error('Neuspješno dohvaćanje korisnika.');
         }
