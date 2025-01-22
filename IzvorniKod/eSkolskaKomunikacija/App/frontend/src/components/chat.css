@@ -143,3 +143,24 @@
     right: 9px;
     font-size: 12px;
 }
+.user-list {
+    list-style: none;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.user-item p {
+    margin: 0;
+    font-size: 14px;
+}
