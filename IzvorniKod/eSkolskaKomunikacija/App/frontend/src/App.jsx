@@ -15,7 +15,8 @@ import Potvrde from "./components/potvrde.jsx";
 import Materijali from "./components/materijali.jsx";
 import ObavijestForm from "./components/obavijestForm.jsx";
 import Statistika from "./components/statistika.jsx";
-//import Chat from "./components/chat.jsx"
+// import Chat from "./components/chat.jsx"
+import UpravljajKorisnicima from "./components/upravljajKorisnicima.jsx";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -137,14 +138,23 @@ function App() {
             </ProtectedRoute>
           }
         />
-          {/* <Route
-  path="/chat"
-  element={
-    <ProtectedRoute>
-      <Chat onLogout={handleLogout} />
-    </ProtectedRoute>
-  }
-/> */}
+        {/* <Route
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <Chat onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        /> */}
+        <Route
+          path="/upravljajKorisnicima"
+          element={
+            <ProtectedRoute>
+              <UpravljajKorisnicima onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        /> 
+
       </Routes>
     </Router>
   );
