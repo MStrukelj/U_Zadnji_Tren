@@ -92,7 +92,7 @@ function Potvrde() {
                 {sidebarVisible && (
                     <aside className="sidebar">
                         <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
-                        {['N', 'A', 'S'].includes(userData?.uloga1) && (
+                        {['N', 'A', 'S', 'R'].includes(userData?.uloga1) && (
                             <>
                                 <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
                             </>

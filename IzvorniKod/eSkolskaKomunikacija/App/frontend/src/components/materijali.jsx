@@ -134,7 +134,7 @@ function Materijali({ onLogout }) {
                 {sidebarVisible && (
                     <aside className="sidebar">
                         <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
-                        {['N', 'A', 'S'].includes(userData?.uloga1) && (
+                        {['N', 'A', 'S', 'R'].includes(userData?.uloga1) && (
                             <>
                                 <Link to="/predmeti" className="sidebar-button active">PREDMETI</Link>
                             </>
@@ -142,7 +142,7 @@ function Materijali({ onLogout }) {
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
                         <Link to="/chat" className="sidebar-button">CHAT</Link>
-                        {["N", "A", "R"].includes(userData?.uloga1) && (
+                        {['N', 'A', 'R'].includes(userData?.uloga1) && (
                             <>
                                 <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
                                 <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>

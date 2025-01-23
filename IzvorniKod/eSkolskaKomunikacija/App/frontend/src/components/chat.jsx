@@ -189,7 +189,7 @@ function Chat() {
             <Link to="/home" className="sidebar-button">
               NASLOVNICA
             </Link>
-            {["N", "A", "S"].includes(userData?.uloga1) && (
+            {['N', 'A', 'S', 'R'].includes(userData?.uloga1) && (
               <>
                 <Link to="/predmeti" className="sidebar-button">
                   PREDMETI
@@ -205,7 +205,7 @@ function Chat() {
             <Link to="/chat" className="sidebar-button active">
               CHAT
             </Link>
-            {["N", "A", "R"].includes(user?.uloga1) && ( // N(astavnik), A(dmin), R(avnatelj)
+            {['N', 'A', 'R'].includes(user?.uloga1) && ( // N(astavnik), A(dmin), R(avnatelj)
               <>
                 <Link to="/obavijestForm" className="sidebar-button">
                   IZRADI OBAVIJEST
