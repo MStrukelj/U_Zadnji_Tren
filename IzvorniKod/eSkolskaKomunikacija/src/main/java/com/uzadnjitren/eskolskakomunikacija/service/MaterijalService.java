@@ -71,6 +71,23 @@ public class MaterijalService {
         return materials;
     }
 
+    public void incrementDownloads(String fileName) {
+        Materijal materijal = materijalRepository.findByNazMaterijal(fileName)
+                .orElseThrow(() -> new RuntimeException("Materijal not found: " + fileName));
+        materijal.setBrSkidanja(materijal.getBrSkidanja() + 1);
+        materijalRepository.save(materijal);
+    }
+
+    public void incrementViews(Integer sifPredmet) {
+        List<Materijal> materijali = materijalRepository.findAllByPredmet_SifPredmet(sifPredmet);
+        for (Materijal materijal : materijali) {
+            materijal.setBrPregleda(materijal.getBrPregleda() + 1);
+        }
+        materijalRepository.saveAll(materijali);
+    }
+
+
+
 
     // Metoda za upload materijala u bucket i spremanje u bazu
     public String uploadMaterijal(Integer sifPredmet, MultipartFile file) throws Exception {
