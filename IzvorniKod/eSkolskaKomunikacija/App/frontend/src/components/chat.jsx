@@ -24,6 +24,8 @@ function Chat() {
   const [channels, setChannels] = useState([]);
   const [currentChannel, setCurrentChannel] = useState(null);
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [targetUserEmail, setTargetUserEmail] = useState("");
   const [clientIsReady, setClientIsReady] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -91,6 +93,7 @@ function Chat() {
         // Filtriraj trenutnog korisnika iz liste
         const filteredUsers = data.filter(u => u.email !== userEmail);
         setUsers(filteredUsers);
+        setFilteredUsers(filteredUsers);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -150,6 +153,21 @@ function Chat() {
     }
   };
 
+  const handleSearchChange = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+    if (term.trim() === "") {
+      setFilteredUsers(users);
+    } else {
+      const lowerTerm = term.toLowerCase();
+      const filtered = users.filter((user) =>
+        `${user.ime} ${user.prezime}`.toLowerCase().includes(lowerTerm) ||
+        user.email.toLowerCase().includes(lowerTerm)
+      );
+      setFilteredUsers(filtered);
+    }
+  };
+
   return (
     <div className="container">
       <header className="header">
@@ -193,6 +211,7 @@ function Chat() {
                 </Link>
               </>
             )}
+            
             <button className="sidebar-button logout" onClick={handleLogout}>
               ODJAVA
             </button>
@@ -204,7 +223,7 @@ function Chat() {
               <h2>Kanali</h2>
               {channels.map((ch) => {
                 const otherMember = Object.values(ch.state.members).find(
-                  (m) => m.user_id !== userEmail
+                  (m) => m.user_id !== username
                 );
                 return (
                   <div
@@ -220,8 +239,15 @@ function Chat() {
               })}
               <div className="create-channel">
                 <h3>Dodaj novi kanal</h3>
+                <input
+                type="text"
+                className="search-field"
+                placeholder="Pretraži korisnike..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+            />
                 <ul className="user-list">
-                  {users.map((u) => (
+                  {filteredUsers.map((u) => (
                     <li key={u.id} className="user-item">
                       <p>{u.ime} {u.prezime} ({u.email})</p>
                       <button onClick={() => startChat(u)} className="create-channel-button">
