@@ -8,4 +8,12 @@ public class StreamChatService {
         return User.createToken(userId,null,null);
     }
 
+    public void upsertUser(String userId) {
+        try {
+            var user = User.UserRequestObject.builder().id(userId).build();
+            User.upsert().user(user).request();
+        } catch (Exception e) {
+            System.err.println("Error upserting user: " + e.getMessage());
+        }
+    }
 }
