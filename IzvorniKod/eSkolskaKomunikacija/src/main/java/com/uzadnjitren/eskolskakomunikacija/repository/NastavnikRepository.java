@@ -18,8 +18,8 @@ public interface NastavnikRepository extends JpaRepository<Nastavnik, Integer> {
     Optional<Nastavnik> findByEmail(@Param("email") String email);
 
     // Pronađi predmete koje predaje nastavnik prema njegovom ID-u
-    @Query("SELECT p FROM PredmetRazred pr" +
-            " JOIN pr.predmet p" +
-            " WHERE pr.nastavnik.sifNast = :sifNast")
+    @Query("SELECT pr.predmet FROM PredmetRazred pr " +
+            "WHERE pr.nastavnik.sifNast = :sifNast")
     List<Predmet> findPredmetiByNastavnikId(@Param("sifNast") Integer sifNast);
+
 }

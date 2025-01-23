@@ -25,7 +25,7 @@ public class PredmetRazred implements Serializable {
     private Predmet predmet;
 
     @ManyToOne
-    @JoinColumn(name = "sifNast")
+    @JoinColumn(name = "sifnast")
     private Nastavnik nastavnik;
 
     // Getteri i Setteri
