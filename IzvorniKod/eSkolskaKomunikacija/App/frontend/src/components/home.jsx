@@ -92,6 +92,11 @@ function Home({ onLogout }) {
                                 <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
                                 <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
                             </>
+                        )}
+                        {['A', 'R'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/upravljajKorisnicima" className="sidebar-button active">UPRAVLJANJE KORISNICIMA</Link>
+                            </>
                         )}  
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
                     </aside>
