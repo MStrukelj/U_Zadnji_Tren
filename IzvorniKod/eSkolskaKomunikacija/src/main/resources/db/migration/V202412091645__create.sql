@@ -130,6 +130,12 @@ CREATE TABLE PREDAVANJE
     UNIQUE (vrijemeKraj, danUTjednu, oznRaz, sifPredmet)
 );
 
+CREATE SEQUENCE materijal_seq
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 1
+    NO CYCLE;
+
 CREATE TABLE MATERIJAL
 (
     sifMaterijal INT NOT NULL,

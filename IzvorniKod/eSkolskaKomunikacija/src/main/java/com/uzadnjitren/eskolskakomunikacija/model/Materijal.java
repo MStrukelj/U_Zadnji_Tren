@@ -6,9 +6,11 @@ import jakarta.persistence.*;
 public class Materijal {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sifmaterijal")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "materijal_seq")
+    @SequenceGenerator(name = "materijal_seq", sequenceName = "materijal_seq", allocationSize = 1)
+    @Column(name = "sifmaterijal", nullable = false)
     private Integer sifMaterijal;
+
 
     @Column(name = "nazmaterijal")
     private String nazMaterijal;

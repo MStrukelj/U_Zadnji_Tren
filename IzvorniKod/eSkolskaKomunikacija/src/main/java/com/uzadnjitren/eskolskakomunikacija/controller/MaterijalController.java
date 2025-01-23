@@ -26,9 +26,13 @@ public class MaterijalController {
     // Endpoint koji vraca URL-ove svih materijala za odredjeni predmet (prema sifri predmeta)
     @GetMapping("/{sifPredmet}/materijali")
     public ResponseEntity<List<Map<String, String>>> getMaterijaliByPredmet(@PathVariable Integer sifPredmet) {
+        // Povećanje broja pregleda za sve materijale
+        materijalService.incrementViews(sifPredmet);
+
         List<Map<String, String>> materials = materijalService.listMaterialsBySubjectFolder(sifPredmet.toString());
         return materials.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(materials);
     }
+
 
 
     @PostMapping("/{sifPredmet}/materijali/upload")
@@ -52,13 +56,14 @@ public class MaterijalController {
     @GetMapping("/{sifPredmet}/materijali/download")
     public ResponseEntity<byte[]> downloadMaterijal(@RequestParam String fileUrl) {
         try {
-
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<byte[]> response = restTemplate.getForEntity(fileUrl, byte[].class);
 
-
+            // Izdvajanje naziva datoteke iz URL-a
             String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
 
+            // Povećanje broja skidanja za materijal
+            materijalService.incrementDownloads(fileName);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
@@ -69,6 +74,7 @@ public class MaterijalController {
             return ResponseEntity.badRequest().build();
         }
     }
+
 
 
 
