@@ -189,7 +189,7 @@ function Chat() {
             <Link to="/home" className="sidebar-button">
               NASLOVNICA
             </Link>
-            {["N", "R", "S"].includes(userData?.uloga1) && (
+            {["N", "A", "S"].includes(userData?.uloga1) && (
               <>
                 <Link to="/predmeti" className="sidebar-button">
                   PREDMETI

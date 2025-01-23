@@ -83,7 +83,7 @@ function Home({ onLogout }) {
                 {sidebarVisible && (
                     <aside className="sidebar">
                         <Link to="/home" className="sidebar-button active">NASLOVNICA</Link>
-                        {['N', 'R', 'S'].includes(userData?.uloga1) && (
+                        {['N', 'A', 'S'].includes(userData?.uloga1) && (
                             <>
                                 <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
                             </>
