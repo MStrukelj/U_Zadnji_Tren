@@ -261,9 +261,11 @@ function Statistika({ onLogout }) {
             <Link to="/home" className="sidebar-button">
               NASLOVNICA
             </Link>
-            <Link to="/predmeti" className="sidebar-button">
-              PREDMETI
-            </Link>
+            {['N', 'R', 'S'].includes(userData?.uloga1) && (
+              <>
+                <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+              </>
+            )}
             <Link to="/raspored" className="sidebar-button">
               KALENDAR
             </Link>
@@ -281,7 +283,7 @@ function Statistika({ onLogout }) {
             </Link>
             {['A', 'R'].includes(userData?.uloga1) && (
                 <>
-                  <Link to="/upravljajKorisnicima" className="sidebar-button active">UPRAVLJANJE KORISNICIMA</Link>
+                  <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
                 </>
             )}
             <button className="sidebar-button logout" onClick={handleLogout}>

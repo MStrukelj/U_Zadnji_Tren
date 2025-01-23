@@ -83,7 +83,11 @@ function Home({ onLogout }) {
                 {sidebarVisible && (
                     <aside className="sidebar">
                         <Link to="/home" className="sidebar-button active">NASLOVNICA</Link>
-                        <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                        {['N', 'R', 'S'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                            </>
+                        )}
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
                         <Link to="/chat" className="sidebar-button">CHAT</Link>
@@ -95,7 +99,7 @@ function Home({ onLogout }) {
                         )}
                         {['A', 'R'].includes(userData?.uloga1) && (
                             <>
-                                <Link to="/upravljajKorisnicima" className="sidebar-button active">UPRAVLJANJE KORISNICIMA</Link>
+                                <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
                             </>
                         )}  
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>

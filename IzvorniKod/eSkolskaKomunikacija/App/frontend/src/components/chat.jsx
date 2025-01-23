@@ -189,9 +189,13 @@ function Chat() {
             <Link to="/home" className="sidebar-button">
               NASLOVNICA
             </Link>
-            <Link to="/predmeti" className="sidebar-button">
-              PREDMETI
-            </Link>
+            {["N", "R", "S"].includes(userData?.uloga1) && (
+              <>
+                <Link to="/predmeti" className="sidebar-button">
+                  PREDMETI
+                </Link>
+              </>
+            )}
             <Link to="/raspored" className="sidebar-button">
               KALENDAR
             </Link>
@@ -211,7 +215,11 @@ function Chat() {
                 </Link>
               </>
             )}
-            
+            {['A', 'R'].includes(userData?.uloga1) && (
+              <>
+               <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
+              </>
+            )}
             <button className="sidebar-button logout" onClick={handleLogout}>
               ODJAVA
             </button>
@@ -233,24 +241,34 @@ function Chat() {
                     }`}
                     onClick={() => setCurrentChannel(ch)}
                   >
-                    <p>Razgovor s: {otherMember?.user?.name || otherMember?.user_id || "Nepoznato"}</p>
+                    <p>
+                      Razgovor s:{" "}
+                      {otherMember?.user?.name ||
+                        otherMember?.user_id ||
+                        "Nepoznato"}
+                    </p>
                   </div>
                 );
               })}
               <div className="create-channel">
                 <h3>Dodaj novi kanal</h3>
                 <input
-                type="text"
-                className="search-field"
-                placeholder="Pretraži korisnike..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-            />
+                  type="text"
+                  className="search-field"
+                  placeholder="Pretraži korisnike..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                />
                 <ul className="user-list">
                   {filteredUsers.map((u) => (
                     <li key={u.id} className="user-item">
-                      <p>{u.ime} {u.prezime} ({u.email})</p>
-                      <button onClick={() => startChat(u)} className="create-channel-button">
+                      <p>
+                        {u.ime} {u.prezime} ({u.email})
+                      </p>
+                      <button
+                        onClick={() => startChat(u)}
+                        className="create-channel-button"
+                      >
                         Pokreni Chat
                       </button>
                     </li>
@@ -260,25 +278,28 @@ function Chat() {
             </div>
 
             <div className="chat-window">
-            {isConnecting ? ( // Dodano loading stanje
+              {isConnecting ? ( // Dodano loading stanje
                 <div className="info-section">
                   <p>Učitavanje...</p>
-                </div> 
-                ) : currentChannel ? (
-                  <StreamChatProvider client={chatClient} theme="str-chat__theme-light">
-                    <Channel channel={currentChannel}>
-                      <Window>
-                        <MessageList />
-                        <MessageInput />
-                      </Window>
-                      <Thread />
-                    </Channel>
-                  </StreamChatProvider>
-                ) : (
-                  <div className="info-section">
-                    <p>Odaberite kanal za razgovor</p>
-                  </div>
-                )}
+                </div>
+              ) : currentChannel ? (
+                <StreamChatProvider
+                  client={chatClient}
+                  theme="str-chat__theme-light"
+                >
+                  <Channel channel={currentChannel}>
+                    <Window>
+                      <MessageList />
+                      <MessageInput />
+                    </Window>
+                    <Thread />
+                  </Channel>
+                </StreamChatProvider>
+              ) : (
+                <div className="info-section">
+                  <p>Odaberite kanal za razgovor</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

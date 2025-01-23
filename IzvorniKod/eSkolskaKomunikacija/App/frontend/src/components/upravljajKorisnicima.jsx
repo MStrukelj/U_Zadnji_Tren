@@ -219,7 +219,11 @@ function UpravljajKorisnicima({ onLogout }) {
                 {sidebarVisible && (
                     <aside className="sidebar">
                         <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
-                        <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                        {['N', 'R', 'S'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                            </>
+                        )}
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
                         <Link to="/chat" className="sidebar-button">CHAT</Link>
