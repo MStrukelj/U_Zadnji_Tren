@@ -22,20 +22,36 @@ function Predmeti({ onLogout }) {
         const user = JSON.parse(userStr);
         console.log("Parsed user object:", user);
 
-        if (!user?.JMBAG) {
-            console.error("JMBAG is missing in the user object:", user);
-            navigate("/");
-            return;
-        }
-
-        console.log("JMBAG:", user.JMBAG);
-
         setUserData(user);
 
         const fetchSubjects = async () => {
             try {
+                let endpoint;       //Odredit cemo koji endpoint koristimo ovisno o ulogiranom korisniku
+                
+                if (user.uloga1 === 'S') {
+                    if (!user.JMBAG) {
+                        console.error("JMBAG is missing in the user object:", user);
+                        navigate("/");
+                        return;
+                    }
+                    endpoint = `http://localhost:8080/api/ucenici/${user.JMBAG}/predmeti`;           //endpoint za ucenike
+                } else if (user.uloga1 === 'N') {
+                    if (!user.sifNast) {
+                        console.error("Teacher code is missing in the user object:", user);
+                        navigate("/");
+                        return;
+                    }
+                    endpoint = `http://localhost:8080/api/nastavnici/${user.sifNast}/predmeti`;       //endpoint za nastavnike
+                } else if (['A', 'R'].includes(user.uloga1)) {
+                    endpoint = `http://localhost:8080/api/predmeti`;                                  //Note: nez po cemu ces vuc njihov endpoint pa ako odredis nesto posebno copy paste kod od gornjih ifova
+                } else {                                                                              //za provjeru postoji li kod usera i display errora (ako treba), izbrisi ovaj kom nakon :) endpoint za admine i ravnatelja
+                    console.error("Invalid user role:", user.uloga1);
+                    navigate("/");
+                    return;
+                }                                                                                    
+                
                 const response = await fetch(
-                    `http://localhost:8080/api/ucenici/${user.JMBAG}/predmeti`,
+                    endpoint,
                     {
                         credentials: "include",
                     }
@@ -60,10 +76,6 @@ function Predmeti({ onLogout }) {
 
         fetchSubjects();
     }, [navigate]);
-
-
-
-
 
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
