@@ -49,7 +49,7 @@ function Home({ onLogout }) {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/auth/logout', {
+            const response = await fetch('https://backend-latest-in4o.onrender.com/api/auth/logout', {
                 method: 'POST',
                 credentials: 'include'
             });
@@ -89,11 +89,19 @@ function Home({ onLogout }) {
                             </>
                         )}
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
-                        <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+                        {['S', 'A'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+                            </>
+                        )}
                         <Link to="/chat" className="sidebar-button">CHAT</Link>
-                        {['N', 'A', 'R'].includes(userData?.uloga1) && (              //N(astavnik), A(dmin), R(avnatelj)
+                        {['N', 'A', 'R', 'US'].includes(userData?.uloga1) && (              //N(astavnik), A(dmin), R(avnatelj), US(Ucenicka sluzba)
                             <>
                                 <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
+                            </>
+                        )}
+                        {['N', 'A', 'R'].includes(userData?.uloga1) && (
+                            <>
                                 <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
                             </>
                         )}

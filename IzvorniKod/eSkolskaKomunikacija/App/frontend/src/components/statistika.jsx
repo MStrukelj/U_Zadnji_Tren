@@ -258,37 +258,31 @@ function Statistika({ onLogout }) {
       <div className="main-content">
         {sidebarVisible && (
           <aside className="sidebar">
-            <Link to="/home" className="sidebar-button">
-              NASLOVNICA
-            </Link>
+            <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
             {['N', 'A', 'S', 'R'].includes(userData?.uloga1) && (
               <>
                 <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
               </>
             )}
-            <Link to="/raspored" className="sidebar-button">
-              KALENDAR
-            </Link>
-            <Link to="/potvrde" className="sidebar-button">
-              POTVRDE
-            </Link>
-            <Link to="/chat" className="sidebar-button">
-              CHAT
-            </Link>
-            <Link to="/obavijestForm" className="sidebar-button">
-              IZRADI OBAVIJEST
-            </Link>
-            <Link to="/statistika" className="sidebar-button active">
-              STATISTIKA
-            </Link>
+            <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
+            {['S', 'A'].includes(userData?.uloga1) && (
+              <>
+                <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+              </>
+            )}
+            <Link to="/chat" className="sidebar-button">CHAT</Link>
+            {['N', 'A', 'R', 'US'].includes(userData?.uloga1) && (              //N(astavnik), A(dmin), R(avnatelj), US(Ucenicka sluzba)
+              <>
+                <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
+              </>
+            )}
+            <Link to="/statistika" className="sidebar-button active">STATISTIKA</Link>
             {['A', 'R'].includes(userData?.uloga1) && (
                 <>
                   <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
                 </>
             )}
-            <button className="sidebar-button logout" onClick={handleLogout}>
-              ODJAVA
-            </button>
+            <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
           </aside>
         )}
 

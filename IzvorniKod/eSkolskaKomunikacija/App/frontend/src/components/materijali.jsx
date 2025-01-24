@@ -26,7 +26,7 @@ function Materijali({ onLogout }) {
 
             try {
                 const response = await fetch(
-                    `http://localhost:8080/api/predmeti/${subjectId}/materijali`,
+                    `https://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali`,
                     { credentials: "include" }
                 );
 
@@ -59,7 +59,7 @@ function Materijali({ onLogout }) {
     const fetchSifNast = async (email) => {
         try {
             const response = await fetch(
-                `http://localhost:8080/api/nastavnik/${email}`,
+                `https://backend-latest-in4o.onrender.com/api/nastavnik/${email}`,
                 {
                     credentials: "include",
                 }
@@ -82,7 +82,7 @@ function Materijali({ onLogout }) {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/auth/logout", {
+            const response = await fetch("https://backend-latest-in4o.onrender.com/api/auth/logout", {
                 method: "POST",
                 credentials: "include",
             });
@@ -101,7 +101,7 @@ function Materijali({ onLogout }) {
 
         try {
             const response = await fetch(
-                `http://localhost:8080/api/predmeti/${subjectId}/materijali/download?fileUrl=${encodeURIComponent(fileUrl)}`,
+                `https://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali/download?fileUrl=${encodeURIComponent(fileUrl)}`,
                 { method: "GET", credentials: "include" }
             );
 
@@ -146,7 +146,7 @@ function Materijali({ onLogout }) {
             formData.append("sifNast", sifNast);
 
             const response = await fetch(
-                `http://localhost:8080/api/predmeti/${subjectId}/materijali/upload`,
+                `https://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali/upload`,
                 {
                     method: "POST",
                     body: formData,
@@ -192,11 +192,19 @@ function Materijali({ onLogout }) {
                             </>
                         )}
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
-                        <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+                        {['S', 'A'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+                            </>
+                        )}
                         <Link to="/chat" className="sidebar-button">CHAT</Link>
-                        {['N', 'A', 'R'].includes(userData?.uloga1) && (
+                        {['N', 'A', 'R', 'US'].includes(userData?.uloga1) && (              //N(astavnik), A(dmin), R(avnatelj), US(Ucenicka sluzba)
                             <>
                                 <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
+                            </>
+                        )}
+                        {['N', 'A', 'R'].includes(userData?.uloga1) && (
+                            <>
                                 <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
                             </>
                         )}

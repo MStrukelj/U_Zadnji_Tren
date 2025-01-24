@@ -21,7 +21,7 @@ function ObavijestForm({ onLogout }) {
     useEffect(() => {
         const fetchClasses = async () => {
             try {
-                const response = await fetch("http://localhost:8080/api/ucenici/classes", {
+                const response = await fetch("https://backend-latest-in4o.onrender.com/api/ucenici/classes", {
                     credentials: "include",
                 });
 
@@ -162,7 +162,7 @@ function ObavijestForm({ onLogout }) {
         console.log("Request body:", requestBody);
 
         try {
-            const response = await fetch('http://localhost:8080/api/activities', {
+            const response = await fetch('https://backend-latest-in4o.onrender.com/api/activities', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -251,10 +251,18 @@ function ObavijestForm({ onLogout }) {
                             </>
                         )}
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
-                        <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+                        {['S', 'A'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+                            </>
+                        )}
                         <Link to="/chat" className="sidebar-button">CHAT</Link>
                         <Link to="/obavijestForm" className="sidebar-button active">IZRADI OBAVIJEST</Link>
-                        <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                        {['N', 'A', 'R'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                            </>
+                        )}
                         {['A', 'R'].includes(userData?.uloga1) && (
                             <>
                                 <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
