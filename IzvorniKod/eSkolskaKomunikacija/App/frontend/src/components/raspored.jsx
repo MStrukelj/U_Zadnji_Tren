@@ -168,11 +168,7 @@ function Raspored({ onLogout }) {
                             </>
                         )}
                         <Link to="/chat" className="sidebar-button">CHAT</Link>
-<<<<<<< Updated upstream
-                        {['N', 'A', 'R', 'US'].includes(userData?.uloga1) && (              //N(astavnik), A(dmin), R(avnatelj), US(Ucenicka sluzba)
-=======
                         {['N', 'A', 'R', 'US'].includes(userData?.uloga1) && (
->>>>>>> Stashed changes
                             <>
                                 <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
                             </>
@@ -221,12 +217,8 @@ function Raspored({ onLogout }) {
     );
 }
 
-<<<<<<< Updated upstream
-export default Raspored;
-=======
 Raspored.propTypes = {
     onLogout: PropTypes.func.isRequired
 };
 
 export default Raspored;
->>>>>>> Stashed changes
