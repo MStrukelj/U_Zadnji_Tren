@@ -37,11 +37,11 @@ function Predmeti({ onLogout }) {
                     endpoint = `http://localhost:8080/api/ucenici/${user.JMBAG}/predmeti`;           //endpoint za ucenike
                 } else if (user.uloga1 === 'N') {
                     if (!user.sifNast) {
-                        console.error("Teacher code is missing in the user object:", user);
+                        console.error("sifnast is missing in the user object:", user);
                         navigate("/");
                         return;
                     }
-                    endpoint = `http://localhost:8080/api/nastavnici/${user.sifNast}/predmeti`;       //endpoint za nastavnike
+                    endpoint = `http://localhost:8080/api/nastavnik/${user.sifNast}/predmeti`;       //endpoint za nastavnike
                 } else if (['A', 'R'].includes(user.uloga1)) {
                     endpoint = `http://localhost:8080/api/predmeti`;                                  //Note: nez po cemu ces vuc njihov endpoint pa ako odredis nesto posebno copy paste kod od gornjih ifova
                 } else {                                                                              //za provjeru postoji li kod usera i display errora (ako treba), izbrisi ovaj kom nakon :) endpoint za admine i ravnatelja
