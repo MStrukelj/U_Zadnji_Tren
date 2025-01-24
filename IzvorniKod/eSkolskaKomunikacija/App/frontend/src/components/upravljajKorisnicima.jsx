@@ -21,7 +21,7 @@ function UpravljajKorisnicima({ onLogout }) {
     const [error, setError] = useState(null); 
     const navigate = useNavigate();
 
-    const backendUrl = 'http://localhost:8080'; // Namjestiti backend url
+    const backendUrl = 'https://backend-latest-in4o.onrender.com'; // Namjestiti backend url
 
     useEffect(() => {
         // Dohvaćanje podataka o korisniku iz sessionStorage
@@ -84,7 +84,7 @@ function UpravljajKorisnicima({ onLogout }) {
         }
 
         try {
-            const response = await fetch(`${backendUrl}/api/korisnici`, {
+            const response = await fetch(`${backendUrl}/api/korisnici/add_zaposlenik`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

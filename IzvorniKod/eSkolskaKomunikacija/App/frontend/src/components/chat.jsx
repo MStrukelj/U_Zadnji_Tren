@@ -17,7 +17,7 @@ const apiKey = "m6uex4shv7zw";
 const chatClient = StreamChat.getInstance(apiKey);
 
 const getUsernameFromEmail = (email) => {
-  return email.split('@')[0];
+  return email.split('@')[0].replace(/\./g, "");
 };
 
 function Chat() {
@@ -43,7 +43,7 @@ function Chat() {
     const setupClient = async () => {
       try {
         // Dohvati token za korisnika
-        const response = await fetch(`http://localhost:8080/api/chat/token/${username}`);
+        const response = await fetch(`https://backend-latest-in4o.onrender.com/api/chat/token/${username}`);
         const data = await response.json();
         const token = data.data;
 
@@ -52,7 +52,7 @@ function Chat() {
           { id: username, name: `${user.ime} ${user.prezime}` },
           token
         );
-
+        console.log('User connected successfully.');
         setClientIsReady(true);
         setIsConnecting(false);
 
@@ -82,7 +82,7 @@ function Chat() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://backend-latest-in4o.onrender.com/api/korisnici', {
+        const response = await fetch('https://backend-latest-in4o.onrender.com/api/korisnici', {
           credentials: 'include',
         });
 
@@ -107,6 +107,7 @@ function Chat() {
   };
 
   const startChat = async (selectedUser) => {
+    console.log(chatClient.clientID + 'U startChatu');
     const targetUserEmail = selectedUser.email;
     if (!targetUserEmail || targetUserEmail === userEmail) {
       alert("Odaberite validnog korisnika za chat!");
@@ -117,6 +118,22 @@ function Chat() {
     const channelId = [username, targetUsername].sort().join("-");
 
     try {
+      const targetUser = await chatClient.queryUsers({ id: targetUsername });
+      if(targetUser.users.length === 0) {
+        try {
+          const response = await fetch(`https://backend-latest-in4o.onrender.com/api/chat/${targetUsername}`, {
+            method: 'POST',
+            credentials: 'include',
+          });
+          if (!response.ok) {
+            console.error('Error upserting user.');
+            return;
+          }
+          console.log(`User ${targetUsername} has been upserted.`);
+
+        } catch (error) {
+          console.error('Error with API request to upsert user:', error);
+        } }
       // Provjeri postoji li već kanal
       const existingChannel = channels.find((ch) => ch.id === channelId);
       if (existingChannel) {
@@ -139,7 +156,7 @@ function Chat() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/logout', {
+      const response = await fetch('https://backend-latest-in4o.onrender.com/api/auth/logout', {
         method: "POST",
         credentials: "include",
       });
