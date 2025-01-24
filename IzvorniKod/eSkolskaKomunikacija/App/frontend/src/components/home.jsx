@@ -121,10 +121,11 @@ function Home({ onLogout }) {
                         <div className="info-text-container">
                         <h2 className="info-title">NEŠTO O NAMA</h2>
                         <p className="info-text">
-                            Diplomski studij. Diplomski studij organizira se kroz tri studijska programa,
-                            traje dvije godine, a izvode se po sustavu preduvjeta. Doktorski studij. Fakultet
-                            je nositelj doktorskog studija iz područja tehničkih znanosti, znanstvenog polja
-                            elektrotehnike i znanstvenog polja računarstva.
+                        eŠkola koja nudi tri smjera prilagođena interesima učenika, s ciljem osiguravanja kvalitetnog obrazovanja:
+
+                        Opći smjer: Pruža široko znanje iz različitih područja, idealno za učenike koji žele zadržati raznolike opcije za daljnje obrazovanje.
+                        Informatički smjer: Fokusira se na programiranje, tehnologiju i računalne znanosti, pripremajući učenike za izazove u IT sektoru.
+                        Matematički smjer: Omogućuje produbljeno znanje iz matematike i logike, namijenjeno učenicima koji se žele usmjeriti prema znanstvenim i tehničkim područjima.
                         </p>
                     </div>
                 </section>
