@@ -15,6 +15,10 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.Year;
 import java.util.Date;
 import java.util.Optional;
@@ -70,7 +74,29 @@ public class PdfGeneratorService {
         potvrdaRepository.save(potvrda);
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             ITextRenderer renderer = new ITextRenderer();
-            renderer.getFontResolver().addFont("src/main/resources/potvrda-resource/arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
+            // Load font from classpath and create temp file
+            try (InputStream fontStream = getClass().getResourceAsStream("/potvrda-resource/arial.ttf")) {
+                if (fontStream == null) {
+                    throw new RuntimeException("Font file not found in resources");
+                }
+
+                // Create temporary font file
+                Path tempFont = Files.createTempFile("arial_", ".ttf");
+                Files.copy(fontStream, tempFont, StandardCopyOption.REPLACE_EXISTING);
+
+                // Register font using the temporary file path
+                renderer.getFontResolver().addFont(
+                        tempFont.toAbsolutePath().toString(),
+                        BaseFont.IDENTITY_H,
+                        BaseFont.EMBEDDED
+                );
+
+                // Clean up temporary file
+                tempFont.toFile().deleteOnExit();
+            }
+
+            // Rest of PDF generation
             renderer.setDocumentFromString(html);
             renderer.layout();
             renderer.createPDF(out);
