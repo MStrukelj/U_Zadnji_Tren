@@ -130,11 +130,19 @@ function Predmeti({ onLogout }) {
                         <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
                         <Link to="/predmeti" className="sidebar-button active">PREDMETI</Link>
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
-                        <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+                        {['S', 'A'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+                            </>
+                        )}
                         <Link to="/chat" className="sidebar-button">CHAT</Link>
-                        {['N', 'A', 'R'].includes(userData?.uloga1) && (
+                        {['N', 'A', 'R', 'US'].includes(userData?.uloga1) && (              //N(astavnik), A(dmin), R(avnatelj), US(Ucenicka sluzba)
                             <>
                                 <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
+                            </>
+                        )}
+                        {['N', 'A', 'R'].includes(userData?.uloga1) && (
+                            <>
                                 <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
                             </>
                         )}

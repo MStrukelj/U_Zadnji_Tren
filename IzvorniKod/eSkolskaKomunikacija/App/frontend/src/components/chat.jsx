@@ -206,7 +206,7 @@ function Chat() {
             <Link to="/home" className="sidebar-button">
               NASLOVNICA
             </Link>
-            {['N', 'A', 'S', 'R'].includes(userData?.uloga1) && (
+            {["N", "A", "S", "R"].includes(userData?.uloga1) && (
               <>
                 <Link to="/predmeti" className="sidebar-button">
                   PREDMETI
@@ -216,25 +216,35 @@ function Chat() {
             <Link to="/raspored" className="sidebar-button">
               KALENDAR
             </Link>
-            <Link to="/potvrde" className="sidebar-button">
-              POTVRDE
-            </Link>
+            {["S", "A"].includes(userData?.uloga1) && (
+              <>
+                <Link to="/potvrde" className="sidebar-button">
+                  POTVRDE
+                </Link>
+              </>
+            )}
             <Link to="/chat" className="sidebar-button active">
               CHAT
             </Link>
-            {['N', 'A', 'R'].includes(user?.uloga1) && ( // N(astavnik), A(dmin), R(avnatelj)
+            {["N", "A", "R", "US"].includes(userData?.uloga1) && (          //N(astavnik), A(dmin), R(avnatelj), US(Ucenicka sluzba)
               <>
                 <Link to="/obavijestForm" className="sidebar-button">
                   IZRADI OBAVIJEST
                 </Link>
+              </>
+            )}
+            {["N", "A", "R"].includes(userData?.uloga1) && (
+              <>
                 <Link to="/statistika" className="sidebar-button">
                   STATISTIKA
                 </Link>
               </>
             )}
-            {['A', 'R'].includes(userData?.uloga1) && (
+            {["A", "R"].includes(userData?.uloga1) && (
               <>
-               <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
+                <Link to="/upravljajKorisnicima" className="sidebar-button">
+                  UPRAVLJANJE KORISNICIMA
+                </Link>
               </>
             )}
             <button className="sidebar-button logout" onClick={handleLogout}>

@@ -251,10 +251,18 @@ function ObavijestForm({ onLogout }) {
                             </>
                         )}
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
-                        <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+                        {['S', 'A'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+                            </>
+                        )}
                         <Link to="/chat" className="sidebar-button">CHAT</Link>
                         <Link to="/obavijestForm" className="sidebar-button active">IZRADI OBAVIJEST</Link>
-                        <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                        {['N', 'A', 'R'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                            </>
+                        )}
                         {['A', 'R'].includes(userData?.uloga1) && (
                             <>
                                 <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
