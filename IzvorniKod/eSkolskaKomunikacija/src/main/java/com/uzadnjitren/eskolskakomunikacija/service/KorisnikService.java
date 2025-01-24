@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class KorisnikService {
-    
+
     private final KorisnikRepository korisnikRepository;
 
     public static List<String> getNullOrEmptyFields(Korisnik k) {
@@ -43,7 +43,7 @@ public class KorisnikService {
     public KorisnikService(KorisnikRepository korisnikRepository) {
         this.korisnikRepository = korisnikRepository;
     }
-    
+
     public Optional<Korisnik> findByEmail(String email) {
         return korisnikRepository.findById(email);
     }

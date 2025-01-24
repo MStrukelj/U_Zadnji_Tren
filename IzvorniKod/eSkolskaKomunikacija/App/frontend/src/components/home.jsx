@@ -12,7 +12,7 @@ function Home({ onLogout }) {
 
     const API_KEY = 'fef44a173c0db7329768c24b3085ce3d';
     const API_URL = `https://api.openweathermap.org/data/2.5/weather`;
-    
+
     useEffect(() => {
         // Dohvaćanje podataka o korisniku iz sessionStorage
         const userStr = sessionStorage.getItem('user');
@@ -20,7 +20,7 @@ function Home({ onLogout }) {
             navigate('/');
             return;
         }
-        
+
         const user = JSON.parse(userStr);
         setUserData(user);
     }, [navigate]);
@@ -28,7 +28,7 @@ function Home({ onLogout }) {
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
     };
-    
+
     useEffect(() => {
         // Fetch weather data
         const fetchWeather = async () => {
@@ -53,7 +53,7 @@ function Home({ onLogout }) {
                 method: 'POST',
                 credentials: 'include'
             });
-            
+
             if (response.ok) {
                 onLogout(); // Pozivamo onLogout iz App komponente
                 navigate('/');
@@ -62,7 +62,7 @@ function Home({ onLogout }) {
             console.error('Logout error:', error);
         }
     };
-    
+
     return (
         <div className="container">
             <header className="header">
@@ -78,7 +78,7 @@ function Home({ onLogout }) {
                     <span className="class-field">{userData?.razred || 'Razred'}</span>
                 </div>
             </header>
-            
+
             <div className="main-content">
                 {sidebarVisible && (
                     <aside className="sidebar">
@@ -109,11 +109,11 @@ function Home({ onLogout }) {
                             <>
                                 <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
                             </>
-                        )}  
+                        )}
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
                     </aside>
                 )}
-                
+
                 <main className="content">
                     <div className="info-weather-container">
                     <section className="info-section">
@@ -126,7 +126,7 @@ function Home({ onLogout }) {
                             je nositelj doktorskog studija iz područja tehničkih znanosti, znanstvenog polja
                             elektrotehnike i znanstvenog polja računarstva.
                         </p>
-                    </div>   
+                    </div>
                 </section>
                 <section className="weather-section">
                         <h2 className="weather-title">Trenutno Vrijeme</h2>

@@ -2,19 +2,38 @@ import React, { useState } from "react";
 import "./login.css";
 
 function SignUp({ FormHandle }) {
-  // State to keep track of selected options
-  const [smjer, setSmjer] = useState([]);
-  const [izborniPredmeti, setIzborniPredmeti] = useState([]);
+  // State to keep track of form data
+  const [formData, setFormData] = useState({
+    email: "",
+    lozinka: "",
+    ime: "",
+    prezime: "",
+    smjer: "",
+    izborniPredmet: ""
+  });
+
+  // Handler for input changes
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
 
   // Handler to manage changes in Smjer selection
   const handleSmjerChange = (event) => {
     const { value, checked } = event.target;
     if (checked) {
-      // Set smjer to an array containing only the selected value
-      setSmjer([value]);
+      setFormData({
+        ...formData,
+        smjer: value
+      });
     } else {
-      // If unchecked, clear the smjer array
-      setSmjer([]);
+      setFormData({
+        ...formData,
+        smjer: ""
+      });
     }
   };
 
@@ -22,11 +41,40 @@ function SignUp({ FormHandle }) {
   const handleIzborniPredmetiChange = (event) => {
     const { value, checked } = event.target;
     if (checked) {
-      // Set izborniPredmeti to an array containing only the selected value
-      setIzborniPredmeti([value]);
+      setFormData({
+        ...formData,
+        izborniPredmet: value
+      });
     } else {
-      // If unchecked, clear the izborniPredmeti array
-      setIzborniPredmeti([]);
+      setFormData({
+        ...formData,
+        izborniPredmet: ""
+      });
+    }
+  };
+
+  // Handler for form submission
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch("https://backend-latest-in4o.onrender.com/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        alert("Registration successful!");
+        FormHandle("login");
+      } else {
+        const errorData = await response.text();
+        alert("Registration failed: " + errorData);
+      }
+    } catch (error) {
+      alert("Error during registration: " + error.message);
     }
   };
 
@@ -34,13 +82,45 @@ function SignUp({ FormHandle }) {
     <div className="auth-wrapper">
       <div className="form-container">
         <h2>REGISTRACIJA</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-control">
-            <input type="text" placeholder="Enter your email" />
+            <input
+              type="text"
+              name="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleInputChange}
+            />
           </div>
 
           <div className="form-control">
-            <input type="password" placeholder="Enter your password" />
+            <input
+              type="password"
+              name="lozinka"
+              placeholder="Enter your password"
+              value={formData.lozinka}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="form-control">
+            <input
+              type="text"
+              name="ime"
+              placeholder="Enter your first name"
+              value={formData.ime}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="form-control">
+            <input
+              type="text"
+              name="prezime"
+              placeholder="Enter your last name"
+              value={formData.prezime}
+              onChange={handleInputChange}
+            />
           </div>
 
           {/* Smjer selection */}
@@ -53,9 +133,9 @@ function SignUp({ FormHandle }) {
                 <label>
                   <input
                     type="checkbox"
-                    value="Opci"
+                    value="A"
                     onChange={handleSmjerChange}
-                    checked={smjer.includes("Opci")}
+                    checked={formData.smjer === "A"}
                   />
                   A-Opći
                 </label>
@@ -65,9 +145,9 @@ function SignUp({ FormHandle }) {
                 <label>
                   <input
                     type="checkbox"
-                    value="Informaticki"
+                    value="B"
                     onChange={handleSmjerChange}
-                    checked={smjer.includes("Informaticki")}
+                    checked={formData.smjer === "B"}
                   />
                   B-Informatički
                 </label>
@@ -77,9 +157,9 @@ function SignUp({ FormHandle }) {
                 <label>
                   <input
                     type="checkbox"
-                    value="Matematicki"
+                    value="C"
                     onChange={handleSmjerChange}
-                    checked={smjer.includes("Matematicki")}
+                    checked={formData.smjer === "C"}
                   />
                   C-Matematički
                 </label>
@@ -97,9 +177,9 @@ function SignUp({ FormHandle }) {
                 <label>
                   <input
                     type="checkbox"
-                    value="Francuski"
+                    value="FRA"
                     onChange={handleIzborniPredmetiChange}
-                    checked={izborniPredmeti.includes("Francuski")}
+                    checked={formData.izborniPredmet === "FRA"}
                   />
                   Francuski
                 </label>
@@ -108,9 +188,9 @@ function SignUp({ FormHandle }) {
                 <label>
                   <input
                     type="checkbox"
-                    value="Njemacki"
+                    value="DSD"
                     onChange={handleIzborniPredmetiChange}
-                    checked={izborniPredmeti.includes("Njemacki")}
+                    checked={formData.izborniPredmet === "DSD"}
                   />
                   Njemački-DSD
                 </label>
@@ -119,9 +199,9 @@ function SignUp({ FormHandle }) {
                 <label>
                   <input
                     type="checkbox"
-                    value="Astronomija"
+                    value="ASTR"
                     onChange={handleIzborniPredmetiChange}
-                    checked={izborniPredmeti.includes("Astronomija")}
+                    checked={formData.izborniPredmet === "ASTR"}
                   />
                   Astronomija
                 </label>
@@ -129,7 +209,7 @@ function SignUp({ FormHandle }) {
             </div>
           </div>
 
-          <button>REGISTRACIJA</button>
+          <button type="submit">REGISTRACIJA</button>
         </form>
         <p onClick={() => FormHandle("login")}>
           Already have an account? Login

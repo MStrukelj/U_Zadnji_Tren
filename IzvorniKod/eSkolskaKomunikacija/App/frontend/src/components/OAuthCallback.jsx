@@ -22,12 +22,14 @@ function OAuthCallback() {
           });
 
           const data = await response.json();
+          console.log('OAuth callback response:', data); // Debug log
+
           if (data.success) {
-            // Store user info in session storage
-            sessionStorage.setItem('user', JSON.stringify(data.userInfo));
+            // Store the local user data, not the Google user info
+            sessionStorage.setItem('user', JSON.stringify(data.user));
             navigate('/home');
           } else {
-            console.error('Login failed:', data.error);
+            console.error('Login failed:', data.message || data.error);
             navigate('/login');
           }
         } catch (error) {
