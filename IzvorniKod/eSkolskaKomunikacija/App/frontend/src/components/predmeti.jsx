@@ -65,7 +65,7 @@ function Predmeti({ onLogout }) {
                 const subjectWithImage = data.map((subject) => {
                     return {
                         ...subject,
-                        imageUrl: `src/assets/${subject.sifPredmet}.png`,
+                        imageUrl: `/subjects/${subject.sifPredmet}.png`,
                     };
                 });
                 setSubjects(subjectWithImage);
