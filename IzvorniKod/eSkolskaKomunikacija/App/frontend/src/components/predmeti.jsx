@@ -34,16 +34,16 @@ function Predmeti({ onLogout }) {
                         navigate("/");
                         return;
                     }
-                    endpoint = `http://localhost:8080/api/ucenici/${user.JMBAG}/predmeti`;           //endpoint za ucenike
+                    endpoint = `https://backend-latest-in4o.onrender.com/api/ucenici/${user.JMBAG}/predmeti`;           //endpoint za ucenike
                 } else if (user.uloga1 === 'N') {
                     if (!user.sifNast) {
                         console.error("sifnast is missing in the user object:", user);
                         navigate("/");
                         return;
                     }
-                    endpoint = `http://localhost:8080/api/nastavnik/${user.sifNast}/predmeti`;       //endpoint za nastavnike
+                    endpoint = `https://backend-latest-in4o.onrender.com/api/nastavnik/${user.sifNast}/predmeti`;       //endpoint za nastavnike
                 } else if (['A', 'R'].includes(user.uloga1)) {
-                    endpoint = `http://localhost:8080/api/predmeti`;                                  //Note: nez po cemu ces vuc njihov endpoint pa ako odredis nesto posebno copy paste kod od gornjih ifova
+                    endpoint = `https://backend-latest-in4o.onrender.com/api/predmeti`;                                  //Note: nez po cemu ces vuc njihov endpoint pa ako odredis nesto posebno copy paste kod od gornjih ifova
                 } else {                                                                              //za provjeru postoji li kod usera i display errora (ako treba), izbrisi ovaj kom nakon :) endpoint za admine i ravnatelja
                     console.error("Invalid user role:", user.uloga1);
                     navigate("/");
@@ -83,7 +83,7 @@ function Predmeti({ onLogout }) {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/auth/logout", {
+            const response = await fetch("https://backend-latest-in4o.onrender.com/api/auth/logout", {
                 method: "POST",
                 credentials: "include",
             });
