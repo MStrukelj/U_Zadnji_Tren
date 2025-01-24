@@ -62,6 +62,64 @@ function ObavijestForm({ onLogout }) {
 
             let localMarker = null;
 
+            // Create and style the search input
+            const searchInput = document.createElement("input");
+            searchInput.type = "text";
+            searchInput.placeholder = "Pretraži lokaciju...";
+            searchInput.style.backgroundColor = "#fff";
+            searchInput.style.padding = "8px";
+            searchInput.style.fontSize = "14px";
+            searchInput.style.border = "1px solid #ccc";
+            searchInput.style.borderRadius = "3px";
+            searchInput.style.boxShadow = "0 2px 6px rgba(0,0,0,0.3)";
+            searchInput.style.width = "300px";
+            searchInput.style.marginTop = "10px";
+            searchInput.style.marginLeft = "10px";
+
+            // Add the search input to the map's top-left corner
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(searchInput);
+
+            // Initialize the Autocomplete
+            const autocomplete = new google.maps.places.Autocomplete(searchInput);
+            autocomplete.bindTo("bounds", map);
+
+            // Listen for place selection
+            autocomplete.addListener("place_changed", () => {
+                const place = autocomplete.getPlace();
+                if (!place.geometry) return;
+
+                // Update map view
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);
+                }
+
+                // Update form data with selected location
+                const selectedLocation = {
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng(),
+                };
+
+                setFormData(prev => ({
+                    ...prev,
+                    location: selectedLocation
+                }));
+
+                // Update or create marker
+                if (localMarker) {
+                    localMarker.setPosition(selectedLocation);
+                } else {
+                    localMarker = new google.maps.Marker({
+                        position: selectedLocation,
+                        map: map,
+                        title: "Odabrana lokacija"
+                    });
+                }
+            });
+
+            // Existing click handler for the map
             map.addListener("click", (e) => {
                 const clickedLocation = {
                     lat: e.latLng.lat(),
@@ -73,13 +131,11 @@ function ObavijestForm({ onLogout }) {
                     location: clickedLocation
                 }));
 
-
                 if (localMarker) {
-                    localMarker.setPosition(e.latLng);
+                    localMarker.setPosition(clickedLocation);
                 } else {
-
                     localMarker = new google.maps.Marker({
-                        position: e.latLng,
+                        position: clickedLocation,
                         map: map,
                         title: "Odabrana lokacija"
                     });
@@ -87,7 +143,6 @@ function ObavijestForm({ onLogout }) {
             });
 
             setMapInstance(map);
-
 
             return () => {
                 setMapInstance(null);
