@@ -15,7 +15,7 @@ function LogIn({ FormHandle, onAuthenticate }) {
     setLoading(true);
 
     try {
-      const response = await fetch('https://backend-latest-in4o.onrender.com/api/auth/login', {
+      const response = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -47,7 +47,7 @@ function LogIn({ FormHandle, onAuthenticate }) {
 
   const handleGoogleLogin = async () => {
     try {
-      const response = await fetch('https://backend-latest-in4o.onrender.com/api/oauth/google');
+      const response = await fetch('http://localhost:8080/api/oauth/google');
       const data = await response.json();
       window.location.href = data.url;
     } catch (err) {

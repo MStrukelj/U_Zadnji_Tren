@@ -25,7 +25,7 @@ function Raspored({ onLogout }) {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('https://backend-latest-in4o.onrender.com/api/auth/logout', {
+            const response = await fetch('http://localhost:8080/api/auth/logout', {
                 method: 'POST',
                 credentials: 'include'
             });
@@ -61,7 +61,11 @@ function Raspored({ onLogout }) {
                 {sidebarVisible && (
                     <aside className="sidebar">
                         <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
-                        <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                        {['N', 'A', 'S', 'R'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                            </>
+                        )}
                         <Link to="/raspored" className="sidebar-button active">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
                         <Link to="/chat" className="sidebar-button">CHAT</Link>
@@ -69,6 +73,11 @@ function Raspored({ onLogout }) {
                             <>
                                 <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
                                 <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                            </>
+                        )}
+                        {['A', 'R'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
                             </>
                         )}
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>

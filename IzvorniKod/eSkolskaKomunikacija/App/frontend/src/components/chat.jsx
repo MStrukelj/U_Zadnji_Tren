@@ -16,12 +16,20 @@ import "./chat.css";
 const apiKey = "m6uex4shv7zw"; 
 const chatClient = StreamChat.getInstance(apiKey);
 
+const getUsernameFromEmail = (email) => {
+  return email.split('@')[0].replace(/\./g, "");
+};
+
 function Chat() {
   const [channels, setChannels] = useState([]);
   const [currentChannel, setCurrentChannel] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [targetUserEmail, setTargetUserEmail] = useState("");
   const [clientIsReady, setClientIsReady] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(true);
 
   const navigate = useNavigate();
 
@@ -29,22 +37,27 @@ function Chat() {
   const userStr = sessionStorage.getItem("user");
   const user = userStr ? JSON.parse(userStr) : null;
   const userEmail = user?.email;
+  const username = user ? getUsernameFromEmail(user.email) : null;
 
   useEffect(() => {
     const setupClient = async () => {
       try {
         // Dohvati token za korisnika
-        const response = await fetch(`http://backend-latest-in4o.onrender.com/api/chat/token/${userEmail}`);
+        const response = await fetch(`https://backend-latest-in4o.onrender.com/api/chat/token/${username}`);
         const data = await response.json();
         const token = data.data;
 
         // Poveži korisnika s Stream Chat klijentom
-        await chatClient.connectUser({ id: userEmail }, token);
-
+        await chatClient.connectUser( 
+          { id: username, name: `${user.ime} ${user.prezime}` },
+          token
+        );
+        console.log('User connected successfully.');
         setClientIsReady(true);
+        setIsConnecting(false);
 
         // Dohvati sve kanale u kojima je korisnik član
-        const filters = { type: "messaging", members: { $in: [userEmail] } };
+        const filters = { type: "messaging", members: { $in: [username] } };
         const fetchedChannels = await chatClient.queryChannels(
           filters,
           { last_message_at: -1 }
@@ -52,35 +65,75 @@ function Chat() {
         setChannels(fetchedChannels);
       } catch (error) {
         console.error("Error setting up chat client:", error);
+        setIsConnecting(false);
       }
     };
 
-    setupClient();
+    if (username) {
+      setupClient();
+    }
 
     return () => {
       chatClient.disconnectUser();
     };
   }, [userEmail, navigate]);
 
+  // Dohvaćanje liste korisnika iz backend-a
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch('https://backend-latest-in4o.onrender.com/api/korisnici', {
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          throw new Error('Neuspješno dohvaćanje korisnika.');
+        }
+        const data = await response.json();
+        // Filtriraj trenutnog korisnika iz liste
+        const filteredUsers = data.filter(u => u.email !== userEmail);
+        setUsers(filteredUsers);
+        setFilteredUsers(filteredUsers);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, [userEmail]);
+
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
   };
 
-  const startChat = async () => {
+  const startChat = async (selectedUser) => {
+    console.log(chatClient.clientID + 'U startChatu');
+    const targetUserEmail = selectedUser.email;
     if (!targetUserEmail || targetUserEmail === userEmail) {
-      alert("Unesite validan email korisnika za chat!");
+      alert("Odaberite validnog korisnika za chat!");
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(targetUserEmail)) {
-      alert("Unesite validan email format!");
-      return;
-    }
-
-    const channelId = [userEmail, targetUserEmail].sort().join("-"); // Jedinstveni ID za kanal
+    const targetUsername = getUsernameFromEmail(targetUserEmail);
+    const channelId = [username, targetUsername].sort().join("-");
 
     try {
+      const targetUser = await chatClient.queryUsers({ id: targetUsername });
+      if(targetUser.users.length === 0) {
+        try {
+          const response = await fetch(`https://backend-latest-in4o.onrender.com/api/chat/${targetUsername}`, {
+            method: 'POST',
+            credentials: 'include',
+          });
+          if (!response.ok) {
+            console.error('Error upserting user.');
+            return;
+          }
+          console.log(`User ${targetUsername} has been upserted.`);
+
+        } catch (error) {
+          console.error('Error with API request to upsert user:', error);
+        } }
       // Provjeri postoji li već kanal
       const existingChannel = channels.find((ch) => ch.id === channelId);
       if (existingChannel) {
@@ -88,15 +141,13 @@ function Chat() {
       } else {
         // Kreiraj novi kanal
         const newChannel = chatClient.channel("messaging", channelId, {
-          members: [userEmail, targetUserEmail],
+          members: [username, targetUsername],
+          name: `Razgovor s ${selectedUser.ime} ${selectedUser.prezime}`
         });
         await newChannel.watch();
         setCurrentChannel(newChannel);
         setChannels((prevChannels) => [...prevChannels, newChannel]);
       }
-
-      // Resetiraj unos email-a
-      setTargetUserEmail("");
     } catch (error) {
       console.error("Error starting chat:", error);
       alert("Došlo je do greške prilikom pokretanja chata.");
@@ -105,17 +156,32 @@ function Chat() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/logout', {
+      const response = await fetch('https://backend-latest-in4o.onrender.com/api/auth/logout', {
         method: "POST",
         credentials: "include",
       });
 
       if (response.ok) {
-        onLogout(); // Pozivamo onLogout iz App komponente
+        onLogout();
         navigate('/');
     }
     } catch (error) {
       console.error("Logout error:", error);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+    if (term.trim() === "") {
+      setFilteredUsers(users);
+    } else {
+      const lowerTerm = term.toLowerCase();
+      const filtered = users.filter((user) =>
+        `${user.ime} ${user.prezime}`.toLowerCase().includes(lowerTerm) ||
+        user.email.toLowerCase().includes(lowerTerm)
+      );
+      setFilteredUsers(filtered);
     }
   };
 
@@ -140,9 +206,13 @@ function Chat() {
             <Link to="/home" className="sidebar-button">
               NASLOVNICA
             </Link>
-            <Link to="/predmeti" className="sidebar-button">
-              PREDMETI
-            </Link>
+            {['N', 'A', 'S', 'R'].includes(userData?.uloga1) && (
+              <>
+                <Link to="/predmeti" className="sidebar-button">
+                  PREDMETI
+                </Link>
+              </>
+            )}
             <Link to="/raspored" className="sidebar-button">
               KALENDAR
             </Link>
@@ -152,7 +222,7 @@ function Chat() {
             <Link to="/chat" className="sidebar-button active">
               CHAT
             </Link>
-            {["N", "A", "R"].includes(user?.role) && ( // N(astavnik), A(dmin), R(avnatelj)
+            {['N', 'A', 'R'].includes(user?.uloga1) && ( // N(astavnik), A(dmin), R(avnatelj)
               <>
                 <Link to="/obavijestForm" className="sidebar-button">
                   IZRADI OBAVIJEST
@@ -160,6 +230,11 @@ function Chat() {
                 <Link to="/statistika" className="sidebar-button">
                   STATISTIKA
                 </Link>
+              </>
+            )}
+            {['A', 'R'].includes(userData?.uloga1) && (
+              <>
+               <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
               </>
             )}
             <button className="sidebar-button logout" onClick={handleLogout}>
@@ -172,8 +247,8 @@ function Chat() {
             <div className="channels-list">
               <h2>Kanali</h2>
               {channels.map((ch) => {
-                const otherMember = ch.state.members.find(
-                  (m) => m.user_id !== userEmail
+                const otherMember = Object.values(ch.state.members).find(
+                  (m) => m.user_id !== username
                 );
                 return (
                   <div
@@ -183,45 +258,63 @@ function Chat() {
                     }`}
                     onClick={() => setCurrentChannel(ch)}
                   >
-                    <p>Razgovor s: {otherMember?.user_id || "Nepoznato"}</p>
+                    <p>
+                      Razgovor s:{" "}
+                      {otherMember?.user?.name ||
+                        otherMember?.user_id ||
+                        "Nepoznato"}
+                    </p>
                   </div>
                 );
               })}
               <div className="create-channel">
                 <h3>Dodaj novi kanal</h3>
                 <input
-                  type="email"
-                  placeholder="Unesite email korisnika"
-                  value={targetUserEmail}
-                  onChange={(e) => setTargetUserEmail(e.target.value)}
-                  className="input-field"
+                  type="text"
+                  className="search-field"
+                  placeholder="Pretraži korisnike..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
                 />
-                <button onClick={startChat} className="create-channel-button">
-                  Pokreni Chat
-                </button>
+                <ul className="user-list">
+                  {filteredUsers.map((u) => (
+                    <li key={u.id} className="user-item">
+                      <p>
+                        {u.ime} {u.prezime} ({u.email})
+                      </p>
+                      <button
+                        onClick={() => startChat(u)}
+                        className="create-channel-button"
+                      >
+                        Pokreni Chat
+                      </button>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
 
             <div className="chat-window">
-              {clientIsReady ? (
-                currentChannel ? (
-                  <StreamChatProvider client={chatClient} theme="str-chat__theme-light">
-                    <Channel channel={currentChannel}>
-                      <Window>
-                        <MessageList />
-                        <MessageInput />
-                      </Window>
-                      <Thread />
-                    </Channel>
-                  </StreamChatProvider>
-                ) : (
-                  <div className="info-section">
-                    <p>Odaberite kanal za razgovor</p>
-                  </div>
-                )
-              ) : (
+              {isConnecting ? ( // Dodano loading stanje
                 <div className="info-section">
                   <p>Učitavanje...</p>
+                </div>
+              ) : currentChannel ? (
+                <StreamChatProvider
+                  client={chatClient}
+                  theme="str-chat__theme-light"
+                >
+                  <Channel channel={currentChannel}>
+                    <Window>
+                      <MessageList />
+                      <MessageInput />
+                    </Window>
+                    <Thread />
+                  </Channel>
+                </StreamChatProvider>
+              ) : (
+                <div className="info-section">
+                  <p>Odaberite kanal za razgovor</p>
                 </div>
               )}
             </div>

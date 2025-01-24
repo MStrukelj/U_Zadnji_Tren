@@ -7,6 +7,7 @@ function Materijali({ onLogout }) {
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [materials, setMaterials] = useState([]);
     const [userData, setUserData] = useState(null);
+    const [sifNast, setSifNast] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const { subjectId } = useParams();
@@ -25,7 +26,7 @@ function Materijali({ onLogout }) {
 
             try {
                 const response = await fetch(
-                    `https://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali`,
+                    `http://localhost:8080/api/predmeti/${subjectId}/materijali`,
                     { credentials: "include" }
                 );
 
@@ -49,13 +50,39 @@ function Materijali({ onLogout }) {
         }
         const user = JSON.parse(userStr);
         setUserData(user);
+
+        if (user.isTeacher && user.email) {
+            fetchSifNast(user.email);
+        }
     }, [navigate]);
+
+    const fetchSifNast = async (email) => {
+        try {
+            const response = await fetch(
+                `http://localhost:8080/api/nastavnik/${email}`,
+                {
+                    credentials: "include",
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    `Pogreška pri dohvaćanju šifre nastavnika: ${response.statusText}`
+                );
+            }
+            const sifNastData = await response.json();
+            console.log("Fetched sifNast:", sifNastData);
+            setSifNast(sifNastData);
+        } catch (error) {
+            console.error("Pogreška pri dohvaćanju šifre nastavnika:", error);
+        }
+    };
 
     const toggleSidebar = () => setSidebarVisible(!sidebarVisible);
 
     const handleLogout = async () => {
         try {
-            const response = await fetch("https://backend-latest-in4o.onrender.com/api/auth/logout", {
+            const response = await fetch("http://localhost:8080/api/auth/logout", {
                 method: "POST",
                 credentials: "include",
             });
@@ -69,12 +96,12 @@ function Materijali({ onLogout }) {
     };
 
     const handleDownloadClick = async (material) => {
-        const fileUrl = material;
+        const fileUrl = material.fileUrl; // Ensure fileUrl is correctly retrieved from the material object
         if (!fileUrl) return alert("Nije moguće preuzeti datoteku jer nedostaje URL.");
 
         try {
             const response = await fetch(
-                `https://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali/download?fileUrl=${encodeURIComponent(fileUrl)}`,
+                `http://localhost:8080/api/predmeti/${subjectId}/materijali/download?fileUrl=${encodeURIComponent(fileUrl)}`,
                 { method: "GET", credentials: "include" }
             );
 
@@ -87,10 +114,12 @@ function Materijali({ onLogout }) {
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-        } catch {
+        } catch (error) {
             alert("Preuzimanje datoteke nije uspjelo.");
         }
     };
+
+
 
     const handleUploadClick = async (event) => {
         const file = event.target.files[0];
@@ -102,20 +131,43 @@ function Materijali({ onLogout }) {
         try {
             if (!subjectId) return alert("ID predmeta nije dostupan.");
 
+            const userStr = sessionStorage.getItem("user");
+            if (!userStr) {
+                return alert("Korisnički podaci nisu pronađeni. Prijavite se ponovno.");
+            }
+
+            const user = JSON.parse(userStr);
+
+            const sifNast = user.sifNast;
+            if (!sifNast) {
+                return alert("Šifra nastavnika nije dostupna.");
+            }
+
+            formData.append("sifNast", sifNast);
+
             const response = await fetch(
-                `https://backend-latest-in4o.onrender.com/api/predmeti/${subjectId}/materijali/upload`,
-                { method: "POST", body: formData, credentials: "include" }
+                `http://localhost:8080/api/predmeti/${subjectId}/materijali/upload`,
+                {
+                    method: "POST",
+                    body: formData,
+                    credentials: "include",
+                }
             );
 
-            if (!response.ok) throw new Error();
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || "Nepoznata greška");
+            }
 
             const result = await response.json();
             alert("Datoteka uspješno učitana!");
             setMaterials((prev) => [...prev, { fileUrl: result.fileUrl, fileName: file.name }]);
-        } catch {
-            alert("Nije moguće učitati datoteku.");
+        } catch (error) {
+            alert(`Nije moguće učitati datoteku. Razlog: ${error.message}`);
         }
     };
+
+
 
     return (
         <div className="container">
@@ -134,14 +186,23 @@ function Materijali({ onLogout }) {
                 {sidebarVisible && (
                     <aside className="sidebar">
                         <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
-                        <Link to="/predmeti" className="sidebar-button active">PREDMETI</Link>
+                        {['N', 'A', 'S', 'R'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/predmeti" className="sidebar-button active">PREDMETI</Link>
+                            </>
+                        )}
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
                         <Link to="/chat" className="sidebar-button">CHAT</Link>
-                        {["N", "A", "R"].includes(userData?.uloga1) && (
+                        {['N', 'A', 'R'].includes(userData?.uloga1) && (
                             <>
                                 <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
                                 <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                            </>
+                        )}
+                        {['A', 'R'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
                             </>
                         )}
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
@@ -154,17 +215,24 @@ function Materijali({ onLogout }) {
                     ) : (
                         <div className="materials-grid">
                             {materials.map((material, index) => (
-                                <div key={index} className="material-card" onClick={() => handleDownloadClick(material.fileUrl)}>
+                                <div
+                                    key={index}
+                                    className="material-card"
+                                    onClick={() => handleDownloadClick(material)}
+                                >
                                     <span className="material-icon">📚</span>
                                     <span className="material-name">{material.fileName}</span>
                                 </div>
                             ))}
                         </div>
+
                     )}
-                    <div className="upload-container">
-                        <label htmlFor="file-upload" className="upload-button">Dodaj datoteku</label>
-                        <input id="file-upload" type="file" onChange={handleUploadClick} style={{ display: "none" }} />
-                    </div>
+                    {userData?.uloga1 === "N" && (
+                        <div className="upload-container">
+                            <label htmlFor="file-upload" className="upload-button">Dodaj datoteku</label>
+                            <input id="file-upload" type="file" onChange={handleUploadClick} style={{display: "none"}}/>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

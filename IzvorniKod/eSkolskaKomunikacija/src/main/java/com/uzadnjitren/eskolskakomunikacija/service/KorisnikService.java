@@ -81,11 +81,11 @@ public class KorisnikService {
                 () -> new KorisnikCRUDException("Korisnik s email adresom:"+email+" nije pronađen.", HttpStatus.NOT_FOUND));
         if(!korisnik.getEmail().equals(email))
             throw new KorisnikCRUDException("Mijenjanje email adrese nije dopušteno.", HttpStatus.FORBIDDEN);
-        else if(korisnik.getUloga1().equals("S") && !korisnik.getUloga2().isEmpty())
+        else if(korisnik.getUloga1().equals("S") && korisnik.getUloga2() != null && !korisnik.getUloga2().isEmpty())
             throw new KorisnikCRUDException("Korisnik koji je student ne smije imati drugu ulogu.", HttpStatus.FORBIDDEN);
-        else if (korisnik_email.getUloga1().equals("S") && !korisnik.getUloga1().equals("S"))
+        else if (korisnik_email.getUloga1().equals("S") && korisnik.getUloga2() != null && !korisnik.getUloga1().equals("S"))
             throw new KorisnikCRUDException("Uloga se ne smije mijenjati iz studenta u ulogu koja pripada nastavnom osoblju.", HttpStatus.FORBIDDEN);
-        else if (korisnik.getUloga2().equals("S")) {
+        else if (korisnik.getUloga2() != null && korisnik.getUloga2().equals("S")) {
             throw new KorisnikCRUDException("Korisnik ne smije istovremeno imati uloge nastavnog osoblja i studenta.",HttpStatus.FORBIDDEN);
         }
         return korisnikRepository.save(korisnik);

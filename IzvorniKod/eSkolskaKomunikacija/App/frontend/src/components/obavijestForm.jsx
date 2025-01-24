@@ -21,7 +21,7 @@ function ObavijestForm({ onLogout }) {
     useEffect(() => {
         const fetchClasses = async () => {
             try {
-                const response = await fetch("https://backend-latest-in4o.onrender.com/api/ucenici/classes", {
+                const response = await fetch("http://localhost:8080/api/ucenici/classes", {
                     credentials: "include",
                 });
 
@@ -62,6 +62,56 @@ function ObavijestForm({ onLogout }) {
 
             let localMarker = null;
 
+            const searchInput = document.createElement("input");
+            searchInput.type = "text";
+            searchInput.placeholder = "Pretraži lokaciju...";
+            searchInput.style.backgroundColor = "#fff";
+            searchInput.style.padding = "8px";
+            searchInput.style.fontSize = "14px";
+            searchInput.style.border = "1px solid #ccc";
+            searchInput.style.borderRadius = "3px";
+            searchInput.style.boxShadow = "0 2px 6px rgba(0,0,0,0.3)";
+            searchInput.style.width = "300px";
+            searchInput.style.marginTop = "10px";
+            searchInput.style.marginLeft = "10px";
+
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(searchInput);
+
+            const autocomplete = new google.maps.places.Autocomplete(searchInput);
+            autocomplete.bindTo("bounds", map);
+
+            autocomplete.addListener("place_changed", () => {
+                const place = autocomplete.getPlace();
+                if (!place.geometry) return;
+
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);
+                }
+
+                const selectedLocation = {
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng(),
+                };
+
+                setFormData(prev => ({
+                    ...prev,
+                    location: selectedLocation
+                }));
+
+                if (localMarker) {
+                    localMarker.setPosition(selectedLocation);
+                } else {
+                    localMarker = new google.maps.Marker({
+                        position: selectedLocation,
+                        map: map,
+                        title: "Odabrana lokacija"
+                    });
+                }
+            });
+
             map.addListener("click", (e) => {
                 const clickedLocation = {
                     lat: e.latLng.lat(),
@@ -73,13 +123,11 @@ function ObavijestForm({ onLogout }) {
                     location: clickedLocation
                 }));
 
-
                 if (localMarker) {
-                    localMarker.setPosition(e.latLng);
+                    localMarker.setPosition(clickedLocation);
                 } else {
-
                     localMarker = new google.maps.Marker({
-                        position: e.latLng,
+                        position: clickedLocation,
                         map: map,
                         title: "Odabrana lokacija"
                     });
@@ -87,7 +135,6 @@ function ObavijestForm({ onLogout }) {
             });
 
             setMapInstance(map);
-
 
             return () => {
                 setMapInstance(null);
@@ -115,7 +162,7 @@ function ObavijestForm({ onLogout }) {
         console.log("Request body:", requestBody);
 
         try {
-            const response = await fetch('https://backend-latest-in4o.onrender.com/api/activities', {
+            const response = await fetch('http://localhost:8080/api/activities', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -198,12 +245,21 @@ function ObavijestForm({ onLogout }) {
                 {sidebarVisible && (
                     <aside className="sidebar">
                         <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
-                        <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                        {['N', 'A', 'S', 'R'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                            </>
+                        )}
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
-                        <button className="sidebar-button">CHAT</button>
+                        <Link to="/chat" className="sidebar-button">CHAT</Link>
                         <Link to="/obavijestForm" className="sidebar-button active">IZRADI OBAVIJEST</Link>
                         <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                        {['A', 'R'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
+                            </>
+                        )}
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
                     </aside>
                 )}

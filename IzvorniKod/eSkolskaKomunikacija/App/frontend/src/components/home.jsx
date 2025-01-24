@@ -33,11 +33,15 @@ function Home({ onLogout }) {
         // Fetch weather data
         const fetchWeather = async () => {
             try {
-                const response = await fetch(`${API_URL}?q=${city}&appid=${API_KEY}&units=metric`);
+                const response = await fetch(`${API_URL}?q=${city}&appid=${API_KEY}&units=metric&lang=hr`);
+                if (!response.ok) {
+                    throw new Error('Neuspješno dohvaćanje vremenskih podataka.');
+                }
                 const data = await response.json();
                 setWeather(data);
             } catch (error) {
                 console.error('Error fetching weather data:', error);
+                setWeather(null);
             }
         };
         fetchWeather();
@@ -45,7 +49,7 @@ function Home({ onLogout }) {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('https://backend-latest-in4o.onrender.com/api/auth/logout', {
+            const response = await fetch('http://localhost:8080/api/auth/logout', {
                 method: 'POST',
                 credentials: 'include'
             });
@@ -79,7 +83,11 @@ function Home({ onLogout }) {
                 {sidebarVisible && (
                     <aside className="sidebar">
                         <Link to="/home" className="sidebar-button active">NASLOVNICA</Link>
-                        <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                        {['N', 'A', 'S', 'R'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                            </>
+                        )}
                         <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
                         <Link to="/chat" className="sidebar-button">CHAT</Link>
@@ -88,14 +96,21 @@ function Home({ onLogout }) {
                                 <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
                                 <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
                             </>
+                        )}
+                        {['A', 'R'].includes(userData?.uloga1) && (
+                            <>
+                                <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
+                            </>
                         )}  
                         <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
                     </aside>
                 )}
                 
                 <main className="content">
+                    <div className="info-weather-container">
                     <section className="info-section">
                         <img className="info-image" alt="Škola" src={SkolaImg}/>
+                        <div className="info-text-container">
                         <h2 className="info-title">NEŠTO O NAMA</h2>
                         <p className="info-text">
                             Diplomski studij. Diplomski studij organizira se kroz tri studijska programa,
@@ -103,20 +118,38 @@ function Home({ onLogout }) {
                             je nositelj doktorskog studija iz područja tehničkih znanosti, znanstvenog polja
                             elektrotehnike i znanstvenog polja računarstva.
                         </p>
-                    </section>
-                    <section className="weather-section">
+                    </div>   
+                </section>
+                <section className="weather-section">
                         <h2 className="weather-title">Trenutno Vrijeme</h2>
-                        {weather ? (
-                            <div className="weather-container">
-                                <p className="weather-city">{weather.name}</p>
-                                <p className="weather-temp">{weather.main.temp}°C</p>
-                                <p className="weather-condition">{weather.weather[0].description}</p>
-                                <p className="weather-humidity">Vlažnost: {weather.main.humidity}%</p>
-                            </div>
-                        ) : (
-                            <p className="weather-loading">Učitavanje vremenskih podataka...</p>
-                        )}
-                    </section>
+                        <div className="weather-input">
+                            <input
+                                type="text"
+                                value={city}
+                                onChange={(e) => setCity(e.target.value)}
+                                placeholder="Unesite grad"
+                            />
+                            <button onClick={() => setCity(city)}>Traži</button>
+                        </div>
+                            {weather ? (
+                                <div className="weather-container">
+                                    <p className="weather-city">{weather.name}</p>
+                                    <p className="weather-temp">{weather.main.temp}°C</p>
+                                    <img
+                                        className="weather-icon"
+                                        src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                                        alt={weather.weather[0].description}
+                                    />
+                                    <p className="weather-condition">{weather.weather[0].description}</p>
+                                    <p className="weather-humidity">Vlažnost: {weather.main.humidity}%</p>
+                                </div>
+                            ) : city ? (
+                                <p className="weather-error">Došlo je do greške prilikom dohvaćanja vremenskih podataka.</p>
+                            ) : (
+                                <p className="weather-loading">Učitavanje vremenskih podataka...</p>
+                            )}
+                        </section>
+                    </div>
                 </main>
             </div>
         </div>

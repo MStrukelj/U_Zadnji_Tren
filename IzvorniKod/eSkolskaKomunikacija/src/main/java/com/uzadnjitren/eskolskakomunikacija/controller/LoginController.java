@@ -1,11 +1,9 @@
 package com.uzadnjitren.eskolskakomunikacija.controller;
 
-import com.uzadnjitren.eskolskakomunikacija.model.Korisnik;
-import com.uzadnjitren.eskolskakomunikacija.model.Login;
-import com.uzadnjitren.eskolskakomunikacija.model.Razred;
-import com.uzadnjitren.eskolskakomunikacija.model.Ucenik;
+import com.uzadnjitren.eskolskakomunikacija.model.*;
 import com.uzadnjitren.eskolskakomunikacija.service.LoginService;
 import com.uzadnjitren.eskolskakomunikacija.service.KorisnikService;
+import com.uzadnjitren.eskolskakomunikacija.service.NastavnikService;
 import com.uzadnjitren.eskolskakomunikacija.service.UcenikService;
 import com.uzadnjitren.eskolskakomunikacija.exception.InvalidLoginException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +24,14 @@ public class LoginController {
     private final LoginService loginService;
     private final KorisnikService korisnikService;
     private final UcenikService ucenikService;
+    private final NastavnikService nastavnikService;
 
     @Autowired
-    public LoginController(LoginService loginService, KorisnikService korisnikService, UcenikService ucenikService) {
+    public LoginController(LoginService loginService, KorisnikService korisnikService, UcenikService ucenikService, NastavnikService nastavnikService) {
         this.loginService = loginService;
         this.korisnikService = korisnikService;
         this.ucenikService = ucenikService;
+        this.nastavnikService = nastavnikService;
     }
 
     public static class LoginRequest {
@@ -61,17 +61,24 @@ public class LoginController {
         try {
             Login user = loginService.authenticate(loginRequest.getEmail(), loginRequest.getLozinka());
 
-            // Spremanje podataka u sesiju
             session.setAttribute("user", user);
             session.setAttribute("email", user.getEmail());
 
-            // Ako je user ucenik, pohrani njegov JMBAG u sesion
             if (loginService.isStudent(user)) {
                 Integer jmbag = loginService.getJmbagByEmail(user.getEmail());
                 session.setAttribute("jmbag", jmbag);
             }
 
-            // Priprema odgovora
+            if (loginService.isTeacher(user)) {
+                Integer sifNast = nastavnikService.getSifNast(user.getEmail());
+                if (sifNast != null) {
+                    session.setAttribute("sifNast", sifNast);
+                    System.out.println("sifNast stored in session: " + sifNast);
+                } else {
+                    System.err.println("sifNast not found for email: " + user.getEmail());
+                }
+            }
+
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", "Uspješna prijava");
@@ -95,6 +102,7 @@ public class LoginController {
             return ResponseEntity.internalServerError().body(response);
         }
     }
+
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpSession session) {
@@ -163,6 +171,17 @@ public class LoginController {
                         });
                     });
                 }
+
+                // **Handle Teachers: Include sifNast using getSifNast**
+                if (loginService.isTeacher(user)) {
+                    Integer sifNast = nastavnikService.getSifNast(user.getEmail());
+                    if (sifNast != null) {
+                        userResponse.put("sifNast", sifNast);
+                        System.out.println("Found sifNast: " + sifNast);
+                    } else {
+                        System.err.println("Nastavnik not found for email: " + user.getEmail());
+                    }
+                }
             }
 
             System.out.println("Created user response: " + userResponse);
@@ -173,4 +192,6 @@ public class LoginController {
 
         return userResponse;
     }
+
+
 }

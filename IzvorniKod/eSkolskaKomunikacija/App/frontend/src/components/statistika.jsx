@@ -95,24 +95,26 @@ function Statistika({ onLogout }) {
         `https://backend-latest-in4o.onrender.com/api/materijal/stats/mostviewed/${teacherId}`,
         { credentials: "include" }
       );
+      if(viewedResponse.status === 200) {
       const viewedData = await viewedResponse.json();
       const formattedViewedData = viewedData.map((item) => ({
         name: item.nazMaterijal,
         views: item.brPregleda,
       }));
-      setMostViewed(formattedViewedData);
+      setMostViewed(formattedViewedData);}
 
       // Most downloaded materials for teacher's subjects
       const downloadedResponse = await fetch(
         `https://backend-latest-in4o.onrender.com/api/materijal/stats/mostdownloaded/${teacherId}`,
         { credentials: "include" }
       );
+      if(downloadedResponse.status === 200){
       const downloadedData = await downloadedResponse.json();
       const formattedDownloadsData = downloadedData.map((item) => ({
         name: item.nazmaterijal,
         downloads: item.brskidanja,
       }));
-      setMostDownloaded(formattedDownloadsData);
+      setMostDownloaded(formattedDownloadsData);}
 
       // Subject materials count
       const subjectsResponse = await fetch(
@@ -121,12 +123,13 @@ function Statistika({ onLogout }) {
           credentials: "include",
         }
       );
+      if(subjectsResponse.status === 200){
       const subjectsData = await subjectsResponse.json();
       const formatedSubjectsData = subjectsData.map((item) => ({
         subject: item.nazpred,
         count: item.ukupnoMaterijala,
       }));
-      setSubjectMaterials(formatedSubjectsData);
+      setSubjectMaterials(formatedSubjectsData);}
 
       // Certificate statistics
       const certResponse = await fetch(
@@ -135,12 +138,13 @@ function Statistika({ onLogout }) {
           credentials: "include",
         }
       );
+      if(certResponse.status === 200){
       const certData = await certResponse.json();
       const formatedCertData = certData.map((item) => ({
         type: item.vrsta,
         downloads: item.ukupno,
       }));
-      setCertificateStats(formatedCertData);
+      setCertificateStats(formatedCertData); }
     } catch (error) {
       console.error("Error fetching statistics:", error);
     } finally {
@@ -257,9 +261,11 @@ function Statistika({ onLogout }) {
             <Link to="/home" className="sidebar-button">
               NASLOVNICA
             </Link>
-            <Link to="/predmeti" className="sidebar-button">
-              PREDMETI
-            </Link>
+            {['N', 'A', 'S', 'R'].includes(userData?.uloga1) && (
+              <>
+                <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+              </>
+            )}
             <Link to="/raspored" className="sidebar-button">
               KALENDAR
             </Link>
@@ -275,6 +281,11 @@ function Statistika({ onLogout }) {
             <Link to="/statistika" className="sidebar-button active">
               STATISTIKA
             </Link>
+            {['A', 'R'].includes(userData?.uloga1) && (
+                <>
+                  <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
+                </>
+            )}
             <button className="sidebar-button logout" onClick={handleLogout}>
               ODJAVA
             </button>
