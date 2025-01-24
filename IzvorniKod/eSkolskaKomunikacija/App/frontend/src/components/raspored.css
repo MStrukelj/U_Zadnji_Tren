@@ -1,0 +1,105 @@
+.scheduleTableContainer {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.scheduleTable {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.scheduleTable thead {
+    background-color: #4a3a8b; /* Boja headera iz home.css */
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.scheduleTable th,
+.scheduleTable td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.scheduleTable th {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.scheduleTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.scheduleTable tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.subjectCell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.subjectName {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.subjectTime,
+.subjectClassroom {
+    font-size: 12px;
+    color: #555;
+}
+
+.editButton,
+.deleteButton {
+    margin-top: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s;
+}
+
+.editButton {
+    background-color: #4a3a8b;
+    color: white;
+    margin-right: 5px;
+}
+
+.editButton:hover {
+    background-color: #3a2a6b;
+}
+
+.deleteButton {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.deleteButton:hover {
+    background-color: #e60000;
+}
+
+.add-button {
+    padding: 10px 20px;
+    background-color: #4a3a8b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+.add-button:hover {
+    background-color: #3a2a6b;
+}
