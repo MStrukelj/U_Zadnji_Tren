@@ -62,7 +62,6 @@ function ObavijestForm({ onLogout }) {
 
             let localMarker = null;
 
-            // Create and style the search input
             const searchInput = document.createElement("input");
             searchInput.type = "text";
             searchInput.placeholder = "Pretraži lokaciju...";
@@ -76,19 +75,15 @@ function ObavijestForm({ onLogout }) {
             searchInput.style.marginTop = "10px";
             searchInput.style.marginLeft = "10px";
 
-            // Add the search input to the map's top-left corner
             map.controls[google.maps.ControlPosition.TOP_LEFT].push(searchInput);
 
-            // Initialize the Autocomplete
             const autocomplete = new google.maps.places.Autocomplete(searchInput);
             autocomplete.bindTo("bounds", map);
 
-            // Listen for place selection
             autocomplete.addListener("place_changed", () => {
                 const place = autocomplete.getPlace();
                 if (!place.geometry) return;
 
-                // Update map view
                 if (place.geometry.viewport) {
                     map.fitBounds(place.geometry.viewport);
                 } else {
@@ -96,7 +91,6 @@ function ObavijestForm({ onLogout }) {
                     map.setZoom(17);
                 }
 
-                // Update form data with selected location
                 const selectedLocation = {
                     lat: place.geometry.location.lat(),
                     lng: place.geometry.location.lng(),
@@ -107,7 +101,6 @@ function ObavijestForm({ onLogout }) {
                     location: selectedLocation
                 }));
 
-                // Update or create marker
                 if (localMarker) {
                     localMarker.setPosition(selectedLocation);
                 } else {
@@ -119,7 +112,6 @@ function ObavijestForm({ onLogout }) {
                 }
             });
 
-            // Existing click handler for the map
             map.addListener("click", (e) => {
                 const clickedLocation = {
                     lat: e.latLng.lat(),
