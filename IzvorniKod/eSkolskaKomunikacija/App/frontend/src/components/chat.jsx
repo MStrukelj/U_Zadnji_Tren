@@ -187,70 +187,53 @@ function Chat() {
 
   return (
     <div className="container">
-      <header className="header">
+    <header className="header">
         <button className="menu-button" onClick={toggleSidebar}>
-          ☰
+            ☰
         </button>
         <h1 className="logo">eŠkola</h1>
         <div className="user-container">
-          <div className="user-names">
-            <span className="user-field">{user?.ime || "Ime"}</span>
-            <span className="user-field">{user?.prezime || "Prezime"}</span>
-          </div>
-          <span className="class-field">{user?.razred || "Razred"}</span>
+            <div className="user-names">
+                <span className="user-field">{user?.ime || 'Ime'}</span>
+                <span className="user-field">{user?.prezime || 'Prezime'}</span>
+            </div>
+            <span className="class-field">{user?.razred || 'Razred'}</span>
         </div>
-      </header>
-      <div className="main-content">
+    </header>
+    
+    <div className="main-content">
         {sidebarVisible && (
-          <aside className="sidebar">
-            <Link to="/home" className="sidebar-button">
-              NASLOVNICA
-            </Link>
-            {["N", "A", "S", "R"].includes(userData?.uloga1) && (
-              <>
-                <Link to="/predmeti" className="sidebar-button">
-                  PREDMETI
-                </Link>
-              </>
-            )}
-            <Link to="/raspored" className="sidebar-button">
-              KALENDAR
-            </Link>
-            {["S", "A"].includes(userData?.uloga1) && (
-              <>
-                <Link to="/potvrde" className="sidebar-button">
-                  POTVRDE
-                </Link>
-              </>
-            )}
-            <Link to="/chat" className="sidebar-button active">
-              CHAT
-            </Link>
-            {["N", "A", "R", "US"].includes(userData?.uloga1) && (          //N(astavnik), A(dmin), R(avnatelj), US(Ucenicka sluzba)
-              <>
-                <Link to="/obavijestForm" className="sidebar-button">
-                  IZRADI OBAVIJEST
-                </Link>
-              </>
-            )}
-            {["N", "A", "R"].includes(userData?.uloga1) && (
-              <>
-                <Link to="/statistika" className="sidebar-button">
-                  STATISTIKA
-                </Link>
-              </>
-            )}
-            {["A", "R"].includes(userData?.uloga1) && (
-              <>
-                <Link to="/upravljajKorisnicima" className="sidebar-button">
-                  UPRAVLJANJE KORISNICIMA
-                </Link>
-              </>
-            )}
-            <button className="sidebar-button logout" onClick={handleLogout}>
-              ODJAVA
-            </button>
-          </aside>
+            <aside className="sidebar">
+                <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
+                {['N', 'A', 'S', 'R'].includes(user?.uloga1) && (
+                    <>
+                        <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
+                    </>
+                )}
+                <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
+                {['S', 'A'].includes(user?.uloga1) && (
+                    <>
+                        <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
+                    </>
+                )}
+                <Link to="/chat" className="sidebar-button active">CHAT</Link>
+                {['N', 'A', 'R', 'US'].includes(user?.uloga1) && (              //N(astavnik), A(dmin), R(avnatelj), US(Ucenicka sluzba)
+                    <>
+                        <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
+                    </>
+                )}
+                {['N', 'A', 'R'].includes(user?.uloga1) && (
+                    <>
+                        <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
+                    </>
+                )}
+                {['A', 'R'].includes(user?.uloga1) && (
+                    <>
+                        <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
+                    </>
+                )}  
+                <button className="sidebar-button logout" onClick={handleLogout}>ODJAVA</button>
+            </aside>
         )}
         <div className="content-area">
           <div className="chat-container">
