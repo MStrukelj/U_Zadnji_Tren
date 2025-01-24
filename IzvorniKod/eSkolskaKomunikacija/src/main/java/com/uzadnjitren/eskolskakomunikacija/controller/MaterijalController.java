@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,14 +70,18 @@ public class MaterijalController {
     @GetMapping("/{sifPredmet}/materijali/download")
     public ResponseEntity<byte[]> downloadMaterijal(@RequestParam String fileUrl) {
         try {
+            String decodedFileUrl = java.net.URLDecoder.decode(fileUrl, StandardCharsets.UTF_8.name());
+
             RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<byte[]> response = restTemplate.getForEntity(fileUrl, byte[].class);
+            ResponseEntity<byte[]> response = restTemplate.getForEntity(decodedFileUrl, byte[].class);
 
-            // Izdvajanje naziva datoteke iz URL-a
-            String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                throw new RuntimeException("Failed to download file from URL: " + decodedFileUrl);
+            }
 
-            // Povećanje broja skidanja za materijal
-            materijalService.incrementDownloads(fileName);
+            String fileName = decodedFileUrl.substring(decodedFileUrl.lastIndexOf("/") + 1);
+
+            materijalService.incrementDownloads(decodedFileUrl);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
@@ -84,9 +89,12 @@ public class MaterijalController {
 
             return new ResponseEntity<>(response.getBody(), headers, HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            System.err.println("Error downloading file: " + e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
     }
+
+
 
 
 

@@ -96,7 +96,7 @@ function Materijali({ onLogout }) {
     };
 
     const handleDownloadClick = async (material) => {
-        const fileUrl = material;
+        const fileUrl = material.fileUrl; // Ensure fileUrl is correctly retrieved from the material object
         if (!fileUrl) return alert("Nije moguće preuzeti datoteku jer nedostaje URL.");
 
         try {
@@ -114,10 +114,12 @@ function Materijali({ onLogout }) {
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-        } catch {
+        } catch (error) {
             alert("Preuzimanje datoteke nije uspjelo.");
         }
     };
+
+
 
     const handleUploadClick = async (event) => {
         const file = event.target.files[0];
@@ -213,17 +215,22 @@ function Materijali({ onLogout }) {
                     ) : (
                         <div className="materials-grid">
                             {materials.map((material, index) => (
-                                <div key={index} className="material-card" onClick={() => handleDownloadClick(material.fileUrl)}>
+                                <div
+                                    key={index}
+                                    className="material-card"
+                                    onClick={() => handleDownloadClick(material)}
+                                >
                                     <span className="material-icon">📚</span>
                                     <span className="material-name">{material.fileName}</span>
                                 </div>
                             ))}
                         </div>
+
                     )}
                     {userData?.uloga1 === "N" && (
                         <div className="upload-container">
                             <label htmlFor="file-upload" className="upload-button">Dodaj datoteku</label>
-                            <input id="file-upload" type="file" onChange={handleUploadClick} style={{ display: "none" }} />
+                            <input id="file-upload" type="file" onChange={handleUploadClick} style={{display: "none"}}/>
                         </div>
                     )}
                 </div>

@@ -18,6 +18,8 @@ import java.util.Optional;
 public interface MaterijalRepository extends JpaRepository<Materijal, Integer> {
     List<Materijal> findAllByPredmet_SifPredmet(Integer sifPredmet);
     Optional<Materijal> findByNazMaterijal(String nazMaterijal);
+    Optional<Materijal> findByUrl(String url);
+
 
 
     @Query("SELECT new com.uzadnjitren.eskolskakomunikacija.dto.MaterijalViewsDto(m.nazMaterijal, m.brPregleda) " +

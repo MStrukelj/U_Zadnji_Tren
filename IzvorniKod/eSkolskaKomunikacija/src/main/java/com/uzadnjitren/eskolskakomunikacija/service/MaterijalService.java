@@ -71,12 +71,14 @@ public class MaterijalService {
         return materials;
     }
 
-    public void incrementDownloads(String fileName) {
-        Materijal materijal = materijalRepository.findByNazMaterijal(fileName)
-                .orElseThrow(() -> new RuntimeException("Materijal not found: " + fileName));
+    public void incrementDownloads(String fileUrl) {
+        Materijal materijal = materijalRepository.findByUrl(fileUrl)
+                .orElseThrow(() -> new RuntimeException("Materijal not found for URL: " + fileUrl));
+
         materijal.setBrSkidanja(materijal.getBrSkidanja() + 1);
         materijalRepository.save(materijal);
     }
+
 
     public void incrementViews(Integer sifPredmet) {
         List<Materijal> materijali = materijalRepository.findAllByPredmet_SifPredmet(sifPredmet);
