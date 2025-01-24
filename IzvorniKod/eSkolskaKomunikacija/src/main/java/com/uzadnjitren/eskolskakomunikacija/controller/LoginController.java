@@ -61,17 +61,24 @@ public class LoginController {
         try {
             Login user = loginService.authenticate(loginRequest.getEmail(), loginRequest.getLozinka());
 
-            // Spremanje podataka u sesiju
             session.setAttribute("user", user);
             session.setAttribute("email", user.getEmail());
 
-            // Ako je user ucenik, pohrani njegov JMBAG u sesion
             if (loginService.isStudent(user)) {
                 Integer jmbag = loginService.getJmbagByEmail(user.getEmail());
                 session.setAttribute("jmbag", jmbag);
             }
 
-            // Priprema odgovora
+            if (loginService.isTeacher(user)) {
+                Integer sifNast = nastavnikService.getSifNast(user.getEmail());
+                if (sifNast != null) {
+                    session.setAttribute("sifNast", sifNast);
+                    System.out.println("sifNast stored in session: " + sifNast);
+                } else {
+                    System.err.println("sifNast not found for email: " + user.getEmail());
+                }
+            }
+
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", "Uspješna prijava");
@@ -95,6 +102,7 @@ public class LoginController {
             return ResponseEntity.internalServerError().body(response);
         }
     }
+
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpSession session) {

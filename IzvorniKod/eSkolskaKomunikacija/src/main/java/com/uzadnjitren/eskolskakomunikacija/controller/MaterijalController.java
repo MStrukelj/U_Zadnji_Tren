@@ -1,6 +1,7 @@
 package com.uzadnjitren.eskolskakomunikacija.controller;
 
 import com.uzadnjitren.eskolskakomunikacija.service.MaterijalService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -38,19 +39,31 @@ public class MaterijalController {
     @PostMapping("/{sifPredmet}/materijali/upload")
     public ResponseEntity<?> uploadMaterijal(
             @PathVariable Integer sifPredmet,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("sifNast") Integer sifNast,
+            HttpSession session) {
         try {
-            String uploadedUrl = materijalService.uploadMaterijal(sifPredmet, file);
+            System.out.println("Session attributes: " + session.getAttributeNames());
 
+            if (sifNast == null) {
+                throw new IllegalArgumentException("Šifra nastavnika nije navedena.");
+            }
+
+            System.out.println("Received upload request: sifPredmet=" + sifPredmet + ", sifNast=" + sifNast);
+
+            String uploadedUrl = materijalService.uploadMaterijal(sifPredmet, file, sifNast);
 
             Map<String, String> response = new HashMap<>();
             response.put("fileUrl", uploadedUrl);
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            System.err.println("Error during file upload: " + e.getMessage());
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
+
+
 
 
     @GetMapping("/{sifPredmet}/materijali/download")

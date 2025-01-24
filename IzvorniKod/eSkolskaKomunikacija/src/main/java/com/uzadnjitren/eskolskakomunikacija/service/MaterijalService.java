@@ -90,32 +90,31 @@ public class MaterijalService {
 
 
     // Metoda za upload materijala u bucket i spremanje u bazu
-    public String uploadMaterijal(Integer sifPredmet, MultipartFile file) throws Exception {
+    public String uploadMaterijal(Integer sifPredmet, MultipartFile file, Integer sifNast) throws Exception {
         Bucket bucket = storage.get(bucketName);
 
         if (bucket == null) {
             throw new Exception("Bucket not found: " + bucketName);
         }
 
+        if (file == null || file.isEmpty()) {
+            throw new Exception("File is empty or missing.");
+        }
+
         String folderPath = sifPredmet + "/";
         String fileName = folderPath + file.getOriginalFilename();
 
-        // Upload datoteke u Google Cloud Storage
         BlobInfo blobInfo = BlobInfo.newBuilder(bucket.getName(), fileName).build();
         bucket.create(blobInfo.getName(), file.getBytes(), file.getContentType());
 
-        // Generiranje javnog URL-a za učitani materijal
         String fileUrl = String.format("https://storage.googleapis.com/%s/%s", bucketName, fileName);
 
-        // Dohvati predmet prema šifri
         Predmet predmet = predmetRepository.findById(sifPredmet)
                 .orElseThrow(() -> new Exception("Predmet not found: " + sifPredmet));
 
-        // Dohvati nastavnika (postavi defaultnog ako nije specificiran)
-        Nastavnik nastavnik = nastavnikRepository.findById(1) // Poziv na instanci repozitorija
-                .orElseThrow(() -> new Exception("Nastavnik not found"));
+        Nastavnik nastavnik = nastavnikRepository.findById(sifNast)
+                .orElseThrow(() -> new Exception("Nastavnik not found with sifNast: " + sifNast));
 
-        // Kreiraj instancu materijala
         Materijal materijal = new Materijal();
         materijal.setNazMaterijal(file.getOriginalFilename());
         materijal.setUrl(fileUrl);
@@ -124,9 +123,9 @@ public class MaterijalService {
         materijal.setPredmet(predmet);
         materijal.setNastavnik(nastavnik);
 
-        // Spremi materijal u bazu
         materijalRepository.save(materijal);
 
         return fileUrl;
     }
+
 }
