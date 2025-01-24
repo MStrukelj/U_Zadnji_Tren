@@ -194,10 +194,10 @@ function Chat() {
         <h1 className="logo">eŠkola</h1>
         <div className="user-container">
             <div className="user-names">
-                <span className="user-field">{userData?.ime || 'Ime'}</span>
-                <span className="user-field">{userData?.prezime || 'Prezime'}</span>
+                <span className="user-field">{user?.ime || 'Ime'}</span>
+                <span className="user-field">{user?.prezime || 'Prezime'}</span>
             </div>
-            <span className="class-field">{userData?.razred || 'Razred'}</span>
+            <span className="class-field">{user?.razred || 'Razred'}</span>
         </div>
     </header>
     
@@ -205,29 +205,29 @@ function Chat() {
         {sidebarVisible && (
             <aside className="sidebar">
                 <Link to="/home" className="sidebar-button">NASLOVNICA</Link>
-                {['N', 'A', 'S', 'R'].includes(userData?.uloga1) && (
+                {['N', 'A', 'S', 'R'].includes(user?.uloga1) && (
                     <>
                         <Link to="/predmeti" className="sidebar-button">PREDMETI</Link>
                     </>
                 )}
                 <Link to="/raspored" className="sidebar-button">KALENDAR</Link>
-                {['S', 'A'].includes(userData?.uloga1) && (
+                {['S', 'A'].includes(user?.uloga1) && (
                     <>
                         <Link to="/potvrde" className="sidebar-button">POTVRDE</Link>
                     </>
                 )}
                 <Link to="/chat" className="sidebar-button active">CHAT</Link>
-                {['N', 'A', 'R', 'US'].includes(userData?.uloga1) && (              //N(astavnik), A(dmin), R(avnatelj), US(Ucenicka sluzba)
+                {['N', 'A', 'R', 'US'].includes(user?.uloga1) && (              //N(astavnik), A(dmin), R(avnatelj), US(Ucenicka sluzba)
                     <>
                         <Link to="/obavijestForm" className="sidebar-button">IZRADI OBAVIJEST</Link>
                     </>
                 )}
-                {['N', 'A', 'R'].includes(userData?.uloga1) && (
+                {['N', 'A', 'R'].includes(user?.uloga1) && (
                     <>
                         <Link to="/statistika" className="sidebar-button">STATISTIKA</Link>
                     </>
                 )}
-                {['A', 'R'].includes(userData?.uloga1) && (
+                {['A', 'R'].includes(user?.uloga1) && (
                     <>
                         <Link to="/upravljajKorisnicima" className="sidebar-button">UPRAVLJANJE KORISNICIMA</Link>
                     </>
